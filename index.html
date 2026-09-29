@@ -167,6 +167,41 @@ button:focus-visible{outline:3px solid var(--warn);outline-offset:2px}
 .tap{transform-box:fill-box;transform-origin:center;animation:tap .55s ease-out forwards;fill:none;stroke:#fff;stroke-width:1.6}@keyframes tap{from{transform:scale(.4);opacity:1}to{transform:scale(2.6);opacity:0}}
 .snd{background:none;border:1px solid var(--line);border-radius:6px;padding:0 8px;font-size:.95rem;line-height:1.6}
 .fig.play{width:176px}
+
+/* ---- écran de jeu plein écran ---- */
+.play .curstep{font-size:.78rem;margin:0;line-height:1.2}
+body.inplay{height:100%;overflow:hidden}
+body.inplay main{height:100%;display:flex;flex-direction:column;padding:6px 10px 0;gap:5px}
+.topbar{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--muted);flex:none}
+.topbar .sp{flex:1}
+.topbar button{background:var(--btn);border:1px solid var(--line);border-radius:7px;padding:3px 9px;font-size:.85rem;font-weight:700;color:var(--ink)}
+.topbar button.on{background:#F2C94C;border-color:#d4ab2c;color:#222}
+.play .tracker2{margin:0;gap:6px;flex:none}
+.play .tracker2 .gl{font-size:.62rem;line-height:1}
+.play .tracker2 .ls div{font-size:.95rem;line-height:1.45;border-width:1.5px;border-radius:5px}
+.play .vitals{flex:none;font-size:.85rem;gap:8px}
+.play .heart{width:18px;height:18px}.play .bar{height:9px}
+.mid{flex:1;min-height:0;display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:100%;gap:8px}
+.mid .stage{height:100%;aspect-ratio:120/262;max-width:62vw}
+.mid .stage svg{width:100%;height:100%;display:block}
+.flipbtn{position:absolute;left:5px;bottom:5px;z-index:2;background:rgba(244,240,226,.92);color:#222;border:1px solid rgba(0,0,0,.3);border-radius:18px;padding:5px 10px;font-weight:700;font-size:.82rem}
+.side2{overflow-y:auto;min-height:0;padding-right:2px}
+.side2 h2{font-size:1.1rem}
+.side2 .ctx{font-size:.84rem;margin:4px 0 6px}
+.side2 h3{font-family:"Barlow Condensed",sans-serif;font-size:.85rem;margin:6px 0 3px;color:var(--muted);font-weight:700}
+.side2 .inj li{font-size:.82rem}
+.side2 .phase{font-size:.75rem;margin-bottom:3px}
+.expl{font-size:.8rem;background:color-mix(in srgb,#F2C94C 16%,var(--panel));border:1px solid #d4ab2c;border-radius:8px;padding:6px 8px;margin-bottom:6px}
+.bottom{flex:none;display:flex;flex-direction:column;gap:5px;padding-bottom:calc(6px + env(safe-area-inset-bottom,0px))}
+.play .fb{min-height:0;max-height:4.3em;overflow-y:auto;margin:0;font-size:.84rem;padding:6px 10px;line-height:1.3}
+.tipline{font-size:.84rem;font-weight:600;background:color-mix(in srgb,#F2C94C 22%,var(--panel));border:1px solid #d4ab2c;border-radius:8px;padding:6px 10px;max-height:4.3em;overflow-y:auto;line-height:1.3}
+.play .choice{margin:0;padding:7px 8px}
+.play .choice h3{font-size:.9rem;margin:0 0 5px}
+.play .choice .opts{grid-template-columns:1fr 1fr;gap:6px}
+.play .choice button{padding:8px;font-size:.82rem;line-height:1.2}
+.play .kit{position:static;margin:0 -10px;padding:6px 10px 0;border-top:1px solid var(--line)}
+.play .tool{width:70px;padding:5px 2px;font-size:.64rem}
+.play .tool svg{width:22px;height:22px}
 @media (max-width:360px){.scene{grid-template-columns:140px 1fr!important}.fig.play{width:140px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -553,6 +588,7 @@ function tracker(){
  ${c?`<p class="curstep"><b style="color:${LC[c]}">${CH(c)}</b> ${LBL[c]}</p>`:""}`;
 }
 function intro(){
+ document.body.classList.remove("inplay");
  const b=best(),D=mk(SC[0]);
  app.innerHTML=`<div class="hero"><h1 class="big" style="font-size:clamp(2.2rem,11vw,3.2rem)"><span>SAFE</span><span style="color:var(--lM)">MARCHE</span><span style="color:var(--lR)">RYAN</span></h1><div class="stage env-fire">${figure(D,"front")}</div></div>
  <p style="margin-top:10px">Le protocole complet du sauvetage au combat, du premier coup de feu jusqu'à l'évacuation.</p>
@@ -582,34 +618,39 @@ function updBar(){
  const p=document.getElementById("pool");if(p){const r=4+st.blood*.22;p.setAttribute("rx",r*1.6);p.setAttribute("ry",Math.max(2,r*.45))}
 }
 function render(){
- const s=st.s,tool=TOOLS.find(t=>t[0]===st.tool);
+ document.body.classList.add("inplay");
+ const s=st.s,c0=curLetter();
  st.H=(st.hintOn||(LEARN()&&AUTO))?hint():null;st.hl=st.H&&st.H.zones||[];
  const needFlip=st.hl.length&&!st.hl.some(z=>(st.view==="back"?ZB:ZF).some(r=>r[0]===z));
- const c0=curLetter();
- app.innerHTML=`<div class="row"><span class="muted">Blessé ${cur+1} / ${SC.length} · ${MODE==="illimite"?"∞":MODES[MODE].t}</span><span class="muted">Erreurs : ${st.err}${st.hints?` · 💡 ${st.hints}`:""} <button class="snd" id="snd" aria-label="Son">${SOUND?"🔊":"🔇"}</button></span></div>
+ const pn=panel(),learn=LEARN();
+ app.innerHTML=`<div class="play" style="display:contents">
+ <div class="topbar"><span style="white-space:nowrap">${cur+1}/${SC.length} · ${({apprentissage:"Apprent.",intense:"Intense",normal:"Normal",decouverte:"Découv.",illimite:"∞"})[MODE]}</span><span style="white-space:nowrap">✗ ${st.err}${st.hints?` · 💡${st.hints}`:""}</span><span class="sp"></span>
+  ${learn?`<button id="auto" class="${AUTO?"on":""}">💡 Auto</button>`:""}${learn&&AUTO?"":`<button id="hintbtn" class="${st.H?"on":""}">💡${learn?"":` −${HINT_COST}`}</button>`}
+  <button id="snd" aria-label="Son">${SOUND?"🔊":"🔇"}</button></div>
  ${tracker()}
  <div class="vitals">${HEART}<div class="bar"><i></i></div><span class="bpm" id="bpm"></span></div>
- <div class="scene"><div><div class="stage env-${s.env}">${figure(st,st.view,"fig play")}</div><button class="viewbtn ${needFlip?"hint":""}" id="flip">↻ ${st.view==="front"?"Retourner (dos)":"Revenir de face"}</button></div>
-  <div class="side"><span class="phase">${s.phase}</span><h2>${s.title}</h2><p class="ctx">${s.ctx}</p>
+ <div class="mid"><div class="stage env-${s.env}">${figure(st,st.view,"fig play")}<button class="flipbtn ${needFlip?"hint":""}" id="flip">↻ ${st.view==="front"?"Dos":"Face"}</button></div>
+  <div class="side2">${learn&&c0?`<div class="expl"><b style="color:${LC[c0]}">${CH(c0)}</b> ${EXPL[c0]}</div>`:""}<span class="phase">${s.phase}</span><h2>${s.title}</h2><p class="ctx">${s.ctx}</p>
   <h3>Constatations</h3><ul class="inj">${st.seen.map((i,k)=>{const w=st.w[i];return `<li class="${w.done?"done":""} ${st.newW===i?"new":""}"><span class="badge" style="${w.done?"background:var(--ok)":""}">${w.done?"✓":k+1}</span><span>${w.label}${w.side==="back"?" (dos)":""}</span></li>`}).join("")}
   ${(s.notes||[]).map(n=>`<li><span class="dot">•</span><span>${n}</span></li>`).join("")}</ul></div></div>
- ${panel()}
- ${LEARN()&&c0?`<div class="learn"><p><b style="color:${LC[c0]}">${CH(c0)} · ${LBL[c0]}</b><br>${EXPL[c0]}</p>${st.H?`<p class="tip">💡 ${st.H.text}</p>`:""}<div class="lrow">${AUTO?"":`<button id="hintbtn">💡 Montre-moi</button>`}<label><input type="checkbox" id="auto" ${AUTO?"checked":""}> Aide permanente</label></div></div>`
- :c0?`<div class="learn compact">${st.H?`<p class="tip">💡 ${st.H.text}</p>`:""}<div class="lrow">${st.H?`<span class="muted">Aide utilisée : ${st.hints} (−${HINT_COST*st.hints} pts)</span>`:`<button id="hintbtn">💡 Montre-moi</button><span class="muted">−${HINT_COST} pts, noté au bilan</span>`}</div></div>`:""}
- <div class="fb ${st.fbc}" aria-live="polite">${st.fb||'<span class="muted">Commence par SAFE, puis choisis un outil et touche le mannequin.</span>'}</div>
- <p class="hint">Outil actif : <strong>${tool[1]}</strong></p>
- <div class="kit">${TOOLS.map(t=>`<button class="tool ${st.tool===t[0]?"sel":""} ${st.H&&st.H.tool===t[0]&&st.tool!==t[0]?"hint":""}" data-t="${t[0]}">${icon(t[2])}<span>${t[1]}</span></button>`).join("")}</div>`;
+ <div class="bottom">
+  <div class="fb ${st.fbc}" aria-live="polite">${st.fb||`<span class="muted">${c0&&c0[0]==="s"&&c0.length===2?"SAFE d'abord : choisis la bonne action ci-dessous.":"Choisis un outil, puis touche une zone du mannequin."}</span>`}</div>
+  ${st.H?`<div class="tipline">💡 ${st.H.text}</div>`:""}
+  ${pn||`<div class="kit">${TOOLS.map(t=>`<button class="tool ${st.tool===t[0]?"sel":""} ${st.H&&st.H.tool===t[0]&&st.tool!==t[0]?"hint":""}" data-t="${t[0]}">${icon(t[2])}<span>${t[1]}</span></button>`).join("")}</div>`}
+ </div></div>`;
  updBar();
  app.querySelector(".fig.play").onclick=e=>{const z=e.target.getAttribute&&e.target.getAttribute("data-z");if(!z)return;try{const sv=e.currentTarget,pt=sv.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const q=pt.matrixTransform(sv.getScreenCTM().inverse());st.tap={x:+q.x.toFixed(1),y:+q.y.toFixed(1)}}catch(err){}onZone(z)};
  document.getElementById("snd").onclick=()=>{SOUND=!SOUND;try{localStorage.setItem("march_snd",SOUND?"1":"0")}catch(e){}if(SOUND){const c=ac();c&&c.resume&&c.resume();SFX.ok()}st.tap=null;render()};
  document.getElementById("flip").onclick=()=>{st.tap=null;st.view=st.view==="front"?"back":"front";st.fresh=null;st.newW=null;render()};
  app.querySelectorAll(".choice button").forEach(b=>b.onclick=()=>choose(b.dataset.k));
- const hb=document.getElementById("hintbtn");if(hb)hb.onclick=()=>{if(!st.hintOn&&!(LEARN()&&AUTO))st.hints++;st.hintOn=true;st.tap=null;render()};
- const au=document.getElementById("auto");if(au)au.onchange=()=>{AUTO=au.checked;try{localStorage.setItem("march_auto",AUTO?"1":"0")}catch(e){}st.tap=null;render()};
- app.querySelectorAll(".tool").forEach(b=>b.onclick=()=>{st.tap=null;st.tool=b.dataset.t;st.fresh=null;st.newW=null;const sc=app.querySelector(".kit").scrollLeft;render();app.querySelector(".kit").scrollLeft=sc});
+ const hb=document.getElementById("hintbtn");if(hb)hb.onclick=()=>{if(st.hintOn)return;if(!(LEARN()&&AUTO))st.hints++;st.hintOn=true;st.tap=null;render()};
+ const au=document.getElementById("auto");if(au)au.onclick=()=>{AUTO=!AUTO;try{localStorage.setItem("march_auto",AUTO?"1":"0")}catch(e){}st.tap=null;render()};
+ const kit=app.querySelector(".kit");
+ app.querySelectorAll(".tool").forEach(b=>b.onclick=()=>{st.tap=null;st.tool=b.dataset.t;st.fresh=null;st.newW=null;const sc=kit.scrollLeft;render();const k2=app.querySelector(".kit");if(k2)k2.scrollLeft=sc});
 }
 function end(ok){
  clearInterval(timer);
+ document.body.classList.remove("inplay");
  const s=st.s,sec=Math.round((Date.now()-st.t0)/1000),hidden=st.w.filter(w=>w.hidden),found=hidden.filter(w=>w.rev).length;
  const pts=LEARN()?0:ok?Math.max(0,Math.round(st.hp*10-st.err*40+(MODES[MODE].k?Math.max(0,Math.round(150/MODES[MODE].k)-sec)*3*MODES[MODE].k:0)+found*100+(st.evSpawned?100:0)-st.hints*HINT_COST)):0;
  total+=pts;results.push({title:s.title,ok,pts,found,hid:hidden.length,hints:st.hints});
@@ -630,6 +671,7 @@ function end(ok){
  document.getElementById("nx").onclick=()=>{cur++;cur<SC.length?start():final()};
 }
 function final(){
+ document.body.classList.remove("inplay");
  const b=best(),rec=!LEARN()&&total>b;if(rec)best(total);
  const th=results.reduce((a,r)=>a+(r.hints||0),0),saved=results.filter(r=>r.ok).length,hf=results.reduce((a,r)=>a+r.found,0),ht=results.reduce((a,r)=>a+r.hid,0);
  app.innerHTML=`<h1 class="big" style="font-size:3rem;margin-top:14px">Bilan</h1><div class="score">${LEARN()?"":total}</div>
@@ -639,13 +681,14 @@ function final(){
  document.getElementById("re").onclick=intro;
 }
 /* ---------- code d'accès ---------- */
-const CODES=["e7f1dfa6"];
+const CODES=["fdc422fd"];
 const hashCode=s=>{let x=0x811c9dc5;for(const c of s){x^=c.charCodeAt(0);x=Math.imul(x,0x01000193)>>>0}return x.toString(16)};
 function unlocked(){try{return CODES.includes(localStorage.getItem("march_key"))}catch(e){return false}}
 function gate(){
+ document.body.classList.remove("inplay");
  app.innerHTML=`<div class="hero"><h1 class="big" style="font-size:clamp(2.2rem,11vw,3.2rem)"><span>SAFE</span><span style="color:var(--lM)">MARCHE</span><span style="color:var(--lR)">RYAN</span></h1><div class="stage env-fire">${figure(mk(SC[0]),"front")}</div></div>
  <div class="card" style="margin-top:16px"><h2>Accès réservé</h2><p class="muted" style="margin:4px 0 10px">Entre le code qui t'a été transmis pour accéder à l'entraînement.</p>
- <input id="code" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Code d'accès" aria-label="Code d'accès"
+ <input id="code" type="text" autocomplete="off" autocapitalize="characters" inputmode="numeric" spellcheck="false" placeholder="Code d'accès" aria-label="Code d'accès"
   style="width:100%;font:inherit;font-size:1.2rem;letter-spacing:.08em;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--btn);color:var(--ink)">
  <p id="err" style="color:var(--blood);font-weight:600;min-height:1.4em;margin:8px 0 0"></p>
  <button class="primary" id="unlock">Déverrouiller</button></div>`;
