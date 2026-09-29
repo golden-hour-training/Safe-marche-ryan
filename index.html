@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MARCH Drill</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Stencil+One&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#D6CDB2; --panel:#E9E3D0; --ink:#23261C; --muted:#5C5F4E; --line:#A99F82;
+  --olive:#4B5320; --blood:#9E1B14; --ok:#3E6B2C; --warn:#B8860B; --btn:#F4F0E2; --ground:#CFC6A8;
+  --lM:#B3261E; --lA:#2F6DB3; --lR:#1F8A87; --lC:#7A4FA0; --lH:#B7810F;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1F231A; --panel:#2E3326; --ink:#ECE6D2; --muted:#AFA98F; --line:#555B45;
+  --olive:#9AA65A; --blood:#E0473C; --ok:#8BC06A; --warn:#E0B24A; --btn:#383E2E; --ground:#353B2B;
+  --lM:#E0473C; --lA:#5B9BE0; --lR:#3FBFBA; --lC:#A980CF; --lH:#E0B24A;}}
+:root[data-theme="dark"]{
+  --bg:#1F231A; --panel:#2E3326; --ink:#ECE6D2; --muted:#AFA98F; --line:#555B45;
+  --olive:#9AA65A; --blood:#E0473C; --ok:#8BC06A; --warn:#E0B24A; --btn:#383E2E; --ground:#353B2B;
+  --lM:#E0473C; --lA:#5B9BE0; --lR:#3FBFBA; --lC:#A980CF; --lH:#E0B24A;}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
+  font-family:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.4;-webkit-tap-highlight-color:transparent}
+main{max-width:560px;margin:0 auto;padding:10px 14px 28px}
+.stencil,h1{font-family:"Saira Stencil One",Impact,"Arial Narrow",sans-serif;font-weight:400}
+h2{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:1.35rem;margin:0;line-height:1.1}
+p{margin:0 0 10px}
+.muted{color:var(--muted)}
+/* tracker */
+.tracker{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:6px 0 8px}
+.tracker div{position:relative;font-family:"Saira Stencil One",Impact,sans-serif;font-size:1.9rem;line-height:1.35;text-align:center;
+  border:2px solid var(--line);border-radius:8px;color:var(--line);transition:background .3s,color .3s,border-color .3s}
+.tracker div.now{border-color:var(--c);color:var(--c)}
+.tracker div.done{background:var(--c);border-color:var(--c);color:#fff;animation:pop .35s}
+@keyframes pop{50%{transform:scale(1.15)}}
+/* vitals */
+.vitals{display:flex;align-items:center;gap:10px;font-family:"Barlow Condensed",sans-serif;font-weight:700}
+.heart{width:26px;height:26px;color:var(--blood);animation:beat var(--dur,.75s) infinite}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.25)}30%{transform:scale(.95)}}
+.bar{flex:1;height:14px;background:var(--panel);border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.bar i{display:block;height:100%;width:100%;background:var(--ok);transition:width .25s linear,background .3s}
+.bpm{min-width:4.2em;text-align:right;font-size:1.05rem}
+/* scene */
+.scene{position:relative;display:grid;grid-template-columns:150px 1fr;gap:12px;margin:10px 0;padding:10px 12px 10px 6px;
+  border-radius:10px;border:1px solid var(--line);
+  background:radial-gradient(circle at 25% 60%,color-mix(in srgb,var(--ground) 70%,var(--panel)) 0 35%,var(--panel) 75%)}
+.fig{width:150px;height:auto;display:block}
+.phase{display:inline-block;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:.85rem;color:#fff;background:var(--blood);padding:1px 8px;border-radius:4px;margin-bottom:6px}
+.ctx{font-size:.95rem;margin:6px 0 8px}
+.inj{list-style:none;padding:0;margin:0;display:grid;gap:5px}
+.inj li{font-size:.9rem;font-weight:500;line-height:1.25;display:flex;gap:6px;align-items:flex-start}
+.badge{flex:none;display:grid;place-items:center;width:1.35em;height:1.35em;border-radius:50%;background:var(--ink);color:var(--panel);font-size:.75em;font-weight:700;margin-top:.1em}
+.dot{flex:none;width:1.35em;text-align:center;color:var(--muted)}
+.ring{transform-box:fill-box;transform-origin:center;animation:ping 1.1s ease-out infinite}
+@keyframes ping{from{transform:scale(1);opacity:.85}to{transform:scale(2.6);opacity:0}}
+.pop-in{transform-box:fill-box;transform-origin:center;animation:popin .35s ease-out}
+@keyframes popin{from{transform:scale(.3);opacity:0}}
+/* feedback */
+.fb{display:flex;gap:8px;align-items:flex-start;min-height:3em;font-weight:500;font-size:.95rem;padding:8px 12px;border-radius:8px;margin-bottom:10px;border:1px dashed var(--line)}
+.fb.good{background:color-mix(in srgb,var(--ok) 20%,transparent);border:1px solid var(--ok)}
+.fb.bad{background:color-mix(in srgb,var(--blood) 18%,transparent);border:1px solid var(--blood)}
+/* actions */
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+button{font:inherit;color:inherit;cursor:pointer}
+.act{display:flex;gap:9px;align-items:center;background:var(--btn);border:1px solid var(--line);border-radius:10px;padding:9px 10px;min-height:62px;
+  text-align:left;font-weight:600;font-size:.93rem;line-height:1.2;box-shadow:0 2px 0 var(--line)}
+.act:active{transform:translateY(2px);box-shadow:none}
+.act svg{flex:none;width:30px;height:30px;padding:4px;border-radius:7px;background:var(--panel);color:var(--olive);
+  fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.act:disabled{opacity:.35;text-decoration:line-through;cursor:default;box-shadow:none}
+.act.shake{animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+#flash{position:fixed;inset:0;pointer-events:none;opacity:0}
+#flash.bad{animation:flash .45s;box-shadow:inset 0 0 0 10px var(--blood),inset 0 0 60px color-mix(in srgb,var(--blood) 50%,transparent)}
+#flash.good{animation:flash .45s;box-shadow:inset 0 0 0 6px var(--ok)}
+@keyframes flash{from{opacity:1}to{opacity:0}}
+.primary{display:block;width:100%;background:var(--olive);color:var(--panel);border:0;border-radius:10px;
+  padding:15px;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:1.25rem;margin-top:14px}
+button:focus-visible{outline:3px solid var(--warn);outline-offset:2px}
+/* intro */
+.hero{display:grid;grid-template-columns:1fr 130px;align-items:center;gap:8px;margin-top:10px}
+.big{font-family:"Saira Stencil One",Impact,sans-serif;font-size:clamp(3.2rem,17vw,4.6rem);line-height:.9;margin:0}
+.big span{display:block}
+.legend{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin:14px 0;align-items:center}
+.legend b{font-family:"Saira Stencil One",Impact,sans-serif;font-weight:400;font-size:1.5rem;color:var(--c);line-height:1}
+.debrief{padding-left:0;list-style:none;margin:8px 0 0}
+.debrief li{display:flex;gap:10px;margin:8px 0;align-items:flex-start}
+.debrief .l{flex:none;font-family:"Saira Stencil One",Impact,sans-serif;color:#fff;background:var(--c);border-radius:5px;width:1.6em;text-align:center}
+.score{font-family:"Saira Stencil One",Impact,sans-serif;font-size:3.2rem;line-height:1;margin:6px 0}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:.9rem}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:12px 0}
+.endgrid{display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center}
+.note{font-size:.82rem;color:var(--muted);margin-top:16px}
+.scene{grid-template-columns:178px 1fr!important;padding:8px 10px 8px 4px!important}
+.fig.play{width:172px}
+.viewbtn{display:block;width:100%;margin-top:6px;background:var(--btn);border:1px solid var(--line);border-radius:8px;padding:7px;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:1rem}
+.side h2{font-size:1.2rem}
+.side .ctx{font-size:.88rem}
+.side h3{font-family:"Barlow Condensed",sans-serif;font-size:.95rem;margin:8px 0 4px;color:var(--muted);font-weight:700}
+.inj li.done span:last-child{text-decoration:line-through;opacity:.6}
+.inj li.new{animation:pop .5s}
+.fb.warn{background:color-mix(in srgb,var(--warn) 25%,transparent);border:1px solid var(--warn)}
+.fb.info{background:var(--panel);border:1px solid var(--line)}
+.coverbtn{display:block;width:100%;background:var(--blood);color:#fff;border:0;border-radius:10px;padding:13px;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:1.2rem;margin-bottom:10px}
+.kit{position:sticky;bottom:0;z-index:5;display:flex;gap:7px;overflow-x:auto;background:var(--bg);margin:0 -14px;padding:8px 14px calc(8px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);scrollbar-width:none}
+.kit::-webkit-scrollbar{display:none}
+.tool{flex:none;width:80px;display:flex;flex-direction:column;align-items:center;gap:3px;background:var(--btn);border:1px solid var(--line);border-radius:10px;padding:6px 3px;font-size:.7rem;font-weight:600;line-height:1.1;text-align:center;hyphens:auto}
+.tool svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;color:var(--olive)}
+.tool.sel{background:var(--olive);border-color:var(--olive);color:var(--panel)}
+.tool.sel svg{color:var(--panel)}
+.hint{font-size:.85rem;color:var(--muted);margin:0 0 6px}
+.figs2{display:flex;gap:6px;justify-content:center}
+.figs2 .fig{width:120px}
+.tag{font-size:.75rem;font-weight:700;padding:1px 6px;border-radius:4px;margin-left:4px;white-space:nowrap}
+.tag.found{background:var(--ok);color:#fff}.tag.miss{background:var(--blood);color:#fff}
+.tracker2{display:flex;gap:10px;margin:6px 0 8px;justify-content:space-between}
+.tracker2 .grp{display:flex;flex-direction:column;gap:2px;flex:var(--n)}
+.tracker2 .gl{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:.72rem;color:var(--muted)}
+.tracker2 .gl.on{color:var(--ink)}
+.tracker2 .ls{display:flex;gap:3px}
+.tracker2 .ls div{flex:1;font-family:"Saira Stencil One",Impact,sans-serif;font-size:1.15rem;line-height:1.5;text-align:center;border:2px solid var(--line);border-radius:6px;color:var(--line);transition:background .3s,color .3s}
+.tracker2 .ls div.now{border-color:var(--c);color:var(--c)}
+.tracker2 .ls div.done{background:var(--c);border-color:var(--c);color:#fff;animation:pop .35s}
+.curstep{font-size:.9rem;margin:-2px 0 6px}
+.curstep b{font-family:"Barlow Condensed",sans-serif;font-size:1rem}
+.choice{background:var(--panel);border:2px solid var(--c,var(--olive));border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.choice h3{margin:0 0 8px;font-family:"Barlow Condensed",sans-serif;font-size:1.05rem}
+.choice .opts{display:grid;gap:7px}
+.choice button{background:var(--btn);border:1px solid var(--line);border-radius:8px;padding:11px 12px;text-align:left;font-weight:600;box-shadow:0 2px 0 var(--line)}
+.choice button:active{transform:translateY(2px);box-shadow:none}
+.choice button:disabled{opacity:.4;text-decoration:line-through}
+.choice button.msel{border:2px solid var(--olive);background:color-mix(in srgb,var(--olive) 14%,var(--btn))}
+.learn{background:color-mix(in srgb,#F2C94C 16%,var(--panel));border:1px solid #d4ab2c;border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:.92rem}
+.learn p{margin:0 0 6px}.learn.compact{padding:8px 10px}.learn .tip{font-weight:600}
+.lrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.lrow button{background:#F2C94C;color:#222;border:0;border-radius:8px;padding:8px 12px;font-weight:700}
+.lrow label{display:flex;gap:6px;align-items:center;font-weight:600}
+.hintz{animation:hintz 1s ease-in-out infinite}@keyframes hintz{50%{fill-opacity:.05;stroke-opacity:.4}}
+.tool.hint,.choice button.hint,.viewbtn.hint{box-shadow:0 0 0 3px #F2C94C;animation:hintp 1s ease-in-out infinite}
+@keyframes hintp{50%{box-shadow:0 0 0 6px rgba(242,201,76,.35)}}
+.grpt{font-family:"Saira Stencil One",Impact,sans-serif;font-size:1.1rem;margin:10px 0 2px}
+.stage{position:relative;overflow:hidden;border-radius:9px;border:1px solid rgba(0,0,0,.25);box-shadow:inset 0 0 18px rgba(0,0,0,.25)}
+.env-forest{background:radial-gradient(ellipse at 50% 100%,rgba(0,0,0,.25),transparent 55%),radial-gradient(circle at 15% 20%,#8f955f 0 3px,transparent 4px),radial-gradient(circle at 80% 35%,#7d8452 0 2px,transparent 3px),radial-gradient(circle at 30% 70%,#8a9058 0 2.5px,transparent 3.5px),radial-gradient(circle at 85% 80%,#747b4a 0 3px,transparent 4px),linear-gradient(180deg,#a7a57a,#8a8a5d);background-size:auto,40px 40px,34px 34px,46px 46px,38px 38px,auto}
+.env-urban{background:radial-gradient(ellipse at 50% 100%,rgba(0,0,0,.25),transparent 55%),repeating-linear-gradient(0deg,rgba(0,0,0,.09) 0 1px,transparent 1px 30px),repeating-linear-gradient(90deg,rgba(0,0,0,.07) 0 1px,transparent 1px 44px),linear-gradient(180deg,#aca79c,#8e897f)}
+.env-fire{background:radial-gradient(ellipse at 50% 100%,rgba(0,0,0,.3),transparent 55%),radial-gradient(circle at 25% 30%,#9b8d6c 0 2px,transparent 3px),radial-gradient(circle at 70% 60%,#8d7f60 0 2.5px,transparent 3.5px),linear-gradient(180deg,#b3a37f,#8f8061);background-size:auto,36px 36px,44px 44px,auto}
+.env-fire::after{content:"";position:absolute;inset:-30%;pointer-events:none;background:radial-gradient(circle at 20% 25%,rgba(70,70,70,.32),transparent 22%),radial-gradient(circle at 65% 15%,rgba(110,110,110,.28),transparent 20%),radial-gradient(circle at 45% 55%,rgba(80,80,80,.18),transparent 28%);animation:smoke 10s ease-in-out infinite alternate}
+@keyframes smoke{from{transform:translateX(-12%)}to{transform:translateX(12%)}}
+.breath{transform-box:fill-box;transform-origin:50% 90%;animation:breathe var(--br,3.2s) ease-in-out infinite}
+@keyframes breathe{50%{transform:scale(1.03,1.012)}}
+.drip{animation:drip 1.3s ease-in infinite}.drip.d2{animation-delay:.65s}
+@keyframes drip{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(16px);opacity:0}}
+.bub{transform-box:fill-box;animation:bub 1.6s ease-out infinite}.bub.b2{animation-delay:.8s}
+@keyframes bub{0%{transform:translate(0,0) scale(.5);opacity:0}30%{opacity:.9}100%{transform:translate(3px,-9px) scale(1.3);opacity:0}}
+.zz{animation:zz 2.4s ease-in-out infinite}@keyframes zz{0%{transform:translate(0,4px);opacity:0}40%{opacity:1}100%{transform:translate(4px,-6px);opacity:0}}
+.vein{animation:vein .8s ease-in-out infinite}@keyframes vein{50%{stroke-width:3.4}}
+.tqIn .band{transform-box:fill-box;transform-origin:center;animation:band .35s ease-out}@keyframes band{from{transform:scaleX(1.4);opacity:0}}
+.wind{transform-box:fill-box;transform-origin:center;animation:wind .8s cubic-bezier(.3,1.4,.5,1)}@keyframes wind{from{transform:rotate(-270deg)}}
+.unfold{transform-box:fill-box;transform-origin:50% 0;animation:unfold .8s cubic-bezier(.2,.8,.2,1)}@keyframes unfold{from{transform:scaleY(.04);opacity:.3}}
+.slideIn{transform-box:fill-box;transform-origin:center;animation:slideIn .5s ease-out}@keyframes slideIn{from{transform:scaleX(.1);opacity:0}}
+.shimmer{animation:shim 2.6s ease-in-out infinite}@keyframes shim{50%{opacity:.15}}
+.tap{transform-box:fill-box;transform-origin:center;animation:tap .55s ease-out forwards;fill:none;stroke:#fff;stroke-width:1.6}@keyframes tap{from{transform:scale(.4);opacity:1}to{transform:scale(2.6);opacity:0}}
+.snd{background:none;border:1px solid var(--line);border-radius:6px;padding:0 8px;font-size:.95rem;line-height:1.6}
+.fig.play{width:176px}
+@media (max-width:360px){.scene{grid-template-columns:140px 1fr!important}.fig.play{width:140px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div id="flash"></div>
+<main id="app"></main>
+<script>
+const ORDER=["sS","sA","sF","sE","M","A","R","C","H","E","rR","rY","rA","rN"];
+const GROUPS=[["SAFE",["sS","sA","sF","sE"]],["MARCHE",["M","A","R","C","H","E"]],["RYAN",["rR","rY","rA","rN"]]];
+const LBL={sS:"Stop the burning process (faire cesser le danger)",sA:"Assess the scene (évaluer la situation)",sF:"Free of danger (soustraire au danger)",sE:"Evaluate (premier bilan)",
+ M:"Hémorragie massive",A:"Voies aériennes",R:"Respiration",C:"Choc / circulation",H:"Hypothermie / tête",E:"Évacuation",
+ rR:"Réévaluation",rY:"Yeux",rA:"Analgésie",rN:"Nursing (soins complémentaires)"};
+const CH=k=>k.length>1?k[1]:k;
+const LC={sS:"var(--muted)",sA:"var(--muted)",sF:"var(--muted)",sE:"var(--muted)",M:"var(--lM)",A:"var(--lA)",R:"var(--lR)",C:"var(--lC)",H:"var(--lH)",E:"var(--olive)",rR:"var(--lR)",rY:"var(--lA)",rA:"var(--lC)",rN:"var(--lH)"};
+const WL={tq:"M",pack:"M",npa:"A",seal:"R",needle:"R",belt:"C",shield:"rY",dress:"rN",splint:"rN"};
+const IC={
+ hand:'<path d="M8 13V5a1.5 1.5 0 0 1 3 0v6M11 11V4a1.5 1.5 0 0 1 3 0v7M14 11V5a1.5 1.5 0 0 1 3 0v8c0 4-3 8-7 8-3 0-5-2-6-4l-2-4a1.5 1.5 0 0 1 2.5-1.5L8 14"/>',
+ tq:'<rect x="2" y="9" width="20" height="6" rx="2"/><path d="M12 4v16"/>',
+ gauze:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16M12 4v16"/>',
+ roll:'<circle cx="9" cy="12" r="6"/><path d="M9 6h11v12H9"/>',
+ tube:'<path d="M6 20c0-8 4-14 12-16"/><circle cx="18" cy="4" r="2"/>',
+ seal:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/>',
+ burp:'<circle cx="12" cy="12" r="8" stroke-dasharray="4 3"/><path d="M12 12l6-6"/>',
+ clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+ belt:'<rect x="2" y="8" width="20" height="8" rx="2"/><rect x="9" y="6" width="6" height="12" rx="1"/>',
+ splint:'<rect x="3" y="3" width="5" height="18" rx="1"/><rect x="16" y="3" width="5" height="18" rx="1"/><path d="M8 8h8M8 16h8"/>',
+ eye:'<ellipse cx="12" cy="12" rx="9" ry="7"/><circle cx="12" cy="12" r="2.5"/>',
+ blanket:'<path d="M3 7c3-2 6 2 9 0s6 2 9 0v10c-3 2-6-2-9 0s-6-2-9 0z"/>',
+ cup:'<path d="M6 4h12l-2 16H8z"/>'
+};
+const icon=k=>`<svg viewBox="0 0 24 24" aria-hidden="true">${IC[k]||""}</svg>`;
+const TOOLS=[["hands","Examiner","hand"],["tq","Garrot","tq"],["pack","Méchage","gauze"],["dress","Pansement compressif","roll"],["seal","Pansement occlusif","seal"],["needle","Exsufflation","burp"],["npa","Canule NPA","tube"],["belt","Ceinture pelvienne","belt"],["splint","Attelle","splint"],["shield","Coque oculaire","eye"],["marker","Feutre (heure)","clock"],["blanket","Couverture","blanket"],["water","Gourde","cup"]];
+const ZN={head:"la tête",chestR:"le thorax droit",chestL:"le thorax gauche",abdomen:"l'abdomen",pelvis:"le bassin",armR:"le bras droit",armL:"le bras gauche",thighR:"la cuisse droite",thighL:"la cuisse gauche",legR:"la jambe droite",legL:"la jambe gauche",back:"le haut du dos",lowback:"le bas du dos",buttocks:"les fesses"};
+const KN={"limb:armR":"bras droit","limb:armL":"bras gauche","limb:LR":"jambe droite","limb:LL":"jambe gauche",head:"tête",chestR:"thorax droit",chestL:"thorax gauche",back:"dos",pelvis:"bassin"};
+const LIMBN={armR:"bras droit",armL:"bras gauche",LR:"jambe droite",LL:"jambe gauche"};
+const ZF=[["head",42,4,36,36],["chestR",40,40,20,40],["chestL",60,40,20,40],["abdomen",41,80,38,31],["pelvis",40,111,40,13],["armR",8,40,32,92],["armL",80,40,32,92],["thighR",40,124,20,62],["thighL",60,124,20,62],["legR",40,186,20,64],["legL",60,186,20,64]];
+const ZB=[["head",42,4,36,36],["back",40,40,40,40],["lowback",41,80,38,31],["buttocks",40,111,40,13],["armL",8,40,32,92],["armR",80,40,32,92],["thighL",40,124,20,62],["thighR",60,124,20,62],["legL",40,186,20,64],["legR",60,186,20,64]];
+const TORSO=new Set(["chestR","chestL","abdomen","pelvis","back","lowback","buttocks"]);
+const limbOf=z=>({armR:"armR",armL:"armL",thighR:"LR",legR:"LR",thighL:"LL",legL:"LL"})[z]||null;
+const mir=(x,v)=>v==="back"?120-x:x;
+function limbX(l,y){return l==="LR"?50.5:l==="LL"?69.5:l==="armR"?43.5-(y-48)*.23:76.5+(y-48)*.23}
+const keyOf=w=>limbOf(w.zone)?"limb:"+limbOf(w.zone):w.tool==="belt"?"pelvis":w.zone;
+
+const SC=[
+ {title:"Embuscade",env:"fire",phase:"Sous le feu",fire:true,evac:"UA",analg:true,ctx:"Ton binôme est touché pendant un échange de tirs. Il crie et se tient la cuisse droite.",
+  head:"Il crie et répond : voies aériennes libres.",pulse:"Pouls radial rapide.",
+  event:{tool:"tq",zone:"thighR",x:50,y:174,label:"Le saignement de la cuisse reprend (garrot insuffisant)",ok:"Second garrot juste au-dessus du premier. C'est exactement pour ça qu'on réévalue."},
+  wounds:[{tool:"tq",zone:"thighR",x:50,y:160,label:"Saignement pulsatile, cuisse droite",ok:"Garrot haut et serré sur la cuisse : hémorragie stoppée."},
+   {tool:"tq",zone:"legL",x:71,y:214,post:true,hidden:true,label:"Saignement abondant à l'arrière du mollet gauche",ok:"Deuxième garrot sur la jambe gauche. Invisible de face : seul le balayage la révèle."}]},
+ {title:"Souffle d'explosion",env:"urban",phase:"Soins de l'avant",evac:"UA",analg:false,ctx:"Après une explosion, un blessé est au sol, inconscient. Il reste peut-être des engins non explosés.",
+  head:"Inconscient, respiration bruyante et ronflante.",pulse:"Pouls radial faible.",
+  wounds:[{tool:"npa",zone:"head",x:60,y:22,label:"Inconscient, ronfle",ok:"Canule nasopharyngée + PLS : voies aériennes protégées."},
+   {tool:"pack",zone:"armR",x:37,y:52,hidden:true,label:"Saignement massif sous l'aisselle droite, caché par le gilet",ok:"Méchage + compression de l'aisselle : zone jonctionnelle, pas de garrot possible."},
+   {tool:"shield",zone:"head",x:55,y:22,hidden:true,revealOn:"rY",label:"Corps étranger dans l'œil droit (souffle)",ok:"Coque rigide sur l'œil, sans appuyer ni retirer le corps étranger."}]},
+ {title:"Plaie au thorax",env:"forest",phase:"Soins de l'avant",evac:"UA",analg:true,ctx:"Un blessé par balle se plaint d'avoir du mal à respirer.",
+  head:"Parle par phrases courtes.",pulse:"Pouls radial rapide.",
+  event:{tool:"needle",zone:"chestL",x:74,y:66,label:"Détresse respiratoire croissante malgré les pansements",ok:"Suspicion de pneumothorax sous tension : décoller un bord du pansement (burp), exsufflation si formé."},
+  wounds:[{tool:"seal",zone:"chestL",x:74,y:66,label:"Plaie soufflante, thorax gauche",ok:"Pansement occlusif sur l'orifice d'entrée."},
+   {tool:"seal",zone:"back",side:"back",x:47,y:66,hidden:true,label:"Orifice de sortie dans le dos",ok:"Deuxième pansement occlusif sur la sortie : cherche toujours l'orifice de sortie."}]},
+ {title:"Plaie jonctionnelle",env:"forest",phase:"Soins de l'avant",evac:"UA",analg:true,ctx:"Blessé touché au pli de l'aine en patrouille.",
+  head:"Conscient, parle, pâle.",pulse:"Pouls radial faible et rapide.",
+  wounds:[{tool:"pack",zone:"thighR",x:53,y:131,label:"Saignement massif au pli de l'aine droit",ok:"Méchage + compression : zone jonctionnelle, garrot impossible."}]},
+ {title:"Chute de hauteur",env:"urban",phase:"Soins de l'avant",evac:"UA",analg:true,ctx:"Un équipier a chuté d'environ 6 mètres depuis un toit. Il se plaint surtout du bassin.",
+  head:"Parle, mais pâle et en sueur.",pulse:"Pouls radial faible et rapide.",
+  wounds:[{tool:"belt",zone:"pelvis",x:60,y:118,label:"Douleur intense du bassin",ok:"Ceinture pelvienne au niveau des grands trochanters."},
+   {tool:"tq",zone:"legR",x:50,y:214,hidden:true,label:"Fracture ouverte de la jambe droite qui saigne sous le pantalon",ok:"Garrot : la douleur du bassin masquait cette hémorragie."},
+   {tool:"splint",zone:"legR",x:50,y:222,hidden:true,label:"Jambe droite fracturée à immobiliser",ok:"Attelle une fois le saignement contrôlé : moins de douleur, moins de lésions."}]},
+ {title:"Dégradation",env:"forest",phase:"Réévaluation",evac:"UA",analg:true,ctx:"Un blessé a reçu un pansement occlusif sur le thorax il y a 10 min. Il se dégrade.",
+  head:"Très agité, parle difficilement. Veines du cou gonflées.",pulse:"Pouls radial faible.",
+  notes:["Garrot posé au bras gauche il y a 10 min"],pre:{seal:{x:76,y:74},tqs:[{limb:"armL",y:92}]},
+  wounds:[{tool:"needle",zone:"chestL",x:76,y:74,label:"Détresse respiratoire qui s'aggrave malgré le pansement",ok:"Décoller un bord du pansement (burp), puis exsufflation à l'aiguille si tu es formé."}]},
+ {title:"Éclats de grenade",env:"urban",phase:"Soins de l'avant",evac:"UR",analg:true,ctx:"Une grenade a explosé à distance. Un équipier se plaint du bras gauche et de l'œil droit.",
+  head:"Conscient, parle normalement.",pulse:"Pouls radial normal.",
+  wounds:[{tool:"dress",zone:"armL",x:86,y:100,label:"Plaies de l'avant-bras gauche, saignement modéré",ok:"Pansement compressif simple : pas d'hémorragie massive, donc pas de garrot."},
+   {tool:"shield",zone:"head",x:55,y:22,label:"Douleur de l'œil droit, éclat possible",ok:"Coque rigide sur l'œil, sans appuyer, sans rincer, sans retirer l'éclat."}]}
+];
+
+const HEART='<svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21s-8-5-8-11a4 4 0 0 1 8-2 4 4 0 0 1 8 2c0 6-8 11-8 11z"/></svg>';
+const app=document.getElementById("app");
+let order=[],cur=0,st=null,timer=null,total=0,results=[];const HINT_COST=75;
+const MODES={apprentissage:{t:"Apprentissage",d:"Pas de chrono, pas de pénalité sur l'état du blessé. Explications à chaque étape et indices à la demande.",k:0,learn:true},intense:{t:"Intense",d:"Rythme réel : un blessé qui saigne tient environ 1 minute.",k:1},normal:{t:"Normal",d:"Deux fois plus de temps pour réfléchir.",k:.5},decouverte:{t:"Découverte",d:"Quatre fois plus de temps, idéal pour apprendre.",k:.25},illimite:{t:"Temps illimité",d:"Le blessé ne se dégrade pas avec le temps. Seules les erreurs coûtent.",k:0}};
+let MODE="normal",AUTO=false;try{AUTO=localStorage.getItem("march_auto")==="1"}catch(e){}
+const LEARN=()=>!!MODES[MODE].learn;try{const m=localStorage.getItem("march_mode");if(MODES[m])MODE=m}catch(e){}
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+function best(v){try{if(v!==undefined)localStorage.setItem("march_best3",v);return +localStorage.getItem("march_best3")||0}catch(e){return 0}}
+function flash(k){const f=document.getElementById("flash");f.className="";void f.offsetWidth;f.className=k}
+function buzz(){try{navigator.vibrate&&navigator.vibrate(120)}catch(e){}}
+
+function mk(s){
+ const w=s.wounds.map((x,i)=>({...x,i,rev:!x.hidden,done:false}));
+ return {s,w,seen:w.filter(x=>x.rev).map(x=>x.i),exam:new Set(),re:new Set(),targets:[],safe:new Set(),safeOpts:shuffle(["sS","sA","sF","sE","bad"]),
+  pulse:false,marked:false,blanket:false,evac:false,analg:false,fiche:false,yExam:false,evSpawned:false,
+  tqs:(s.pre?.tqs||[]).map(t=>({...t})),blood:0,view:"front",tool:"hands",hp:100,err:0,t0:Date.now(),fb:"",fbc:"",fresh:null,newW:null,dead:new Set(),markTime:"",tap:null,lastBeat:0,hints:0};
+}
+
+/* ---------- mannequin ---------- */
+const DEFS=`<defs>
+<pattern id="camo" width="26" height="26" patternUnits="userSpaceOnUse"><rect width="26" height="26" fill="#7A7D57"/><path d="M2 4c4-3 9 0 8 4s-7 5-9 2z" fill="#656948"/><path d="M14 2c5 0 8 4 5 7s-8 1-7-3z" fill="#8F9068"/><path d="M16 14c4-2 9 1 8 5s-6 5-9 2-2-5 1-7z" fill="#595C3F"/><path d="M3 15c3-1 6 2 5 5s-5 4-7 1z" fill="#8F9068"/><path d="M9 21c2-1 4 1 3 3h-4z" fill="#656948"/><path d="M21 22c2 0 3 2 2 3h-3z" fill="#4E5137"/></pattern>
+<linearGradient id="shade" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".34"/><stop offset=".35" stop-color="#000" stop-opacity="0"/><stop offset=".62" stop-color="#fff" stop-opacity=".07"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient>
+<linearGradient id="vest" x1="0" x2="1"><stop offset="0" stop-color="#474B2F"/><stop offset=".45" stop-color="#666B46"/><stop offset="1" stop-color="#43472D"/></linearGradient>
+<radialGradient id="skin" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#EAC7A2"/><stop offset=".65" stop-color="#D3A67C"/><stop offset="1" stop-color="#B4865E"/></radialGradient>
+<linearGradient id="helm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7A7F57"/><stop offset="1" stop-color="#4B4F34"/></linearGradient>
+<radialGradient id="blood"><stop offset="0" stop-color="#4f0906"/><stop offset=".45" stop-color="#861410" stop-opacity=".95"/><stop offset=".8" stop-color="#9e1b14" stop-opacity=".55"/><stop offset="1" stop-color="#9e1b14" stop-opacity="0"/></radialGradient>
+<linearGradient id="foil" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E4C160"/><stop offset=".28" stop-color="#FFF3C2"/><stop offset=".5" stop-color="#C39A35"/><stop offset=".74" stop-color="#F6DE8C"/><stop offset="1" stop-color="#AE8628"/></linearGradient>
+<linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EEF0F3"/><stop offset=".5" stop-color="#9AA1AB"/><stop offset="1" stop-color="#D3D7DC"/></linearGradient>
+<linearGradient id="boot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3D382A"/><stop offset="1" stop-color="#1B1914"/></linearGradient>
+<linearGradient id="strap" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c2c28"/><stop offset=".5" stop-color="#141412"/><stop offset="1" stop-color="#2a2a26"/></linearGradient>
+<filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="1" stdDeviation=".7" flood-opacity=".4"/></filter>
+</defs>`;
+const mp=d=>d.replace(/(-?\d+\.?\d*) (-?\d+\.?\d*)/g,(m,x,y)=>`${+(120-x).toFixed(2)} ${y}`);
+const P_ARMU="M39 43 C34 44 31 50 31 58 L29 84 L37 87 L44 60 L47 50 Z",P_ARML="M29.5 82 L22.5 115 L30.5 118 L37 86 Z",
+ P_THIGH="M42 121 L58.5 121 L57 182 L45 182 Z",P_SHIN="M45 190 L56.5 190 L55.5 235 L46 235 Z",P_KNEE="M44 179 L57.5 179 L57 193 L44.5 193 Z",
+ P_BOOT="M44.5 233 L56.5 233 L57.5 244 Q57.5 249 50 249 L42.5 249 Q41 246 43.5 243 Z",P_GLOVE="M22 114 L31 116.5 L31 124 Q30 129.5 26 129.5 Q21 128.5 21 123 Z",
+ P_TORSO="M40 46 C41 40 48 38 53 38 L67 38 C72 38 79 40 80 46 L78 124 C66 130 54 130 42 124 Z";
+function part(d,fill="url(#camo)"){return`<path d="${d}" fill="${fill}" stroke="#30331d" stroke-width=".7"/><path d="${d}" fill="url(#shade)"/>`}
+function figure(S,view,cls="fig"){
+ const s=S.s,fr=S.fresh,back=view==="back",isF=k=>fr===k;
+ const unc=S.w.some(w=>w.tool==="npa"),distress=S.w.some(w=>(w.tool==="needle"||w.tool==="seal")&&w.rev&&!w.done);
+ const br=distress?1.1:unc?4.6:3.2;
+ let o=`<svg viewBox="0 0 120 262" class="${cls}" style="--br:${br}s" role="img" aria-label="Mannequin du blessé, vue ${back?"de dos":"de face"}">${DEFS}
+ <text x="4" y="11" font-size="8.5" font-weight="700" style="fill:#2b2d20;opacity:.7">${back?"DOS":"FACE"}</text>
+ <ellipse cx="60" cy="251" rx="44" ry="6.5" fill="#000" opacity=".22"/>`;
+ const fb=S.w.find(w=>WL[w.tool]==="M");
+ if(fb){const r=4+S.blood*.22,px=mir(fb.x,view);o+=`<ellipse id="pool" cx="${px+(px<60?-14:14)}" cy="250" rx="${r*1.6}" ry="${Math.max(2,r*.45)}" fill="url(#blood)" opacity=".95"/>`}
+ // jambes
+ o+=part(P_THIGH)+part(mp(P_THIGH))+part(P_SHIN)+part(mp(P_SHIN));
+ if(!back)o+=`<rect x="44.3" y="140" width="5.5" height="13" rx="1" fill="#6B6E4A" stroke="#3a3d26" stroke-width=".5"/><rect x="${120-49.8}" y="140" width="5.5" height="13" rx="1" fill="#6B6E4A" stroke="#3a3d26" stroke-width=".5"/>`;
+ o+=back?part(P_KNEE)+part(mp(P_KNEE)):part(P_KNEE,"#3A3C2B")+part(mp(P_KNEE),"#3A3C2B");
+ o+=`<path d="${P_BOOT}" fill="url(#boot)"/><path d="${mp(P_BOOT)}" fill="url(#boot)"/>`;
+ if(!back)o+=`<path d="M47 237 l7 0 M47 240 l7 0 M${120-54} 237 l7 0 M${120-54} 240 l7 0" stroke="#6d6450" stroke-width=".6"/>`;
+ // bras
+ o+=part(P_ARMU)+part(mp(P_ARMU))+part(P_ARML)+part(mp(P_ARML));
+ o+=`<path d="M30 84 L37 86.5" stroke="#3a3d26" stroke-width="1"/><path d="${mp("M30 84 L37 86.5")}" stroke="#3a3d26" stroke-width="1"/>`;
+ o+=part(P_GLOVE,"#2E2D25")+part(mp(P_GLOVE),"#2E2D25");
+ // torse + gilet (respire)
+ o+=`<g class="breath">${part(P_TORSO)}`;
+ if(!back){
+  o+=`<rect x="46" y="37" width="5" height="10" rx="1.5" fill="#4b4f33"/><rect x="69" y="37" width="5" height="10" rx="1.5" fill="#4b4f33"/>
+  <rect x="40.5" y="66" width="4.5" height="26" rx="1.5" fill="#484c30"/><rect x="75" y="66" width="4.5" height="26" rx="1.5" fill="#484c30"/>
+  <rect x="43" y="44" width="34" height="50" rx="3.5" fill="url(#vest)" stroke="#2e311d" stroke-width=".8"/>
+  <path d="M45 56h30M45 61h30" stroke="#3b3f26" stroke-width="1.4" stroke-dasharray="3 1.3"/>
+  <rect x="52" y="47" width="16" height="7.5" rx="1.5" fill="#50553A"/><rect x="55" y="48.5" width="10" height="4.2" rx=".8" fill="#3c4029"/>
+  ${[46,55.7,65.4].map(x=>`<rect x="${x}" y="67" width="8.6" height="15" rx="1.5" fill="#4a4e31" stroke="#33361f" stroke-width=".5"/><rect x="${x}" y="67" width="8.6" height="4.5" rx="1.2" fill="#3a3e27"/><circle cx="${x+4.3}" cy="69.2" r=".8" fill="#222"/>`).join("")}
+  <rect x="76" y="58" width="5" height="17" rx="1.2" fill="#3a3e27"/><path d="M78.5 58 L80.5 38" stroke="#1d1d1a" stroke-width="1" stroke-linecap="round"/>`;
+ }else{
+  o+=`<rect x="46" y="37" width="5" height="10" rx="1.5" fill="#4b4f33"/><rect x="69" y="37" width="5" height="10" rx="1.5" fill="#4b4f33"/>
+  <rect x="43" y="44" width="34" height="50" rx="3.5" fill="url(#vest)" stroke="#2e311d" stroke-width=".8"/>
+  <path d="M54 47 Q60 39.5 66 47" stroke="#26291a" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  <rect x="49" y="51" width="22" height="34" rx="4" fill="#51563A" stroke="#33361f" stroke-width=".5"/><path d="M53 54v28M60 54v28M67 54v28" stroke="#3e422b" stroke-width=".7" stroke-dasharray="2 1.5"/>
+  <path d="M45 89h30" stroke="#3b3f26" stroke-width="1.4" stroke-dasharray="3 1.3"/>`;
+ }
+ o+=`</g><rect x="41" y="112.5" width="38" height="8" rx="2" fill="#35342a"/>`;
+ o+=back?`<rect x="50" y="111" width="20" height="10" rx="2" fill="#4e5236"/>`:`<rect x="56" y="113" width="8" height="7" rx="1" fill="#1d1d19" stroke="#8a8a80" stroke-width=".6"/><rect x="43" y="110.5" width="9" height="11" rx="1.5" fill="#6B5B3A"/><path d="M47.5 113v6M44.5 116h6" stroke="#D8C9A0" stroke-width="1.4"/>`;
+ // tête
+ o+=`<rect x="54" y="31" width="12" height="11" fill="url(#skin)"/>`;
+ if(!back){
+  o+=`<ellipse cx="47.6" cy="25" rx="2.3" ry="3.4" fill="#C99A70"/><ellipse cx="72.4" cy="25" rx="2.3" ry="3.4" fill="#C99A70"/><circle cx="60" cy="24.5" r="12.5" fill="url(#skin)" stroke="#9c7350" stroke-width=".6"/>`;
+  o+=unc?`<path d="M53.8 24.5q1.8 1.3 3.6 0M62.6 24.5q1.8 1.3 3.6 0" stroke="#3a2a1e" stroke-width=".9" fill="none"/>`
+   :`<circle cx="55.6" cy="24" r="1.15" fill="#2a2320"/><circle cx="64.4" cy="24" r="1.15" fill="#2a2320"/><path d="M53.6 21.3l3.8-.6M66.4 21.3l-3.8-.6" stroke="#5a4030" stroke-width=".8"/>`;
+  o+=`<path d="M60 25.5 l-.8 3 h1.6" stroke="#9c7350" stroke-width=".6" fill="none"/>`+(distress?`<ellipse cx="60" cy="31" rx="2.2" ry="1.5" fill="#5a2e24"/>`:`<path d="M57.3 31 Q60 32.4 62.7 31" stroke="#7a4a38" stroke-width=".8" fill="none"/>`);
+  o+=`<path d="M46.5 23.5 C46 12 52 7.5 60 7.5 C68 7.5 74 12 73.5 23.5 L71 23.5 C70 17 66 15.2 60 15.2 C54 15.2 50 17 49 23.5 Z" fill="url(#helm)" stroke="#34371f" stroke-width=".7"/>
+  <rect x="56.8" y="9.3" width="6.4" height="4.2" rx="1" fill="#1f201a"/><rect x="46.3" y="15.5" width="2.2" height="6" rx=".6" fill="#34371f"/><rect x="71.5" y="15.5" width="2.2" height="6" rx=".6" fill="#34371f"/>
+  <path d="M48.5 23.5 L52.5 33.5 M71.5 23.5 L67.5 33.5" stroke="#22231b" stroke-width=".9"/>`;
+ }else{
+  o+=`<circle cx="60" cy="24.5" r="12.5" fill="url(#skin)" stroke="#9c7350" stroke-width=".6"/>
+  <path d="M46.5 27 C45 12 52 7.5 60 7.5 C68 7.5 75 12 73.5 27 C66 31 54 31 46.5 27 Z" fill="url(#helm)" stroke="#34371f" stroke-width=".7"/>
+  <rect x="55" y="17" width="10" height="7" rx="1.5" fill="#3f432b"/><path d="M48 27 Q60 33 72 27" stroke="#22231b" stroke-width=".9" fill="none"/>`;
+ }
+ // zones examinées
+ for(const [z,x,y,w,h] of back?ZB:ZF){const l=limbOf(z);if(S.exam.has(z)||(l&&S.exam.has("limb:"+l)))o+=`<rect x="${x+2}" y="${y+1}" width="${w-4}" height="${h-2}" rx="5" fill="#5fae4a" opacity=".16"/>`}
+ // positions
+ const pos=w=>{if(w.tool==="belt")return{x:60,y:118};if(w.zone==="head")return back?null:{x:w.x,y:w.y};
+  if(TORSO.has(w.zone))return (w.side||"front")===view?{x:w.x,y:w.y}:null;return{x:mir(w.x,view),y:w.y}};
+ // taches de sang
+ for(const i of S.seen){const w=S.w[i],p=pos(w);if(!p)continue;const M=WL[w.tool]==="M";
+  const base=M?6:w.tool==="dress"?4:w.tool==="seal"?4.5:0;if(!base)continue;
+  const r=M?Math.min(15,base+S.blood*.13):base,dash=w.post&&!back;
+  o+=`<circle class="stain${M&&!w.done?" grow":""}" data-b="${base}" cx="${p.x}" cy="${p.y+1}" r="${r}" fill="url(#blood)" opacity="${dash?.45:.92}"/>`;
+  if(!w.done&&!dash&&w.tool!=="dress")o+=`<polygon points="${p.x-3},${p.y-1} ${p.x-1},${p.y-3.2} ${p.x+1.2},${p.y-1.8} ${p.x+3},${p.y} ${p.x+1},${p.y+2.4} ${p.x-2},${p.y+2.8}" fill="#2a1210"/>`;
+ }
+ if(S.blanket)o+=`<g${isF("blanket")?' class="unfold"':""}><path d="M22 47 Q60 39 98 47 L96 247 Q60 255 24 247 Z" fill="url(#foil)" opacity=".62"/><path class="shimmer" d="M30 70 l20 30 M60 60 l25 40 M35 150 l30 35 M70 170 l20 30 M40 210 l25 25" stroke="#fff8d8" stroke-width="1.4" opacity=".7"/><path d="M22 47 Q60 39 98 47" stroke="#8a6a1c" stroke-width="1" fill="none"/></g>`;
+ // soins
+ const G=(k,c,inner)=>`<g filter="url(#soft)"${isF(k)?` class="${c}"`:""}>${inner}</g>`;
+ for(const w of S.w){if(!w.done)continue;const x=mir(w.x,view);
+  if(w.tool==="belt")o+=G(w.i,"slideIn",`<rect x="36" y="110.5" width="48" height="12.5" rx="3" fill="#2B3A57"/><rect x="36" y="114.5" width="48" height="2" fill="#3f5580"/><rect x="55" y="108.5" width="10" height="16.5" rx="1.5" fill="url(#metal)" stroke="#333" stroke-width=".5"/>`);
+  if(w.tool==="pack")o+=G(w.i,"pop-in",`<ellipse cx="${x}" cy="${w.y}" rx="6.5" ry="5.5" fill="#F3EFE4" stroke="#bdb6a3" stroke-width=".6"/><rect x="${x-8}" y="${w.y-1.8}" width="16" height="3.6" rx="1" fill="#6b6e4a"/><rect x="${x-2}" y="${w.y-3}" width="4" height="6" rx=".8" fill="#4e5236"/>`);
+  if(w.tool==="dress")o+=G(w.i,"pop-in",`<g transform="rotate(${x<60?15:-15} ${x} ${w.y})"><rect x="${x-7.5}" y="${w.y-7}" width="15" height="14" rx="3" fill="#6b6e4a"/><rect x="${x-5}" y="${w.y-4}" width="10" height="8" rx="1.5" fill="#F3EFE4"/><path d="M${x-7.5} ${w.y-5}h15M${x-7.5} ${w.y+5}h15" stroke="#555a39" stroke-width="1"/></g>`);
+  if(w.tool==="splint")o+=G(w.i,"pop-in",`<rect x="${x-10}" y="${w.y-30}" width="3.8" height="44" rx="1.2" fill="#E8742A" stroke="#2f6db3" stroke-width=".8"/><rect x="${x+6.2}" y="${w.y-30}" width="3.8" height="44" rx="1.2" fill="#E8742A" stroke="#2f6db3" stroke-width=".8"/>${[-22,-6,8].map(d=>`<rect x="${x-10.5}" y="${w.y+d}" width="21" height="3.5" rx="1" fill="#D8C7A0"/>`).join("")}`);
+  if(w.tool==="shield"&&!back)o+=G(w.i,"pop-in",`<ellipse cx="54.5" cy="22.5" rx="5.8" ry="4.8" fill="url(#metal)" stroke="#555" stroke-width=".6"/>${[[53,21],[56,21],[54.5,23.5],[53,25.5],[56,25.5]].map(([a,b])=>`<circle cx="${a}" cy="${b}" r=".5" fill="#555"/>`).join("")}<path d="M49 19l-3-2M60 26l3 2" stroke="#e8e4d8" stroke-width="2"/>`);
+  if(w.tool==="seal"&&(w.side||"front")===view)o+=G(w.i,"pop-in",`<circle cx="${w.x}" cy="${w.y}" r="8.5" fill="#CFE3F5" fill-opacity=".85" stroke="#2F6DB3" stroke-width="1.4"/><circle cx="${w.x}" cy="${w.y}" r="2.4" fill="#2F6DB3"/><circle cx="${w.x}" cy="${w.y}" r=".9" fill="#fff"/><path d="M${w.x-5.5} ${w.y-3.5} a6 6 0 0 1 4 -3" stroke="#fff" stroke-width="1" fill="none" opacity=".8"/>`);
+  if(w.tool==="needle"&&!back){const nx=w.zone==="chestL"?69:51;o+=G(w.i,"pop-in",`<line x1="${nx}" y1="50" x2="${nx+4}" y2="44" stroke="#bfc6cf" stroke-width="1"/><rect x="${nx+3}" y="40.5" width="3" height="4.5" rx=".8" fill="#E07A1F" transform="rotate(35 ${nx+4.5} 42.7)"/>`)}
+  if(w.tool==="npa")o+=back?`<text x="84" y="14" font-size="10" font-weight="700" fill="#1f4e86">PLS</text>`:G(w.i,"pop-in",`<circle cx="61.3" cy="27.6" r="1.7" fill="#E07A1F"/><rect x="80" y="6" width="19" height="10" rx="2" fill="#2F6DB3"/><text x="89.5" y="13.6" text-anchor="middle" font-size="7" font-weight="700" fill="#fff">PLS</text>`);
+ }
+ if(s.pre?.seal&&!back){const d=S.w.some(w=>w.tool==="needle"&&w.done),{x,y}=s.pre.seal;
+  o+=`<g filter="url(#soft)"><circle cx="${x}" cy="${y}" r="8.5" fill="#CFE3F5" fill-opacity=".85" stroke="#2F6DB3" stroke-width="1.4" ${d?'stroke-dasharray="3 2"':""}/><circle cx="${x}" cy="${y}" r="2.4" fill="#2F6DB3"/>${d?`<path d="M${x+4} ${y-7} l5 -3 l1 5 z" fill="#CFE3F5" stroke="#2F6DB3" stroke-width=".8"/>`:""}</g>`}
+ for(const t of S.tqs){const x0=limbX(t.limb,t.y),x=mir(x0,view),w=t.limb.startsWith("arm")?14:18,f=t.fresh&&fr==="tq";
+  o+=`<g filter="url(#soft)" class="${f?"tqIn":""}"><rect class="band" x="${x-w/2}" y="${t.y-3.8}" width="${w}" height="7.6" rx="2" fill="url(#strap)"/><path d="M${x-w/2} ${t.y} h${w}" stroke="#444" stroke-width=".5" stroke-dasharray="1.5 1"/>
+   <rect class="${f?"wind":""}" x="${x-1.8}" y="${t.y-9}" width="3.6" height="18" rx="1.2" fill="#D9531E" stroke="#7a2a0c" stroke-width=".5"/><path d="M${x+w/2-1} ${t.y-5} l4 2.5 -4 2.5z" fill="#D9531E"/></g>`;
+  if(S.marked){const tx=x<60?x-w/2-23:x+w/2+1;o+=`<g filter="url(#soft)"${isF("marker")?' class="pop-in"':""}><rect x="${tx}" y="${t.y-19}" width="22" height="11" rx="1.5" fill="#F7F4EA" stroke="#999" stroke-width=".5"/><text x="${tx+11}" y="${t.y-11.2}" text-anchor="middle" font-size="6.2" font-weight="700" fill="#111">H ${S.markTime||""}</text></g>`}}
+ // blessures non traitées
+ S.seen.forEach((i,k)=>{const w=S.w[i],p=pos(w);if(!p)return;const {x,y}=p,c=w.done,n=k+1,dash=w.post&&!back;
+  if(!c){
+   if(w.tool==="tq"||w.tool==="pack")o+=`<circle class="ring" cx="${x}" cy="${y}" r="5.5" fill="none" stroke="#e0473c" stroke-width="1.3"/>`+(dash?`<circle cx="${x}" cy="${y}" r="5.5" fill="none" stroke="#e0473c" stroke-width="1.5" stroke-dasharray="2 1.5"/>`:`<path class="drip" d="M${x} ${y+4} q1.6 3 0 5.2 q-1.6 -2.2 0 -5.2" fill="#8e1510"/><path class="drip d2" d="M${x-1.5} ${y+4} q1.4 2.6 0 4.5 q-1.4 -1.9 0 -4.5" fill="#8e1510"/>`);
+   else if(w.tool==="seal")o+=`<circle class="ring" cx="${x}" cy="${y}" r="7" fill="none" stroke="#5B9BE0" stroke-width="1.6"/><circle class="bub" cx="${x+1}" cy="${y-1}" r="1.2" fill="#eaf4ff" stroke="#9cc3ea" stroke-width=".4"/><circle class="bub b2" cx="${x-1}" cy="${y}" r=".9" fill="#eaf4ff" stroke="#9cc3ea" stroke-width=".4"/>`;
+   else if(w.tool==="needle")o+=`<circle class="ring" cx="${x}" cy="${y}" r="7" fill="none" stroke="#5B9BE0" stroke-width="1.6"/>`+(back?"":`<path class="vein" d="M56.5 32 q-1 4 0 9 M63.5 32 q1 4 0 9" stroke="#5a6fa8" stroke-width="2.2" fill="none" stroke-linecap="round"/>`);
+   else if(w.tool==="belt")o+=`<circle class="ring" cx="${x}" cy="${y}" r="9" fill="none" stroke="#E0B24A" stroke-width="2" stroke-dasharray="4 3"/><path d="M${x-7} ${y-6} l3 3 -2 1 3 3M${x+7} ${y-6} l-3 3 2 1 -3 3" stroke="#E0B24A" stroke-width="1.6" fill="none" stroke-linecap="round"/>`;
+   else if(w.tool==="npa")o+=`<g class="zz"><text x="76" y="30" font-size="9" font-weight="700" fill="#2b2d20" opacity=".75">z</text><text x="81" y="23" font-size="7" font-weight="700" fill="#2b2d20" opacity=".6">z</text></g>`;
+   else if(w.tool==="shield")o+=`<circle cx="55.6" cy="24" r="2.6" fill="#c0392b" opacity=".85"/><path d="M55 27 q.6 2 0 3" stroke="#9cc3ea" stroke-width=".8" fill="none"/>`;
+   else if(w.tool==="dress")o+=[[0,0],[2.5,3],[-2,4],[1,-3]].map(([a,b])=>`<circle cx="${x+a}" cy="${y+b}" r="1" fill="#2a1210"/>`).join("");
+   else if(w.tool==="splint")o+=`<path d="M${x-7} ${y-5} l5 3 -4 3 5 3" stroke="#E0B24A" stroke-width="1.8" fill="none" stroke-linecap="round"/>`;
+  }
+  let bx=x+(x<60?-11:10),by=y-9;
+  if(w.tool==="npa"){bx=x-24;by=y-12}if(w.tool==="shield"){bx=x-12;by=y-10}if(w.tool==="splint"){by=y+5}
+  o+=`<g${S.newW===i?' class="pop-in"':""}><circle cx="${bx}" cy="${by}" r="6.3" fill="${c?"#3E6B2C":"#1c1e16"}" stroke="#fff" stroke-width="1"/><text x="${bx}" y="${by+3.2}" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fff">${c?"✓":n}</text></g>`;
+ });
+ if(cls.includes("play")){
+  for(const [z,x,y,w,h] of back?ZB:ZF)if((S.hl||[]).includes(z))o+=`<rect class="hintz" x="${x+1}" y="${y+1}" width="${w-2}" height="${h-2}" rx="6" fill="#F2C94C" fill-opacity=".22" stroke="#F2C94C" stroke-width="1.8" stroke-dasharray="4 2.5"/>`;
+  if(S.tap)o+=`<circle class="tap" cx="${S.tap.x}" cy="${S.tap.y}" r="5"/>`;
+  for(const [z,x,y,w,h] of back?ZB:ZF)o+=`<rect data-z="${z}" x="${x}" y="${y}" width="${w}" height="${h}" fill="transparent" style="cursor:pointer"/>`;
+ }
+ return o+"</svg>";
+}
+
+/* ---------- son ---------- */
+let AC=null,SOUND=false;try{SOUND=localStorage.getItem("march_snd")==="1"}catch(e){}
+function ac(){if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C()}return AC}
+function tone(f,d,type="sine",vol=.15,when=0){if(!SOUND)return;const c=ac();if(!c)return;const o=c.createOscillator(),g=c.createGain(),t=c.currentTime+when;o.type=type;o.frequency.value=f;g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g).connect(c.destination);o.start(t);o.stop(t+d+.03)}
+function noise(d,vol=.2,freq=2500){if(!SOUND)return;const c=ac();if(!c)return;const b=c.createBuffer(1,Math.floor(c.sampleRate*d),c.sampleRate),x=b.getChannelData(0);for(let i=0;i<x.length;i++)x[i]=(Math.random()*2-1)*(1-i/x.length)*(Math.random()<.3?1:.4);const s=c.createBufferSource();s.buffer=b;const f=c.createBiquadFilter();f.type="bandpass";f.frequency.value=freq;const g=c.createGain();g.gain.value=vol;s.connect(f).connect(g).connect(c.destination);s.start()}
+const SFX={ok:()=>{tone(660,.12,"sine",.12);tone(990,.2,"sine",.1,.09)},bad:()=>{tone(150,.28,"square",.06);tone(110,.3,"square",.05,.05)},
+ warn:()=>{tone(880,.1,"triangle",.12);tone(880,.1,"triangle",.12,.16)},velcro:()=>noise(.4,.35,3200),beat:()=>{tone(58,.13,"sine",.4);tone(52,.11,"sine",.3,.15)}};
+
+/* ---------- logique ---------- */
+const open_=(S,L)=>S.w.filter(w=>WL[w.tool]===L&&!w.done);
+function pending(L,S=st){
+ const W=S.w;
+ if(L[0]==="s"&&L.length===2)return S.safe.has(L)?"":{sS:"fais d'abord cesser le danger.",sA:"évalue la situation.",sF:"soustrais le blessé au danger.",sE:"fais le premier bilan du blessé."}[L];
+ if(L==="M"){
+  if(W.some(w=>WL[w.tool]==="M"&&w.rev&&!w.done))return"une hémorragie massive constatée n'est pas contrôlée.";
+  const miss=["armR","armL","LR","LL"].filter(l=>!S.exam.has("limb:"+l));
+  if(miss.length)return"balayage incomplet, il reste : "+miss.map(l=>LIMBN[l]).join(", ")+".";
+  return open_(S,"M").length?"une hémorragie n'est pas contrôlée.":"";
+ }
+ if(L==="A"){if(!S.exam.has("head"))return"voies aériennes non évaluées : examine la tête.";return open_(S,"A").length?"voies aériennes à sécuriser.":""}
+ if(L==="R"){if(!S.exam.has("chestR")&&!S.exam.has("chestL"))return"thorax non examiné.";
+  if(!S.exam.has("back")&&!S.exam.has("lowback"))return"dos non examiné : retourne le blessé.";
+  return open_(S,"R").length?"un problème respiratoire n'est pas traité.":""}
+ if(L==="C"){if(!S.pulse)return"pouls non vérifié : examine un bras.";
+  if(S.tqs.length&&!S.marked)return"heure de pose du garrot non notée.";
+  return open_(S,"C").length?"bassin à stabiliser.":""}
+ if(L==="H")return S.blanket?"":"protège-le de l'hypothermie.";
+ if(L==="E")return S.evac?"":"demande l'évacuation.";
+ if(L==="rR"){const m=S.targets.filter(k=>!S.re.has(k));return m.length?"réexamine chaque soin posé : "+m.map(k=>KN[k]||k).join(", ")+".":""}
+ if(L==="rY"){if(!S.yExam)return"examine les yeux (touche la tête).";return open_(S,"rY").length?"protège l'œil blessé.":""}
+ if(L==="rA")return S.analg?"":"décide de l'analgésie.";
+ if(L==="rN"){if(open_(S,"rN").some(w=>w.rev))return"soins complémentaires à faire (pansement, attelle).";return S.fiche?"":"remplis la fiche de l'avant et surveille."}
+}
+const curLetter=()=>ORDER.find(L=>pending(L));
+const inRyan=()=>{const c=curLetter();return c&&ORDER.indexOf(c)>=ORDER.indexOf("rR")};
+function blocker(L){const c=curLetter();return c&&ORDER.indexOf(c)<ORDER.indexOf(L)?c:null}
+function penal(n,msg){if(!LEARN())st.hp-=n;st.err++;st.fb="✗ "+msg;st.fbc="bad";flash("bad");buzz();SFX.bad()}
+function good(msg,fresh){st.hintOn=false;st.fb="✓ "+msg;st.fbc="good";st.fresh=fresh;flash("good");SFX.ok()}
+function tooEarly(L){const c=blocker(L);penal(8,`Trop tôt. Priorité : ${LBL[c]} (${CH(c)}), ${pending(c)}`)}
+function spot(w,z,tool){
+ if(tool==="belt"||w.tool==="belt")return w.tool==="belt"&&(z==="pelvis"||z==="buttocks");
+ if(tool==="pack"||w.tool==="pack"||TORSO.has(w.zone)||w.zone==="head")return w.zone===z;
+ return limbOf(w.zone)&&limbOf(w.zone)===limbOf(z);
+}
+function examine(z){
+ const l=limbOf(z);
+ st.exam.add(z);if(l)st.exam.add("limb:"+l);
+ if(z.startsWith("arm"))st.pulse=true;
+ let reMsg="";
+ if(inRyan()){const k=l?"limb:"+l:(z==="buttocks"?"pelvis":z==="lowback"?"back":z);
+  if(st.targets.includes(k)&&!st.re.has(k)){st.re.add(k);reMsg="Réévalué : soin en place."}
+  const e=st.s.event;
+  if(e&&!st.evSpawned&&spot(e,z,"hands")){st.evSpawned=true;const nw={...e,i:st.w.length,rev:true,done:false,ev:true};st.w.push(nw);st.seen.push(nw.i);st.newW=nw.i;
+   st.fb="⚠ Réévaluation : "+e.label+".";st.fbc="warn";flash("bad");buzz();SFX.warn();return}
+ }
+ const c=curLetter();if(z==="head"&&c==="rY")st.yExam=true;
+ const here=st.w.filter(w=>spot(w,z,"hands"));
+ const hid=here.filter(w=>!w.rev&&(!w.revealOn||w.revealOn===c));
+ hid.forEach(w=>{w.rev=true;st.seen.push(w.i);st.newW=w.i});
+ if(hid.length){st.fb="⚠ Blessure "+(c==="rY"?"découverte à l'examen des yeux":"cachée découverte")+" : "+hid.map(w=>w.label).join(" ; ")+".";st.fbc="warn";flash("bad");buzz();SFX.warn();return}
+ const vis=here.filter(w=>w.rev&&!w.done);
+ let info=vis.length?"Constaté : "+vis.map(w=>w.label.toLowerCase()).join(" ; ")+".":"RAS.";
+ if(z==="head")info=c==="rY"?"Yeux examinés. "+(vis.some(w=>w.tool==="shield")?"Œil droit atteint.":"RAS."):st.s.head;
+ if(z.startsWith("arm"))info=(vis.length?info+" ":"RAS. ")+st.s.pulse;
+ if(reMsg)info=reMsg+" "+info;
+ st.fb=`🖐 En examinant ${ZN[z]} : ${info}`;st.fbc="info";
+}
+function onZone(z){
+ st.fresh=null;st.newW=null;const t=st.tool,c=curLetter();
+ if(c&&c[0]==="s"&&c.length===2){penal(8,"Termine d'abord SAFE : "+pending(c));return after()}
+ if(t==="hands"){examine(z);return after()}
+ if(t==="water"){penal(10,"Pas de boisson : risque de vomissement et de chirurgie à venir.");return after()}
+ if(t==="blanket"){if(st.blanket)penal(3,"Il est déjà couvert.");else if(blocker("H"))tooEarly("H");else{st.blanket=true;good("Couverture de survie et isolation du sol : l'hypothermie aggrave les saignements.","blanket")}return after()}
+ if(t==="marker"){const l=limbOf(z);if(!st.tqs.some(q=>q.limb===l))penal(6,"Aucun garrot à dater ici.");else if(blocker("C"))tooEarly("C");else{st.marked=true;st.markTime=new Date().toTimeString().slice(0,5);good("Heure de pose notée : l'équipe médicale doit savoir depuis quand le garrot est serré.","marker")}return after()}
+ const w=st.w.find(w=>!w.done&&w.rev&&w.tool===t&&spot(w,z,t));
+ if(w){
+  if(t==="tq"&&w.zone.startsWith("thigh")&&z.startsWith("leg")){penal(8,"Le garrot se pose au-dessus de la plaie, haut sur la cuisse.");return after()}
+  const L=WL[t];if(blocker(L)){tooEarly(L);return after()}
+  w.done=true;st.exam.add(z);if(limbOf(z))st.exam.add("limb:"+limbOf(z));
+  if(t==="tq"){const l=limbOf(z),n=st.tqs.filter(q=>q.limb===l).length;st.tqs.forEach(q=>q.fresh=false);
+   st.tqs.push({limb:l,y:(z.startsWith("thigh")?146:z.startsWith("arm")?Math.max(60,w.y-14):w.y-14)-n*11,fresh:true})}
+  good(w.ok,t==="tq"?"tq":w.i);if(["tq","dress","splint","belt","pack"].includes(t))SFX.velcro();return after();
+ }
+ if(st.w.some(w=>!w.rev&&w.tool===t&&spot(w,z,t))){penal(5,"Tu n'as rien constaté ici : examine d'abord la zone.");return after()}
+ const o=st.w.find(w=>!w.done&&w.rev&&(w.zone===z||(limbOf(w.zone)&&limbOf(w.zone)===limbOf(z))));
+ if(o&&t==="tq"&&o.tool==="pack")penal(10,"Plaie trop proche du tronc (zone jonctionnelle) : garrot impossible, fais un méchage + compression.");
+ else if(o&&t==="pack"&&o.tool==="tq")penal(6,"Sur un membre, le garrot est plus rapide et plus sûr pour une hémorragie massive.");
+ else if(o&&t==="tq"&&o.tool==="dress")penal(8,"Saignement modéré : un pansement compressif suffit, pas de garrot.");
+ else if(o&&t==="splint"&&o.tool==="tq")penal(6,"Contrôle d'abord l'hémorragie, l'attelle vient après.");
+ else penal(8,{tq:"Pas d'hémorragie massive constatée ici.",pack:"Pas d'hémorragie jonctionnelle constatée ici.",dress:"Pas de plaie à panser ici.",seal:"Pas de plaie thoracique ouverte constatée ici.",
+  needle:st.w.some(w=>w.tool==="needle")?"Mauvais endroit : l'exsufflation se fait sur le thorax atteint.":"Pas de signe de pneumothorax sous tension.",
+  npa:z==="head"?"Il parle : pas besoin de canule.":"La canule se pose dans le nez.",
+  belt:st.w.some(w=>w.tool==="belt")?"La ceinture pelvienne se pose au niveau du bassin.":"Pas d'indication de ceinture pelvienne.",
+  splint:"Pas de fracture constatée ici.",shield:z==="head"?"Pas de lésion de l'œil constatée.":"La coque se pose sur l'œil."}[t]);
+ after();
+}
+function after(){if(st.hp<=0){st.hp=0;return end(false)}if(!curLetter())return end(true);render()}
+
+
+/* ---------- aide (mode apprentissage) ---------- */
+const EXPL={sS:"Faire cesser ce qui fait des victimes : riposter, neutraliser la menace ou écarter le danger.",sA:"Évaluer la scène : autres menaces, engins non explosés, feu, circulation.",sF:"Soustraire le blessé au danger : l'extraire à l'abri avant de le soigner.",sE:"Premier bilan rapide : conscient ? hémorragie évidente ?",
+ M:"Chercher et stopper toute hémorragie massive : balayage des 4 membres, aisselles, aines, sous le gilet.",A:"Vérifier que l'air passe. S'il parle, c'est bon. Inconscient qui ronfle : canule + PLS.",R:"Examiner tout le thorax, devant ET derrière. Plaie soufflante : pansement occlusif.",C:"Pouls radial, signes de choc, heure de pose des garrots, bassin.",H:"Isoler du sol et couvrir : l'hypothermie aggrave les saignements.",E:"Demander l'évacuation avec la bonne priorité.",
+ rR:"Réexaminer chaque soin posé : un garrot peut lâcher, un pansement peut ne plus suffire.",rY:"Examiner les yeux : une lésion oculaire passe souvent inaperçue.",rA:"Soulager la douleur selon ton protocole, sauf si le blessé est inconscient.",rN:"Soins complémentaires : pansements, attelles, fiche de l'avant, surveillance."};
+const TN=t=>(TOOLS.find(x=>x[0]===t)||[,t])[1];
+const ZK=k=>({"limb:armR":"armR","limb:armL":"armL","limb:LR":"thighR","limb:LL":"thighL"})[k]||k;
+function hint(){
+ const c=curLetter();if(!c)return null;const s=st.s,W=st.w;
+ if(c[0]==="s"&&c.length===2)return{choice:c,text:"Choisis : « "+SAFE_T[c]+" »."};
+ if(c==="E")return{choice:s.evac,text:s.evac==="UA"?"Hémorragie, détresse respiratoire ou choc : urgence absolue.":"Pas de détresse vitale : urgence relative."};
+ if(c==="rA")return{choice:s.analg?"yes":"no",text:s.analg?"Il est conscient et souffre : analgésie selon protocole.":"Il est inconscient : pas d'analgésie."};
+ const open=L=>W.find(w=>WL[w.tool]===L&&w.rev&&!w.done);
+ const act=(w,txt)=>({tool:w.tool,zones:[w.zone==="pelvis"?"pelvis":w.zone],text:txt||(`Outil « ${TN(w.tool)} » sur ${ZN[w.zone]}${w.side==="back"?" (retourne le blessé)":""}.`)});
+ if(c==="M"){const w=open("M");if(w)return act(w,w.tool==="pack"?`Zone jonctionnelle : pas de garrot. Outil « Méchage » sur ${ZN[w.zone]}.`:`Hémorragie d'un membre : « Garrot » haut et serré sur ${ZN[w.zone].replace("la jambe","la jambe (ou la cuisse)")}.`);
+  const miss=["armR","armL","LR","LL"].filter(l=>!st.exam.has("limb:"+l));
+  return{tool:"hands",zones:miss.map(l=>ZK("limb:"+l)),text:"Balayage : outil « Examiner » sur chaque membre en surbrillance. Des blessures peuvent être cachées."}}
+ if(c==="A"){if(!st.exam.has("head"))return{tool:"hands",zones:["head"],text:"Outil « Examiner » sur la tête : est-ce qu'il parle, est-ce qu'il respire bruyamment ?"};const w=open("A");return act(w,"Inconscient qui ronfle : « Canule NPA » sur la tête, puis PLS.")}
+ if(c==="R"){if(!st.exam.has("chestR")&&!st.exam.has("chestL"))return{tool:"hands",zones:["chestR","chestL"],text:"Outil « Examiner » sur le thorax."};
+  if(!st.exam.has("back")&&!st.exam.has("lowback"))return{tool:"hands",zones:["back"],text:"Retourne le blessé (bouton ↻), puis « Examiner » sur le dos : cherche un orifice de sortie."};
+  const w=open("R");return act(w,w.tool==="needle"?"Pneumothorax sous tension : « Exsufflation » sur le thorax atteint (d'abord décoller un bord du pansement).":undefined)}
+ if(c==="C"){if(!st.pulse)return{tool:"hands",zones:["armR","armL"],text:"Outil « Examiner » sur un bras pour prendre le pouls radial."};
+  if(st.tqs.length&&!st.marked)return{tool:"marker",zones:[...new Set(st.tqs.map(q=>ZK("limb:"+q.limb)))],text:"Outil « Feutre » sur un membre garrotté : on note l'heure de pose."};
+  return act(open("C"),"Chute + douleur du bassin : « Ceinture pelvienne » sur le bassin.")}
+ if(c==="H")return{tool:"blanket",zones:["chestR","chestL","abdomen"],text:"Outil « Couverture » sur le blessé."};
+ if(c==="rR"){const m=st.targets.filter(k=>!st.re.has(k));return{tool:"hands",zones:m.map(ZK),text:"Outil « Examiner » sur chaque zone déjà soignée, en surbrillance."}}
+ if(c==="rY"){if(!st.yExam)return{tool:"hands",zones:["head"],text:"Outil « Examiner » sur la tête pour vérifier les yeux."};return act(open("rY"),"« Coque oculaire » sur la tête : on protège sans appuyer.")}
+ if(c==="rN"){const w=open("rN");if(w)return act(w);return{choice:"fiche",text:"Remplis la fiche de l'avant et surveille le blessé."}}
+ return null;
+}
+/* ---------- panneaux de choix ---------- */
+const SAFE_T={sS:"Faire cesser le danger (riposte, neutralisation)",sA:"Évaluer la situation (menaces, engins, dangers)",sF:"Soustraire le blessé au danger (extraction à l'abri)",sE:"Premier bilan : conscience, hémorragie évidente",bad:"Courir le soigner immédiatement"};
+function safeOk(k){const f=st.s.fire;return{sS:f?"Supériorité du feu d'abord : la meilleure médecine, c'est de neutraliser la menace.":"Danger écarté : pas de sur-accident.",
+ sA:"Situation évaluée : menaces résiduelles, engins, feu, circulation.",sF:f?"Blessé extrait vers un abri.":"Blessé soustrait au danger et installé.",sE:"Premier bilan fait. On enchaîne sur MARCHE."}[k]}
+function choose(k){
+ st.tap=null;st.fresh=null;st.newW=null;const c=curLetter();
+ if(k==="bad"){st.dead.add("bad");penal(10,"Sans sécuriser d'abord, tu risques d'être le deuxième blessé.")}
+ else if(["sS","sA","sF","sE"].includes(k)){if(c===k){st.safe.add(k);good(safeOk(k))}else penal(8,`Pas encore. Dans SAFE, la priorité est : ${SAFE_T[c]}.`)}
+ else if(k==="UA"||k==="UR"){if(k===st.s.evac){st.evac=true;
+   const T=new Set(st.w.filter(w=>w.done&&["M","A","R","C"].includes(WL[w.tool])).map(keyOf));st.tqs.forEach(q=>T.add("limb:"+q.limb));st.targets=[...T];
+   good(k==="UA"?"Demande d'évacuation en urgence absolue transmise. En attendant : RYAN.":"Urgence relative : blessé stable, on ne sature pas les moyens d'évacuation. En attendant : RYAN.")}
+  else{st.dead.add(k);penal(10,k==="UA"?"Pas de détresse vitale : c'est une urgence relative.":"Hémorragie, détresse ou choc : c'est une urgence absolue.")}}
+ else if(k==="yes"||k==="no"){const ok=(k==="yes")===st.s.analg;if(ok){st.analg=true;good(k==="yes"?"Analgésie selon ton protocole et tes compétences : la douleur aggrave le stress et le choc.":"Inconscient : pas d'analgésie, surveillance des voies aériennes.")}
+  else{st.dead.add(k);penal(8,k==="yes"?"Il est inconscient : pas d'analgésie.":"Il est conscient et souffre : l'analgésie fait partie des soins.")}}
+ else if(k==="fiche"){if(open_(st,"rN").some(w=>w.rev))penal(5,"Termine d'abord les soins complémentaires.");else{st.fiche=true;good("Fiche de l'avant remplie (heures, gestes, constantes). Surveillance jusqu'à l'évacuation.")}}
+ after();
+}
+function panel(){
+ const c=curLetter();if(!c)return"";
+ const HC=st.H&&st.H.choice;const B=(k,t)=>`<button data-k="${k}" class="${HC===k?"hint":""}" ${st.dead.has(k)?"disabled":""}>${t}</button>`;
+ if(c[0]==="s"&&c.length===2)return`<div class="choice" style="--c:var(--ink)"><h3>SAFE : avant de toucher le blessé</h3><div class="opts">${st.safeOpts.filter(k=>!st.safe.has(k)).map(k=>B(k,SAFE_T[k])).join("")}</div></div>`;
+ if(c==="E")return`<div class="choice" style="--c:var(--olive)"><h3>E : demande d'évacuation</h3><div class="opts">${B("UA","Urgence absolue")}${B("UR","Urgence relative")}</div></div>`;
+ if(c==="rA")return`<div class="choice" style="--c:var(--lC)"><h3>A : analgésie</h3><div class="opts">${B("yes","Analgésie selon protocole")}${B("no","Pas d'analgésie")}</div></div>`;
+ if(c==="rN"&&!open_(st,"rN").some(w=>w.rev))return`<div class="choice" style="--c:var(--lH)"><h3>N : nursing</h3><div class="opts">${B("fiche","Remplir la fiche de l'avant et surveiller")}</div></div>`;
+ return"";
+}
+
+/* ---------- écrans ---------- */
+function tracker(){
+ const c=curLetter();
+ return`<div class="tracker2">${GROUPS.map(([g,ks])=>`<div class="grp" style="--n:${ks.length}"><span class="gl ${ks.includes(c)?"on":""}">${g}</span><div class="ls">${ks.map(k=>`<div class="${!pending(k)&&(!c||ORDER.indexOf(k)<ORDER.indexOf(c))?"done":c===k?"now":""}" style="--c:${LC[k]}" title="${LBL[k]}">${CH(k)}</div>`).join("")}</div></div>`).join("")}</div>
+ ${c?`<p class="curstep"><b style="color:${LC[c]}">${CH(c)}</b> ${LBL[c]}</p>`:""}`;
+}
+function intro(){
+ const b=best(),D=mk(SC[0]);
+ app.innerHTML=`<div class="hero"><h1 class="big" style="font-size:clamp(2.2rem,11vw,3.2rem)"><span>SAFE</span><span style="color:var(--lM)">MARCHE</span><span style="color:var(--lR)">RYAN</span></h1><div class="stage env-fire">${figure(D,"front")}</div></div>
+ <p style="margin-top:10px">Le protocole complet du sauvetage au combat, du premier coup de feu jusqu'à l'évacuation.</p>
+ <p class="grpt">SAFE</p><p class="muted">Avant de toucher le blessé : faire cesser le danger, évaluer la situation, soustraire au danger, premier bilan.</p>
+ <p class="grpt" style="color:var(--lM)">MARCHE</p><p class="muted">Hémorragie massive, voies aériennes, respiration, choc, hypothermie, évacuation.</p>
+ <p class="grpt" style="color:var(--lR)">RYAN</p><p class="muted">En attendant l'évacuation : réévaluation, yeux, analgésie, nursing.</p>
+ <p style="margin-top:12px"><strong>Choisis un outil</strong> dans la trousse en bas, puis <strong>touche la zone</strong> sur le mannequin. Fais un vrai balayage et retourne le blessé : certaines blessures sont cachées, et la réévaluation peut en faire apparaître de nouvelles.</p>
+ <div class="choice" style="--c:var(--olive);margin-top:14px"><h3>Temps disponible</h3><div class="opts">${Object.entries(MODES).map(([k,m])=>`<button data-m="${k}" class="${MODE===k?"msel":""}"><strong>${MODE===k?"● ":"○ "}${m.t}</strong><br><span class="muted" style="font-weight:500;font-size:.88rem">${m.d}</span></button>`).join("")}</div></div>
+ ${b?`<p>Meilleur score : <strong>${b}</strong></p>`:""}
+ <button class="primary" id="go">Commencer la série (${SC.length} blessés)</button>
+ <p class="note">Outil d'entraînement au raisonnement. Ne remplace pas une formation SC1 / SC2 / TCCC encadrée, ni les protocoles de ton unité.</p>`;
+ app.querySelectorAll("[data-m]").forEach(x=>x.onclick=()=>{MODE=x.dataset.m;try{localStorage.setItem("march_mode",MODE)}catch(e){}const y=window.scrollY;intro();window.scrollTo(0,y)});
+ document.getElementById("go").onclick=()=>{order=shuffle(SC.map((_,i)=>i));cur=0;total=0;results=[];start()};
+}
+function start(){
+ st=mk(SC[order[cur]]);render();clearInterval(timer);
+ timer=setInterval(()=>{const b=open_(st,"M").length>0,r=open_(st,"R").length>0;
+  const k=MODES[MODE].k;st.hp-=(b?0.45:r?0.22:0.06)*k;if(b)st.blood=Math.min(60,st.blood+.3*Math.max(k,.25));if(st.hp<=0){st.hp=0;end(false)}else updBar()},250);
+}
+function updBar(){
+ const i=document.querySelector(".bar i");if(!i)return;
+ i.style.width=st.hp+"%";i.style.background=st.hp>60?"var(--ok)":st.hp>30?"var(--warn)":"var(--blood)";
+ const bpm=Math.round(78+(100-st.hp)*0.9);document.getElementById("bpm").textContent=bpm+" bpm";
+ const h=document.querySelector(".heart");if(h)h.style.setProperty("--dur",(60/bpm).toFixed(2)+"s");
+ document.querySelectorAll(".stain.grow").forEach(c=>c.setAttribute("r",Math.min(15,+c.dataset.b+st.blood*.13)));
+ const now=performance.now();if(SOUND&&now-st.lastBeat>=60000/bpm){st.lastBeat=now;SFX.beat()}
+ const p=document.getElementById("pool");if(p){const r=4+st.blood*.22;p.setAttribute("rx",r*1.6);p.setAttribute("ry",Math.max(2,r*.45))}
+}
+function render(){
+ const s=st.s,tool=TOOLS.find(t=>t[0]===st.tool);
+ st.H=(st.hintOn||(LEARN()&&AUTO))?hint():null;st.hl=st.H&&st.H.zones||[];
+ const needFlip=st.hl.length&&!st.hl.some(z=>(st.view==="back"?ZB:ZF).some(r=>r[0]===z));
+ const c0=curLetter();
+ app.innerHTML=`<div class="row"><span class="muted">Blessé ${cur+1} / ${SC.length} · ${MODE==="illimite"?"∞":MODES[MODE].t}</span><span class="muted">Erreurs : ${st.err}${st.hints?` · 💡 ${st.hints}`:""} <button class="snd" id="snd" aria-label="Son">${SOUND?"🔊":"🔇"}</button></span></div>
+ ${tracker()}
+ <div class="vitals">${HEART}<div class="bar"><i></i></div><span class="bpm" id="bpm"></span></div>
+ <div class="scene"><div><div class="stage env-${s.env}">${figure(st,st.view,"fig play")}</div><button class="viewbtn ${needFlip?"hint":""}" id="flip">↻ ${st.view==="front"?"Retourner (dos)":"Revenir de face"}</button></div>
+  <div class="side"><span class="phase">${s.phase}</span><h2>${s.title}</h2><p class="ctx">${s.ctx}</p>
+  <h3>Constatations</h3><ul class="inj">${st.seen.map((i,k)=>{const w=st.w[i];return `<li class="${w.done?"done":""} ${st.newW===i?"new":""}"><span class="badge" style="${w.done?"background:var(--ok)":""}">${w.done?"✓":k+1}</span><span>${w.label}${w.side==="back"?" (dos)":""}</span></li>`}).join("")}
+  ${(s.notes||[]).map(n=>`<li><span class="dot">•</span><span>${n}</span></li>`).join("")}</ul></div></div>
+ ${panel()}
+ ${LEARN()&&c0?`<div class="learn"><p><b style="color:${LC[c0]}">${CH(c0)} · ${LBL[c0]}</b><br>${EXPL[c0]}</p>${st.H?`<p class="tip">💡 ${st.H.text}</p>`:""}<div class="lrow">${AUTO?"":`<button id="hintbtn">💡 Montre-moi</button>`}<label><input type="checkbox" id="auto" ${AUTO?"checked":""}> Aide permanente</label></div></div>`
+ :c0?`<div class="learn compact">${st.H?`<p class="tip">💡 ${st.H.text}</p>`:""}<div class="lrow">${st.H?`<span class="muted">Aide utilisée : ${st.hints} (−${HINT_COST*st.hints} pts)</span>`:`<button id="hintbtn">💡 Montre-moi</button><span class="muted">−${HINT_COST} pts, noté au bilan</span>`}</div></div>`:""}
+ <div class="fb ${st.fbc}" aria-live="polite">${st.fb||'<span class="muted">Commence par SAFE, puis choisis un outil et touche le mannequin.</span>'}</div>
+ <p class="hint">Outil actif : <strong>${tool[1]}</strong></p>
+ <div class="kit">${TOOLS.map(t=>`<button class="tool ${st.tool===t[0]?"sel":""} ${st.H&&st.H.tool===t[0]&&st.tool!==t[0]?"hint":""}" data-t="${t[0]}">${icon(t[2])}<span>${t[1]}</span></button>`).join("")}</div>`;
+ updBar();
+ app.querySelector(".fig.play").onclick=e=>{const z=e.target.getAttribute&&e.target.getAttribute("data-z");if(!z)return;try{const sv=e.currentTarget,pt=sv.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const q=pt.matrixTransform(sv.getScreenCTM().inverse());st.tap={x:+q.x.toFixed(1),y:+q.y.toFixed(1)}}catch(err){}onZone(z)};
+ document.getElementById("snd").onclick=()=>{SOUND=!SOUND;try{localStorage.setItem("march_snd",SOUND?"1":"0")}catch(e){}if(SOUND){const c=ac();c&&c.resume&&c.resume();SFX.ok()}st.tap=null;render()};
+ document.getElementById("flip").onclick=()=>{st.tap=null;st.view=st.view==="front"?"back":"front";st.fresh=null;st.newW=null;render()};
+ app.querySelectorAll(".choice button").forEach(b=>b.onclick=()=>choose(b.dataset.k));
+ const hb=document.getElementById("hintbtn");if(hb)hb.onclick=()=>{if(!st.hintOn&&!(LEARN()&&AUTO))st.hints++;st.hintOn=true;st.tap=null;render()};
+ const au=document.getElementById("auto");if(au)au.onchange=()=>{AUTO=au.checked;try{localStorage.setItem("march_auto",AUTO?"1":"0")}catch(e){}st.tap=null;render()};
+ app.querySelectorAll(".tool").forEach(b=>b.onclick=()=>{st.tap=null;st.tool=b.dataset.t;st.fresh=null;st.newW=null;const sc=app.querySelector(".kit").scrollLeft;render();app.querySelector(".kit").scrollLeft=sc});
+}
+function end(ok){
+ clearInterval(timer);
+ const s=st.s,sec=Math.round((Date.now()-st.t0)/1000),hidden=st.w.filter(w=>w.hidden),found=hidden.filter(w=>w.rev).length;
+ const pts=LEARN()?0:ok?Math.max(0,Math.round(st.hp*10-st.err*40+(MODES[MODE].k?Math.max(0,Math.round(150/MODES[MODE].k)-sec)*3*MODES[MODE].k:0)+found*100+(st.evSpawned?100:0)-st.hints*HINT_COST)):0;
+ total+=pts;results.push({title:s.title,ok,pts,found,hid:hidden.length,hints:st.hints});
+ const F=mk(s);F.w=st.w.map(w=>({...w,rev:true,done:ok?true:w.done}));F.seen=F.w.map(w=>w.i);
+ F.tqs=st.tqs.map(t=>({...t,fresh:false}));F.marked=st.marked;F.blanket=st.blanket;F.blood=st.blood;F.exam=st.exam;
+ const has=t=>s.wounds.some(w=>w.tool===t);
+ const steps=[["SAFE",[["sS",s.fire?"Riposter, neutraliser la menace.":"Faire cesser le danger."],["sA","Évaluer la situation."],["sF","Soustraire le blessé au danger."],["sE","Premier bilan."]]],
+  ["MARCHE",[["M","Balayage des 4 membres (et sous le gilet), contrôle de chaque hémorragie."],["A","Tête et voies aériennes"+(has("npa")?" : canule + PLS.":".")],["R","Thorax devant ET derrière"+(s.wounds.some(w=>WL[w.tool]==="R")?", traiter chaque plaie.":".")],
+   ["C","Pouls radial"+(has("tq")||s.pre?.tqs?", heure des garrots":"")+(has("belt")?", ceinture pelvienne":"")+"."],["H","Isoler du sol et couvrir."],["E","Évacuation en urgence "+(s.evac==="UA"?"absolue.":"relative.")]]],
+  ["RYAN",[["rR","Réexaminer chaque soin posé"+(s.event?" : ici, "+s.event.label.toLowerCase()+".":".")],["rY","Examiner les yeux"+(has("shield")?", coque oculaire.":".")],["rA",s.analg?"Analgésie selon protocole.":"Pas d'analgésie (inconscient)."],["rN",(has("splint")?"Attelle. ":"")+(has("dress")?"Pansement compressif. ":"")+"Fiche de l'avant, surveillance."]]]];
+ app.innerHTML=`<div class="card"><h2 style="color:${ok?"var(--ok)":"var(--blood)"}">${ok?"Blessé pris en charge":"Blessé perdu"}</h2>
+  <p class="muted" style="margin:4px 0 0">${s.title} : ${sec} s, ${st.err} erreur${st.err>1?"s":""}${hidden.length?`, blessures cachées : ${found}/${hidden.length}`:""}${st.hints?`<br><span class="tag" style="background:#F2C94C;color:#222;margin:4px 0 0">💡 Aidé ${st.hints} fois${LEARN()?"":` (−${st.hints*HINT_COST} pts)`}</span>`:""}</p>
+  <div class="score">${LEARN()?(ok?"✓":"✗"):pts}</div><div class="figs2"><div class="stage env-${s.env}">${figure(F,"front")}</div><div class="stage env-${s.env}">${figure(F,"back")}</div></div></div>
+ <div class="card"><h2>Blessures</h2><ul class="debrief">${F.w.map(w=>`<li><span class="l" style="--c:${LC[WL[w.tool]]}">${CH(WL[w.tool])}</span><span><strong>${w.label}</strong>${w.hidden?`<span class="tag ${st.w[w.i].rev?"found":"miss"}">${st.w[w.i].rev?"cachée, trouvée":"cachée, manquée"}</span>`:""}${w.ev?`<span class="tag found">réévaluation</span>`:""}<br><span class="muted">${w.ok}</span></span></li>`).join("")}</ul></div>
+ <div class="card"><h2>La bonne séquence</h2>${steps.map(([g,l])=>`<p class="grpt">${g}</p><ol class="debrief">${l.map(([k,t])=>`<li><span class="l" style="--c:${LC[k]}">${CH(k)}</span><span>${t}</span></li>`).join("")}</ol>`).join("")}</div>
+ <button class="primary" id="nx">${cur+1<SC.length?"Blessé suivant":"Voir le bilan"}</button>`;
+ window.scrollTo(0,0);
+ document.getElementById("nx").onclick=()=>{cur++;cur<SC.length?start():final()};
+}
+function final(){
+ const b=best(),rec=!LEARN()&&total>b;if(rec)best(total);
+ const th=results.reduce((a,r)=>a+(r.hints||0),0),saved=results.filter(r=>r.ok).length,hf=results.reduce((a,r)=>a+r.found,0),ht=results.reduce((a,r)=>a+r.hid,0);
+ app.innerHTML=`<h1 class="big" style="font-size:3rem;margin-top:14px">Bilan</h1><div class="score">${LEARN()?"":total}</div>
+ <p class="muted">Mode ${MODES[MODE].t}. ${saved} / ${results.length} blessés pris en charge, ${hf} / ${ht} blessures cachées trouvées${th?`, aide utilisée ${th} fois`:", sans aide"}. ${LEARN()?"":rec?"Nouveau record.":"Record : "+b}</p>
+ <div class="card"><ul class="debrief">${results.map(r=>`<li><span class="l" style="--c:${r.ok?"var(--ok)":"var(--blood)"}">${r.ok?"✓":"✗"}</span><span>${r.title} : ${LEARN()?(r.ok?"pris en charge":"perdu"):r.ok?r.pts+" pts":"perdu"}${r.hints?` · 💡 aidé ${r.hints}×`:""}</span></li>`).join("")}</ul></div>
+ <button class="primary" id="re">Rejouer une série</button>`;
+ document.getElementById("re").onclick=intro;
+}
+/* ---------- code d'accès ---------- */
+const CODES=["67ed2905"];
+const hashCode=s=>{let x=0x811c9dc5;for(const c of s){x^=c.charCodeAt(0);x=Math.imul(x,0x01000193)>>>0}return x.toString(16)};
+function unlocked(){try{return CODES.includes(localStorage.getItem("march_key"))}catch(e){return false}}
+function gate(){
+ app.innerHTML=`<div class="hero"><h1 class="big" style="font-size:clamp(2.2rem,11vw,3.2rem)"><span>SAFE</span><span style="color:var(--lM)">MARCHE</span><span style="color:var(--lR)">RYAN</span></h1><div class="stage env-fire">${figure(mk(SC[0]),"front")}</div></div>
+ <div class="card" style="margin-top:16px"><h2>Accès réservé</h2><p class="muted" style="margin:4px 0 10px">Entre le code qui t'a été transmis pour accéder à l'entraînement.</p>
+ <input id="code" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Code d'accès" aria-label="Code d'accès"
+  style="width:100%;font:inherit;font-size:1.2rem;letter-spacing:.08em;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--btn);color:var(--ink)">
+ <p id="err" style="color:var(--blood);font-weight:600;min-height:1.4em;margin:8px 0 0"></p>
+ <button class="primary" id="unlock">Déverrouiller</button></div>`;
+ const inp=document.getElementById("code"),go=()=>{const h=hashCode(inp.value.trim().toUpperCase());
+  if(CODES.includes(h)){try{localStorage.setItem("march_key",h)}catch(e){}intro()}
+  else{document.getElementById("err").textContent="Code incorrect. Vérifie auprès de la personne qui te l'a envoyé.";flash("bad");buzz();inp.select()}};
+ document.getElementById("unlock").onclick=go;inp.onkeydown=e=>{if(e.key==="Enter")go()};
+}
+unlocked()?intro():gate();
+</script>
+</body>
+</html>
