@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>MARCH Drill</title>
+<title>SAFE MARCHE RYAN</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira+Stencil+One&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
@@ -144,6 +144,7 @@ button:focus-visible{outline:3px solid var(--warn);outline-offset:2px}
 .hintz{animation:hintz 1s ease-in-out infinite}@keyframes hintz{50%{fill-opacity:.05;stroke-opacity:.4}}
 .tool.hint,.choice button.hint,.viewbtn.hint{box-shadow:0 0 0 3px #F2C94C;animation:hintp 1s ease-in-out infinite}
 @keyframes hintp{50%{box-shadow:0 0 0 6px rgba(242,201,76,.35)}}
+.langbtn{float:right;margin-top:8px;background:var(--btn);border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-weight:700;color:var(--ink)}
 .grpt{font-family:"Saira Stencil One",Impact,sans-serif;font-size:1.1rem;margin:10px 0 2px}
 .stage{position:relative;overflow:hidden;border-radius:9px;border:1px solid rgba(0,0,0,.25);box-shadow:inset 0 0 18px rgba(0,0,0,.25)}
 .env-forest{background:radial-gradient(ellipse at 50% 100%,rgba(0,0,0,.25),transparent 55%),radial-gradient(circle at 15% 20%,#8f955f 0 3px,transparent 4px),radial-gradient(circle at 80% 35%,#7d8452 0 2px,transparent 3px),radial-gradient(circle at 30% 70%,#8a9058 0 2.5px,transparent 3.5px),radial-gradient(circle at 85% 80%,#747b4a 0 3px,transparent 4px),linear-gradient(180deg,#a7a57a,#8a8a5d);background-size:auto,40px 40px,34px 34px,46px 46px,38px 38px,auto}
@@ -174,7 +175,7 @@ body.inplay{height:100%;overflow:hidden}
 body.inplay main{height:100%;display:flex;flex-direction:column;padding:6px 10px 0;gap:5px}
 .topbar{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--muted);flex:none}
 .topbar .sp{flex:1}
-.topbar button{background:var(--btn);border:1px solid var(--line);border-radius:7px;padding:3px 9px;font-size:.85rem;font-weight:700;color:var(--ink)}
+.topbar button{white-space:nowrap;background:var(--btn);border:1px solid var(--line);border-radius:7px;padding:3px 9px;font-size:.85rem;font-weight:700;color:var(--ink)}
 .topbar button.on{background:#F2C94C;border-color:#d4ab2c;color:#222}
 .play .tracker2{margin:0;gap:6px;flex:none}
 .play .tracker2 .gl{font-size:.62rem;line-height:1}
@@ -191,6 +192,7 @@ body.inplay main{height:100%;display:flex;flex-direction:column;padding:6px 10px
 .side2 h3{font-family:"Barlow Condensed",sans-serif;font-size:.85rem;margin:6px 0 3px;color:var(--muted);font-weight:700}
 .side2 .inj li{font-size:.82rem}
 .side2 .phase{font-size:.75rem;margin-bottom:3px}
+.chips{display:flex;flex-wrap:wrap;gap:4px}.chip{font-size:.72rem;font-weight:700;padding:2px 6px;border-radius:10px;border:1px solid var(--line);color:var(--muted)}.chip.on{background:#2f8a22;border-color:#2f8a22;color:#fff}
 .expl{font-size:.8rem;background:color-mix(in srgb,#F2C94C 16%,var(--panel));border:1px solid #d4ab2c;border-radius:8px;padding:6px 8px;margin-bottom:6px}
 .bottom{flex:none;display:flex;flex-direction:column;gap:5px;padding-bottom:calc(6px + env(safe-area-inset-bottom,0px))}
 .play .fb{min-height:0;max-height:4.3em;overflow-y:auto;margin:0;font-size:.84rem;padding:6px 10px;line-height:1.3}
@@ -217,7 +219,7 @@ const LBL={sS:"Stop the burning process (faire cesser le danger)",sA:"Assess the
  rR:"Réévaluation",rY:"Yeux",rA:"Analgésie",rN:"Nursing (soins complémentaires)"};
 const CH=k=>k.length>1?k[1]:k;
 const LC={sS:"var(--muted)",sA:"var(--muted)",sF:"var(--muted)",sE:"var(--muted)",M:"var(--lM)",A:"var(--lA)",R:"var(--lR)",C:"var(--lC)",H:"var(--lH)",E:"var(--olive)",rR:"var(--lR)",rY:"var(--lA)",rA:"var(--lC)",rN:"var(--lH)"};
-const WL={tq:"M",pack:"M",npa:"A",seal:"R",needle:"R",belt:"C",shield:"rY",dress:"rN",splint:"rN"};
+const WL={tq:"M",pack:"M",npa:"A",seal:"R",needle:"R",belt:"C",shield:"rY",dress:"rN",splint:"rN",wet:"rN"};
 const IC={
  hand:'<path d="M8 13V5a1.5 1.5 0 0 1 3 0v6M11 11V4a1.5 1.5 0 0 1 3 0v7M14 11V5a1.5 1.5 0 0 1 3 0v8c0 4-3 8-7 8-3 0-5-2-6-4l-2-4a1.5 1.5 0 0 1 2.5-1.5L8 14"/>',
  tq:'<rect x="2" y="9" width="20" height="6" rx="2"/><path d="M12 4v16"/>',
@@ -231,16 +233,17 @@ const IC={
  splint:'<rect x="3" y="3" width="5" height="18" rx="1"/><rect x="16" y="3" width="5" height="18" rx="1"/><path d="M8 8h8M8 16h8"/>',
  eye:'<ellipse cx="12" cy="12" rx="9" ry="7"/><circle cx="12" cy="12" r="2.5"/>',
  blanket:'<path d="M3 7c3-2 6 2 9 0s6 2 9 0v10c-3 2-6-2-9 0s-6-2-9 0z"/>',
- cup:'<path d="M6 4h12l-2 16H8z"/>'
+ cup:'<path d="M6 4h12l-2 16H8z"/>',
+ wet:'<rect x="3" y="8" width="18" height="12" rx="2"/><path d="M12 1.5c2 3 3 4 3 5.3a3 3 0 0 1-6 0c0-1.3 1-2.3 3-5.3z"/>'
 };
 const icon=k=>`<svg viewBox="0 0 24 24" aria-hidden="true">${IC[k]||""}</svg>`;
-const TOOLS=[["hands","Examiner","hand"],["tq","Garrot","tq"],["pack","Méchage","gauze"],["dress","Pansement compressif","roll"],["seal","Pansement occlusif","seal"],["needle","Exsufflation","burp"],["npa","Canule NPA","tube"],["belt","Ceinture pelvienne","belt"],["splint","Attelle","splint"],["shield","Coque oculaire","eye"],["marker","Feutre (heure)","clock"],["blanket","Couverture","blanket"],["water","Gourde","cup"]];
-const ZN={head:"la tête",chestR:"le thorax droit",chestL:"le thorax gauche",abdomen:"l'abdomen",pelvis:"le bassin",armR:"le bras droit",armL:"le bras gauche",thighR:"la cuisse droite",thighL:"la cuisse gauche",legR:"la jambe droite",legL:"la jambe gauche",back:"le haut du dos",lowback:"le bas du dos",buttocks:"les fesses"};
-const KN={"limb:armR":"bras droit","limb:armL":"bras gauche","limb:LR":"jambe droite","limb:LL":"jambe gauche",head:"tête",chestR:"thorax droit",chestL:"thorax gauche",back:"dos",pelvis:"bassin"};
+const TOOLS=[["hands","Examiner","hand"],["tq","Garrot","tq"],["pack","Méchage","gauze"],["dress","Pansement compressif","roll"],["seal","Pansement occlusif","seal"],["needle","Exsufflation","burp"],["npa","Canule NPA","tube"],["belt","Ceinture pelvienne","belt"],["splint","Attelle","splint"],["wet","Pansement humide","wet"],["shield","Coque oculaire","eye"],["marker","Feutre (heure)","clock"],["blanket","Couverture","blanket"],["water","Gourde","cup"]];
+const ZN={head:"la tête",chest:"le thorax",abdomen:"l'abdomen",pelvis:"le bassin",armR:"le bras droit",armL:"le bras gauche",thighR:"la cuisse droite",thighL:"la cuisse gauche",legR:"la jambe droite",legL:"la jambe gauche",back:"le dos",buttocks:"les fesses"};
+const KN={"limb:armR":"bras droit","limb:armL":"bras gauche","limb:LR":"jambe droite","limb:LL":"jambe gauche",head:"tête",chest:"thorax",back:"dos",pelvis:"bassin"};
 const LIMBN={armR:"bras droit",armL:"bras gauche",LR:"jambe droite",LL:"jambe gauche"};
-const ZF=[["head",42,4,36,36],["chestR",40,40,20,40],["chestL",60,40,20,40],["abdomen",41,80,38,31],["pelvis",40,111,40,13],["armR",8,40,32,92],["armL",80,40,32,92],["thighR",40,124,20,62],["thighL",60,124,20,62],["legR",40,186,20,64],["legL",60,186,20,64]];
-const ZB=[["head",42,4,36,36],["back",40,40,40,40],["lowback",41,80,38,31],["buttocks",40,111,40,13],["armL",8,40,32,92],["armR",80,40,32,92],["thighL",40,124,20,62],["thighR",60,124,20,62],["legL",40,186,20,64],["legR",60,186,20,64]];
-const TORSO=new Set(["chestR","chestL","abdomen","pelvis","back","lowback","buttocks"]);
+const ZF=[["head",42,4,36,36],["chest",40,40,40,40],["abdomen",41,80,38,31],["pelvis",40,111,40,13],["armR",8,40,32,92],["armL",80,40,32,92],["thighR",40,124,20,62],["thighL",60,124,20,62],["legR",40,186,20,64],["legL",60,186,20,64]];
+const ZB=[["head",42,4,36,36],["back",40,40,40,71],["buttocks",40,111,40,13],["armL",8,40,32,92],["armR",80,40,32,92],["thighL",40,124,20,62],["thighR",60,124,20,62],["legL",40,186,20,64],["legR",60,186,20,64]];
+const TORSO=new Set(["chest","abdomen","pelvis","back","buttocks"]);
 const limbOf=z=>({armR:"armR",armL:"armL",thighR:"LR",legR:"LR",thighL:"LL",legL:"LL"})[z]||null;
 const mir=(x,v)=>v==="back"?120-x:x;
 function limbX(l,y){return l==="LR"?50.5:l==="LL"?69.5:l==="armR"?43.5-(y-48)*.23:76.5+(y-48)*.23}
@@ -250,7 +253,7 @@ const SC=[
  {title:"Embuscade",env:"fire",phase:"Sous le feu",fire:true,evac:"UA",analg:true,ctx:"Ton binôme est touché pendant un échange de tirs. Il crie et se tient la cuisse droite.",
   head:"Il crie et répond : voies aériennes libres.",pulse:"Pouls radial rapide.",
   event:{tool:"tq",zone:"thighR",x:50,y:174,label:"Le saignement de la cuisse reprend (garrot insuffisant)",ok:"Second garrot juste au-dessus du premier. C'est exactement pour ça qu'on réévalue."},
-  wounds:[{tool:"tq",zone:"thighR",x:50,y:160,label:"Saignement pulsatile, cuisse droite",ok:"Garrot haut et serré sur la cuisse : hémorragie stoppée."},
+  wounds:[{tool:"tq",zone:"thighR",x:50,y:160,label:"Saignement pulsatile, cuisse droite",ok:"Garrot posé sur la cuisse : hémorragie stoppée."},
    {tool:"tq",zone:"legL",x:71,y:214,post:true,hidden:true,label:"Saignement abondant à l'arrière du mollet gauche",ok:"Deuxième garrot sur la jambe gauche. Invisible de face : seul le balayage la révèle."}]},
  {title:"Souffle d'explosion",env:"urban",phase:"Soins de l'avant",evac:"UA",analg:false,ctx:"Après une explosion, un blessé est au sol, inconscient. Il reste peut-être des engins non explosés.",
   head:"Inconscient, respiration bruyante et ronflante.",pulse:"Pouls radial faible.",
@@ -259,8 +262,8 @@ const SC=[
    {tool:"shield",zone:"head",x:55,y:22,hidden:true,revealOn:"rY",label:"Corps étranger dans l'œil droit (souffle)",ok:"Coque rigide sur l'œil, sans appuyer ni retirer le corps étranger."}]},
  {title:"Plaie au thorax",env:"forest",phase:"Soins de l'avant",evac:"UA",analg:true,ctx:"Un blessé par balle se plaint d'avoir du mal à respirer.",
   head:"Parle par phrases courtes.",pulse:"Pouls radial rapide.",
-  event:{tool:"needle",zone:"chestL",x:74,y:66,label:"Détresse respiratoire croissante malgré les pansements",ok:"Suspicion de pneumothorax sous tension : décoller un bord du pansement (burp), exsufflation si formé."},
-  wounds:[{tool:"seal",zone:"chestL",x:74,y:66,label:"Plaie soufflante, thorax gauche",ok:"Pansement occlusif sur l'orifice d'entrée."},
+  event:{tool:"needle",zone:"chest",x:74,y:66,label:"Détresse respiratoire croissante malgré les pansements",ok:"Suspicion de pneumothorax sous tension : décoller un bord du pansement (burp), exsufflation si formé."},
+  wounds:[{tool:"seal",zone:"chest",x:74,y:66,label:"Plaie soufflante, thorax gauche",ok:"Pansement occlusif sur l'orifice d'entrée."},
    {tool:"seal",zone:"back",side:"back",x:47,y:66,hidden:true,label:"Orifice de sortie dans le dos",ok:"Deuxième pansement occlusif sur la sortie : cherche toujours l'orifice de sortie."}]},
  {title:"Plaie jonctionnelle",env:"forest",phase:"Soins de l'avant",evac:"UA",analg:true,ctx:"Blessé touché au pli de l'aine en patrouille.",
   head:"Conscient, parle, pâle.",pulse:"Pouls radial faible et rapide.",
@@ -273,15 +276,39 @@ const SC=[
  {title:"Dégradation",env:"forest",phase:"Réévaluation",evac:"UA",analg:true,ctx:"Un blessé a reçu un pansement occlusif sur le thorax il y a 10 min. Il se dégrade.",
   head:"Très agité, parle difficilement. Veines du cou gonflées.",pulse:"Pouls radial faible.",
   notes:["Garrot posé au bras gauche il y a 10 min"],pre:{seal:{x:76,y:74},tqs:[{limb:"armL",y:92}]},
-  wounds:[{tool:"needle",zone:"chestL",x:76,y:74,label:"Détresse respiratoire qui s'aggrave malgré le pansement",ok:"Décoller un bord du pansement (burp), puis exsufflation à l'aiguille si tu es formé."}]},
+  wounds:[{tool:"needle",zone:"chest",x:76,y:74,label:"Détresse respiratoire qui s'aggrave malgré le pansement",ok:"Décoller un bord du pansement (burp), puis exsufflation à l'aiguille si tu es formé."}]},
  {title:"Éclats de grenade",env:"urban",phase:"Soins de l'avant",evac:"UR",analg:true,ctx:"Une grenade a explosé à distance. Un équipier se plaint du bras gauche et de l'œil droit.",
   head:"Conscient, parle normalement.",pulse:"Pouls radial normal.",
   wounds:[{tool:"dress",zone:"armL",x:86,y:100,label:"Plaies de l'avant-bras gauche, saignement modéré",ok:"Pansement compressif simple : pas d'hémorragie massive, donc pas de garrot."},
    {tool:"shield",zone:"head",x:55,y:22,label:"Douleur de l'œil droit, éclat possible",ok:"Coque rigide sur l'œil, sans appuyer, sans rincer, sans retirer l'éclat."}]}
+,
+ {title:"Éclat à l'abdomen",env:"forest",phase:"Soins de l'avant",evac:"UA",analg:true,ctx:"Un équipier a été touché au ventre par un éclat. Il se tient l'abdomen à deux mains.",
+  head:"Conscient, pâle, se plaint du ventre.",pulse:"Pouls radial rapide et faible.",
+  wounds:[{tool:"wet",zone:"abdomen",x:60,y:102,label:"Plaie de l'abdomen avec intestins extériorisés (éviscération)",ok:"Viscères couverts par un pansement humide non adhérent, sans comprimer ni réintégrer. Jambes fléchies, rien à boire, surveillance du choc."},
+   {tool:"tq",zone:"armL",x:90,y:104,post:true,hidden:true,label:"Saignement abondant à l'arrière de l'avant-bras gauche",ok:"Garrot sur l'avant-bras gauche. L'éviscération impressionne, mais elle ne tue pas aussi vite que cette hémorragie."}]}
 ];
 
 const HEART='<svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21s-8-5-8-11a4 4 0 0 1 8-2 4 4 0 0 1 8 2c0 6-8 11-8 11z"/></svg>';
 const app=document.getElementById("app");
+/* ---------- langue ---------- */
+let LANG=(()=>{try{const l=localStorage.getItem("march_lang");if(l)return l}catch(e){}return (navigator.language||"fr").toLowerCase().startsWith("fr")?"fr":"en"})();
+const EN={"🌐 Classes en ligne":"🌐 Online classes","Les résultats des élèves arrivent automatiquement.":"Student results arrive automatically.","＋ Créer une classe":"＋ Create a class","↪ Récupérer une classe":"↪ Recover a class","Pas encore configuré.":"Not configured yet.","Ajouter / mettre à jour un élève (par message)":"Add / update a student (by message)","Nom de la classe (ex. Groupe SC1 octobre)":"Class name (e.g. SC1 group October)","Créer":"Create","Création…":"Creating…","Erreur de création. Vérifie la configuration Firebase.":"Creation error. Check the Firebase setup.","Code de classe":"Class code","Clé formateur":"Instructor key","Récupérer":"Recover","Code ou clé incorrects.":"Wrong code or key.","Connexion impossible. Vérifie ta connexion internet (la fonction en ligne marche sur la version GitHub, pas dans l'aperçu Claude).":"Can't connect. Check your internet connection (online features work on the GitHub version, not in the Claude preview).","(donné par ton formateur, facultatif)":"(given by your instructor, optional)","⏳ Inscrit, synchronisation en attente":"⏳ Joined, sync pending","✓ Inscrit dans la classe":"✓ Joined class",": tes résultats sont envoyés automatiquement":": your results are sent automatically","Inscription…":"Joining…","✗ Code de classe inconnu.":"✗ Unknown class code.","⏳ Inscrit, synchronisation en attente (pas de connexion)":"⏳ Joined, sync pending (no connection)","🌐 Classe":"🌐 Class","synchronisation en attente":"sync pending","résultats envoyés automatiquement":"results sent automatically","Code de classe à donner aux élèves :":"Class code to give to students:","Clé formateur (pour retrouver la classe sur un autre téléphone) :":"Instructor key (to recover the class on another phone):","📤 Partager le code":"📤 Share the code","↻ Actualiser":"↻ Refresh","Chargement…":"Loading…","Rejoins ma classe SAFE MARCHE RYAN : entre le code":"Join my SAFE MARCHE RYAN class: enter the code","dans le champ « Code de classe » de l'appli.":"in the \"Class code\" field of the app.","✓ Message copié.":"✓ Message copied.","élèves":"students","mis à jour à":"updated at","Aucun élève pour l'instant. Partage le code de classe.":"No students yet. Share the class code.","Accès refusé à cette classe.":"Access to this class denied.","Pris en charge":"Managed",": ici,":": here,","»":"\"","«":"\"","📤 Envoyer à mon formateur":"📤 Send to my instructor","sur le mannequin. Fais un vrai balayage et retourne le blessé : certaines blessures sont cachées, et la réévaluation peut en faire apparaître de nouvelles.": "on the mannequin. Do a real sweep and roll the casualty over: some wounds are hidden, and reassessment can reveal new ones.", "Viscères couverts par un pansement humide non adhérent, sans comprimer ni réintégrer. Jambes fléchies, rien à boire, surveillance du choc.": "Bowel covered with a moist non-adherent dressing, without compressing or pushing it back. Knees bent, nothing by mouth, monitor for shock.", "Doctrine française SAFE MARCHE RYAN. SC1 pour tout combattant, SC2 pour l'auxiliaire sanitaire, SC3 pour le personnel médical.": "French SAFE MARCHE RYAN doctrine. SC1 for every soldier, SC2 for the combat medic assistant, SC3 for medical personnel.", "Outil d'entraînement au raisonnement. Ne remplace pas une formation SC1 / SC2 / TCCC encadrée, ni les protocoles de ton unité.": "A decision-making training tool. It does not replace supervised SC1 / SC2 / TCCC training or your unit's protocols.", "Ce jeu s'appuie sur ces doctrines. En cas de différence, ce sont les protocoles de ta formation et de ton unité qui priment.": "This game is based on these doctrines. If anything differs, your course and unit protocols take precedence.", "Adaptation civile du TCCC (forces de l'ordre, secours, tueries de masse) : Direct Threat, Indirect Threat, Evacuation Care.": "Civilian adaptation of TCCC (law enforcement, EMS, mass casualty attacks): Direct Threat, Indirect Threat, Evacuation Care.", "Référence militaire internationale : Care Under Fire, Tactical Field Care, Tactical Evacuation Care, algorithme MARCH PAWS.": "International military reference: Care Under Fire, Tactical Field Care, Tactical Evacuation Care, MARCH PAWS algorithm.", "Garrot sur l'avant-bras gauche. L'éviscération impressionne, mais elle ne tue pas aussi vite que cette hémorragie.": "Tourniquet on the left forearm. The evisceration looks dramatic, but it doesn't kill as fast as this bleed.", "Sous la plaie, il n'arrête pas un saignement qui vient du cœur : le sang continue de couler. Il se pose au-dessus.": "Below the wound it can't stop blood coming from the heart: the bleeding continues. It goes above.", "Avant de toucher le blessé : faire cesser le danger, évaluer la situation, soustraire au danger, premier bilan.": "Before touching the casualty: stop the threat, assess the scene, move to safety, first evaluation.", "Une compresse sèche colle aux intestins et les lèse au retrait : le pansement doit être humide et non adhérent.": "A dry gauze sticks to the bowel and damages it on removal: the dressing must be moist and non-adherent.", ", les os empêchent de comprimer l'artère : le garrot est inefficace. Décale-le au-dessus de l'articulation.": ", the bones prevent compressing the artery: the tourniquet won't work. Move it above the joint.", "Pneumothorax sous tension : « Exsufflation » sur le thorax atteint (d'abord décoller un bord du pansement).": "Tension pneumothorax: \"Decompression\" on the injured chest (first burp the seal by lifting one edge).", "Pas de chrono, pas de pénalité sur l'état du blessé. Explications à chaque étape et indices à la demande.": "No timer, no penalty on the casualty's condition. Explanations at every step and hints on demand.", "Sur la plaie, le garrot ne comprime pas l'artère en amont : le saignement continue. Remonte-le au-dessus.": "Over the wound, the tourniquet doesn't compress the artery upstream: the bleeding continues. Move it higher.", "Chercher et stopper toute hémorragie massive : balayage des 4 membres, aisselles, aines, sous le gilet.": "Find and stop any massive bleeding: sweep all 4 limbs, armpits, groin, under the vest.", "Jamais réintégrer les viscères : risque d'infection grave et de lésions. On les couvre là où ils sont.": "Never push the bowel back in: risk of severe infection and injury. Cover it where it is.", "Posé haut et serré : le bon réflexe sous le feu ou si la plaie est mal localisée. À réévaluer ensuite.": "Applied high and tight: the right reflex under fire or when the wound is hard to locate. Reassess later.", "Suspicion de pneumothorax sous tension : décoller un bord du pansement (burp), exsufflation si formé.": "Suspected tension pneumothorax: burp the seal by lifting one edge, needle decompression if trained.", "Balayage : outil « Examiner » sur chaque membre en surbrillance. Des blessures peuvent être cachées.": "Sweep: \"Examine\" tool on each highlighted limb. Wounds may be hidden.", "Posé 5 à 8 cm au-dessus de la plaie, hors articulation : la position de référence une fois à l'abri.": "Applied 2–3 inches (5–8 cm) above the wound, not over a joint: the standard position once under cover.", "Après une explosion, un blessé est au sol, inconscient. Il reste peut-être des engins non explosés.": "After an explosion, a casualty is lying on the ground, unconscious. There may be unexploded devices nearby.", "Plaie trop proche du tronc (zone jonctionnelle) : garrot impossible, fais un méchage + compression.": "Wound too close to the torso (junctional area): no tourniquet possible, pack the wound and apply pressure.", "Couvre avec un pansement humide non adhérent, sans comprimer, et ne réintègre jamais les viscères.": "Cover with a moist non-adherent dressing, without compressing, and never push the bowel back in.", "Urgence relative : blessé stable, on ne sature pas les moyens d'évacuation. En attendant : RYAN.": "Routine priority: stable casualty, don't overload evacuation assets. While waiting: RYAN.", "Colle ici le message reçu de l'élève (bouton « Envoyer à mon formateur » dans sa progression).": "Paste the message received from the student here (\"Send to my instructor\" button in their progress).", "Faire cesser ce qui fait des victimes : riposter, neutraliser la menace ou écarter le danger.": "Stop whatever is causing casualties: return fire, neutralise the threat or remove the danger.", "Pas de compression sur des viscères : ça les abîme et aggrave l'état. On couvre sans serrer.": "No pressure on exposed bowel: it damages it and makes things worse. Cover without tightening.", "Analgésie selon ton protocole et tes compétences : la douleur aggrave le stress et le choc.": "Pain management according to your protocol and skills: pain worsens stress and shock.", "Retourne le blessé (bouton ↻), puis « Examiner » sur le dos : cherche un orifice de sortie.": "Roll the casualty over (↻ button), then \"Examine\" the back: look for an exit wound.", "Soins complémentaires : pansements, éviscération, attelles, fiche de l'avant, surveillance.": "Additional care: dressings, evisceration, splints, casualty card, monitoring.", "Fiche de l'avant remplie (heures, gestes, constantes). Surveillance jusqu'à l'évacuation.": "Casualty card filled in (times, interventions, vitals). Monitoring until evacuation.", "Le protocole complet du sauvetage au combat, du premier coup de feu jusqu'à l'évacuation.": "The complete French combat casualty care protocol, from the first shot to evacuation.", "Une grenade a explosé à distance. Un équipier se plaint du bras gauche et de l'œil droit.": "A grenade exploded some distance away. A teammate complains about his left arm and right eye.", "Réexaminer chaque soin posé : un garrot peut lâcher, un pansement peut ne plus suffire.": "Re-check every intervention: a tourniquet can loosen, a dressing may no longer be enough.", "Ton binôme est touché pendant un échange de tirs. Il crie et se tient la cuisse droite.": "Your buddy is hit during a firefight. He's shouting and holding his right thigh.", "Vérifier que l'air passe. S'il parle, c'est bon. Inconscient qui ronfle : canule + PLS.": "Make sure air gets through. If he talks, it's fine. Unconscious and snoring: NPA + recovery position.", "Outil « Examiner » sur la tête : est-ce qu'il parle, est-ce qu'il respire bruyamment ?": "\"Examine\" tool on the head: is he talking, is his breathing noisy?", "Un équipier a chuté d'environ 6 mètres depuis un toit. Il se plaint surtout du bassin.": "A teammate fell about 6 metres (20 ft) from a roof. He mainly complains about his pelvis.", "Cours certifiants TCCC (militaires) et TECC (civils) dispensés dans de nombreux pays.": "Certified TCCC (military) and TECC (civilian) courses taught in many countries.", "Heure de pose notée : l'équipe médicale doit savoir depuis quand le garrot est serré.": "Time of application written down: the medical team needs to know how long the tourniquet has been on.", "Deuxième garrot sur la jambe gauche. Invisible de face : seul le balayage la révèle.": "Second tourniquet on the left leg. Invisible from the front: only the sweep reveals it.", "Décoller un bord du pansement (burp), puis exsufflation à l'aiguille si tu es formé.": "Burp the seal by lifting one edge, then needle decompression if you are trained.", "Un équipier a été touché au ventre par un éclat. Il se tient l'abdomen à deux mains.": "A teammate was hit in the belly by a fragment. He's holding his abdomen with both hands.", "Examiner tout le thorax, devant ET derrière. Plaie soufflante : pansement occlusif.": "Examine the whole chest, front AND back. Sucking chest wound: chest seal.", "Supériorité du feu d'abord : la meilleure médecine, c'est de neutraliser la menace.": "Fire superiority first: the best medicine is neutralising the threat.", "Programme grand public de contrôle des hémorragies : compression, méchage, garrot.": "Public bleeding-control program: pressure, wound packing, tourniquet.", "Second garrot juste au-dessus du premier. C'est exactement pour ça qu'on réévalue.": "Second tourniquet just above the first. This is exactly why we reassess.", "Un blessé a reçu un pansement occlusif sur le thorax il y a 10 min. Il se dégrade.": "A casualty received a chest seal 10 minutes ago. He's deteriorating.", "Couverture de survie et isolation du sol : l'hypothermie aggrave les saignements.": "Survival blanket and insulation from the ground: hypothermia worsens bleeding.", "Deuxième pansement occlusif sur la sortie : cherche toujours l'orifice de sortie.": "Second chest seal on the exit wound: always look for an exit wound.", "Méchage + compression de l'aisselle : zone jonctionnelle, pas de garrot possible.": "Armpit packed and pressure applied: junctional area, no tourniquet possible.", "Sur un membre, le garrot est plus rapide et plus sûr pour une hémorragie massive.": "On a limb, a tourniquet is faster and safer for massive bleeding.", "Hémorragie massive, voies aériennes, respiration, choc, hypothermie, évacuation.": "Massive bleeding, airway, respiration, circulation/shock, hypothermia, evacuation.", "Jamais de méchage dans une éviscération : on couvre humide, sans rien enfoncer.": "Never pack an evisceration: cover it moist, without pushing anything in.", "À l'abri : garrot 5 à 8 cm au-dessus de la plaie, jamais sur une articulation.": "Under cover: tourniquet 2–3 inches (5–8 cm) above the wound, never over a joint.", "Attelle une fois le saignement contrôlé : moins de douleur, moins de lésions.": "Splint once the bleeding is controlled: less pain, less damage.", "Pas de pansement compressif sur des viscères : on couvre humide, sans serrer.": "No pressure dressing on exposed bowel: cover it moist, without tightening.", "Éviscération : couvrir humide sans comprimer ni réintégrer, jambes fléchies.": "Evisceration: cover moist without compressing or pushing back, knees bent.", "Pansement compressif simple : pas d'hémorragie massive, donc pas de garrot.": "Simple pressure dressing: no massive bleeding, so no tourniquet.", "Soulager la douleur selon ton protocole, sauf si le blessé est inconscient.": "Relieve pain according to your protocol, unless the casualty is unconscious.", "Balayage des 4 membres (et sous le gilet), contrôle de chaque hémorragie.": "Sweep all 4 limbs (and under the vest), control every bleed.", "Soustraire le blessé au danger : l'extraire à l'abri avant de le soigner.": "Get the casualty out of danger: move him to cover before treating him.", "TCCC : plaie abdominale, éviscération (couvrir humide, ne pas réintégrer)": "TCCC: abdominal wound, evisceration (cover moist, do not push back in)", "Évaluer la scène : autres menaces, engins non explosés, feu, circulation.": "Assess the scene: other threats, unexploded devices, fire, traffic.", "Coque rigide sur l'œil, sans appuyer, sans rincer, sans retirer l'éclat.": "Rigid shield over the eye, no pressure, no rinsing, don't remove the fragment.", "Demande d'évacuation en urgence absolue transmise. En attendant : RYAN.": "Urgent evacuation request sent. While waiting: RYAN.", "Le blessé ne se dégrade pas avec le temps. Seules les erreurs coûtent.": "The casualty doesn't deteriorate over time. Only mistakes cost you.", "Sources : SSA (sauvetage au combat), CoTCCC (TCCC Guidelines), C-TECC.": "Sources: French Military Health Service (combat casualty care), CoTCCC (TCCC Guidelines), C-TECC.", "En attendant l'évacuation : réévaluation, yeux, analgésie, nursing.": "While waiting for evacuation: reassessment, eyes, analgesia, nursing care.", "Coque rigide sur l'œil, sans appuyer ni retirer le corps étranger.": "Rigid shield over the eye, no pressure, don't remove the foreign body.", "Outil « Feutre » sur un membre garrotté : on note l'heure de pose.": "\"Marker\" tool on a limb with a tourniquet: write down the time.", "Saignement modéré : un pansement compressif suffit, pas de garrot.": "Moderate bleeding: a pressure dressing is enough, no tourniquet.", "Situation évaluée : menaces résiduelles, engins, feu, circulation.": "Scene assessed: remaining threats, devices, fire, traffic.", "TCCC : hémorragie jonctionnelle, méchage et pansement hémostatique": "TCCC: junctional hemorrhage, wound packing and hemostatic dressing", "Chute + douleur du bassin : « Ceinture pelvienne » sur le bassin.": "Fall + pelvic pain: \"Pelvic binder\" on the pelvis.", "Entre le code qui t'a été transmis pour accéder à l'entraînement.": "Enter the code you were given to access the training.", "Isoler du sol et couvrir : l'hypothermie aggrave les saignements.": "Insulate from the ground and cover: hypothermia worsens bleeding.", "Outil « Examiner » sur chaque zone déjà soignée, en surbrillance.": "\"Examine\" tool on each area already treated (highlighted).", "Code incorrect. Vérifie auprès de la personne qui te l'a envoyé.": "Wrong code. Check with the person who sent it to you.", "Examiner les yeux : une lésion oculaire passe souvent inaperçue.": "Examine the eyes: eye injuries are often missed.", "Il est conscient et souffre : l'analgésie fait partie des soins.": "He's conscious and in pain: pain management is part of care.", "Inconscient : pas d'analgésie, surveillance des voies aériennes.": "Unconscious: no analgesia, monitor the airway.", "Pouls radial, signes de choc, heure de pose des garrots, bassin.": "Radial pulse, signs of shock, tourniquet times, pelvis.", "Fracture ouverte de la jambe droite qui saigne sous le pantalon": "Open fracture of the right leg bleeding under the trousers", "Mauvais endroit : l'exsufflation se fait sur le thorax atteint.": "Wrong place: decompression is done on the injured side of the chest.", "Pas de boisson : risque de vomissement et de chirurgie à venir.": "Nothing to drink: risk of vomiting and upcoming surgery.", "Inconscient qui ronfle : « Canule NPA » sur la tête, puis PLS.": "Unconscious and snoring: \"NPA\" on the head, then recovery position.", "Méchage + compression : zone jonctionnelle, garrot impossible.": "Wound packing + pressure: junctional area, no tourniquet possible.", "Zone dangereuse : garrot haut et serré, à la racine du membre.": "Dangerous area: tourniquet high and tight, at the top of the limb.", "National Association of Emergency Medical Technicians (NAEMT)": "National Association of Emergency Medical Technicians (NAEMT)", "Plaie de l'abdomen avec intestins extériorisés (éviscération)": "Abdominal wound with bowel exposed (evisceration)", "Sans sécuriser d'abord, tu risques d'être le deuxième blessé.": "Without securing the area first, you risk becoming the second casualty.", "Hémorragie, détresse respiratoire ou choc : urgence absolue.": "Bleeding, respiratory distress or shock: urgent priority.", "Outil « Examiner » sur un bras pour prendre le pouls radial.": "\"Examine\" tool on an arm to take the radial pulse.", "Pour des viscères, utilise un pansement humide non adhérent.": "For exposed bowel, use a moist non-adherent dressing.", "Saignement massif sous l'aisselle droite, caché par le gilet": "Massive bleeding under the right armpit, hidden by the vest", "TCCC : plaie thoracique ouverte, pansement occlusif à valve": "TCCC: open chest wound, vented chest seal", "Rythme réel : un blessé qui saigne tient environ 1 minute.": "Real pace: a bleeding casualty lasts about 1 minute.", "Réévaluation + PAWS : Pain, Antibiotics, Wounds, Splinting": "Reassessment + PAWS: Pain, Antibiotics, Wounds, Splinting", "Hémorragie, détresse ou choc : c'est une urgence absolue.": "Bleeding, distress or shock: this is an urgent priority.", "Zone jonctionnelle : pas de garrot. Outil « Méchage » sur": "Junctional area: no tourniquet. \"Wound packing\" tool on", "« Coque oculaire » sur la tête : on protège sans appuyer.": "\"Eye shield\" on the head: protect without pressing.", "Garrot : la douleur du bassin masquait cette hémorragie.": "Tourniquet: the pelvic pain was masking this bleed.", "Il est conscient et souffre : analgésie selon protocole.": "He's conscious and in pain: analgesia per protocol.", "Premier bilan rapide : conscient ? hémorragie évidente ?": "Quick first check: conscious? obvious bleeding?", "Très agité, parle difficilement. Veines du cou gonflées.": "Very agitated, struggling to speak. Distended neck veins.", "Un blessé par balle se plaint d'avoir du mal à respirer.": "A gunshot casualty complains of difficulty breathing.", "Canule nasopharyngée + PLS : voies aériennes protégées.": "Nasopharyngeal airway + recovery position: airway protected.", "Committee for Tactical Emergency Casualty Care (C-TECC)": "Committee for Tactical Emergency Casualty Care (C-TECC)", "Détresse respiratoire qui s'aggrave malgré le pansement": "Worsening respiratory distress despite the chest seal", "Le saignement de la cuisse reprend (garrot insuffisant)": "The thigh is bleeding again (tourniquet not tight enough)", "Service de santé des armées (SSA), ministère des Armées": "French Military Health Service (SSA), Ministry of the Armed Forces", "Détresse respiratoire croissante malgré les pansements": "Increasing respiratory distress despite the chest seals", "Outil « Examiner » sur la tête pour vérifier les yeux.": "\"Examine\" tool on the head to check the eyes.", "Saignement abondant à l'arrière de l'avant-bras gauche": "Heavy bleeding at the back of the left forearm", "Contrôle d'abord l'hémorragie, l'attelle vient après.": "Control the bleeding first, the splint comes after.", "Hémorragie d'un membre : « Garrot » haut et serré sur": "Limb bleeding: \"Tourniquet\" high and tight on", "une hémorragie massive constatée n'est pas contrôlée.": "an identified massive bleed is not controlled.", "Ceinture pelvienne au niveau des grands trochanters.": "Pelvic binder at the level of the greater trochanters.", "Choisis un outil, puis touche une zone du mannequin.": "Pick a tool, then tap an area of the mannequin.", "Pas de détresse vitale : c'est une urgence relative.": "No life-threatening distress: this is a routine priority.", "Soustraire le blessé au danger (extraction à l'abri)": "Move the casualty out of danger (extract to cover)", "Tu n'as rien constaté ici : examine d'abord la zone.": "You haven't found anything here: examine the area first.", "Remplis la fiche de l'avant et surveille le blessé.": "Fill in the casualty card and monitor the casualty.", "soins complémentaires à faire (pansement, attelle).": "additional care to do (dressing, splint).", "La ceinture pelvienne se pose au niveau du bassin.": "The pelvic binder goes on the pelvis.", "SAFE d'abord : choisis la bonne action ci-dessous.": "SAFE first: choose the right action below.", "Stop the burning process (faire cesser le danger)": "Stop the burning process (stop the threat)", "Couvrir avec un pansement humide, sans comprimer": "Cover with a moist dressing, without pressure", "Faire cesser le danger (riposte, neutralisation)": "Stop the threat (return fire, neutralise)", "Plaies de l'avant-bras gauche, saignement modéré": "Wounds on the left forearm, moderate bleeding", "Quatre fois plus de temps, idéal pour apprendre.": "Four times more time, ideal for learning.", "Saignement abondant à l'arrière du mollet gauche": "Heavy bleeding at the back of the left calf", "Aucun code de progression trouvé dans ce texte.": "No progress code found in this text.", "Garrot posé sur la cuisse : hémorragie stoppée.": "Tourniquet on the thigh: bleeding stopped.", "Inconscient, respiration bruyante et ronflante.": "Unconscious, noisy snoring respirations.", "Premier bilan : conscience, hémorragie évidente": "First evaluation: consciousness, obvious bleeding", "TCCC : pneumothorax sous tension, décompression": "TCCC: tension pneumothorax, decompression", "voies aériennes non évaluées : examine la tête.": "airway not assessed: examine the head.", "Évaluer la situation (menaces, engins, dangers)": "Assess the scene (threats, devices, hazards)", "Pas de plaie thoracique ouverte constatée ici.": "No open chest wound found here.", "Blessé touché au pli de l'aine en patrouille.": "Casualty hit in the groin crease on patrol.", "Demander l'évacuation avec la bonne priorité.": "Request evacuation with the right priority.", "Pas d'hémorragie jonctionnelle constatée ici.": "No junctional bleeding found here.", "TCCC : voies aériennes, canule nasopharyngée": "TCCC: airway, nasopharyngeal airway", "Il crie et répond : voies aériennes libres.": "He's shouting and responding: airway clear.", "Premier bilan fait. On enchaîne sur MARCHE.": "First evaluation done. Moving on to MARCHE.", "TCCC : garrot de membre, hémorragie massive": "TCCC: limb tourniquet, massive bleeding", "Pansement occlusif sur l'orifice d'entrée.": "Chest seal on the entry wound.", "Pas de détresse vitale : urgence relative.": "No life-threatening distress: routine priority.", "Pas de signe de pneumothorax sous tension.": "No signs of tension pneumothorax.", "Termine d'abord les soins complémentaires.": "Finish the additional care first.", "un problème respiratoire n'est pas traité.": "a breathing problem is not treated.", "Corps étranger dans l'œil droit (souffle)": "Foreign body in the right eye (blast)", "TCCC : traumatisme oculaire, coque rigide": "TCCC: eye trauma, rigid eye shield", "remplis la fiche de l'avant et surveille.": "fill in the casualty card and monitor.", "Garrot posé au bras gauche il y a 10 min": "Tourniquet on the left arm applied 10 min ago", "Pas encore. Dans SAFE, la priorité est :": "Not yet. In SAFE, the priority is:", "Saignement massif au pli de l'aine droit": "Massive bleeding at the right groin crease", "Assess the scene (évaluer la situation)": "Assess the scene", "Blessé soustrait au danger et installé.": "Casualty moved out of danger and positioned.", "Deux fois plus de temps pour réfléchir.": "Twice as much time to think.", "Pas d'hémorragie massive constatée ici.": "No massive bleeding found here.", "Pas d'indication de ceinture pelvienne.": "No indication for a pelvic binder.", "📈 Ma progression / envoyer au formateur": "📈 My progress / send to instructor", "Douleur de l'œil droit, éclat possible": "Right eye pain, possible fragment", "TCCC PAWS : Splinting (immobilisation)": "TCCC PAWS: Splinting", "Conscient, pâle, se plaint du ventre.": "Conscious, pale, complaining about his belly.", "Free of danger (soustraire au danger)": "Free of danger", "Il est inconscient : pas d'analgésie.": "He's unconscious: no analgesia.", "Remettre les intestins dans l'abdomen": "Push the bowel back into the abdomen", "dos non examiné : retourne le blessé.": "back not examined: roll the casualty over.", "Danger écarté : pas de sur-accident.": "Danger removed: no secondary casualties.", "Haut et serré, à la racine du membre": "High and tight, at the top of the limb", "Jambe droite fracturée à immobiliser": "Fractured right leg to immobilise", "pouls non vérifié : examine un bras.": "pulse not checked: examine an arm.", "Comment traites-tu l'éviscération ?": "How do you treat the evisceration?", "Outil « Couverture » sur le blessé.": "\"Blanket\" tool on the casualty.", "Saignement pulsatile, cuisse droite": "Pulsating bleeding, right thigh", "Sauvetage au combat (SC1, SC2, SC3)": "French Combat Casualty Care (SC1, SC2, SC3)", "une hémorragie n'est pas contrôlée.": "a bleed is not controlled.", "examine les yeux (touche la tête).": "examine the eyes (tap the head).", "heure de pose du garrot non notée.": "tourniquet time not written down.", "Ma progression SAFE MARCHE RYAN (": "My SAFE MARCHE RYAN progress (", "Outil « Examiner » sur le thorax.": "\"Examine\" tool on the chest.", "Pas de lésion de l'œil constatée.": "No eye injury found.", "SAFE : avant de toucher le blessé": "SAFE: before touching the casualty", "Ajouter / mettre à jour un élève": "Add / update a student", "Bander serré pour tout maintenir": "Wrap it tight to hold everything in", "Couvrir avec une compresse sèche": "Cover with a dry gauze", "Il parle : pas besoin de canule.": "He's talking: no airway adjunct needed.", "Riposter, neutraliser la menace.": "Return fire, neutralise the threat.", "fais le premier bilan du blessé.": "do the casualty's first evaluation.", "Correspondance SC ↔ TCCC / TECC": "SC ↔ TCCC / TECC equivalence", "Courir le soigner immédiatement": "Run and treat him immediately", "Fiche de l'avant, surveillance.": "Casualty card, monitoring.", "Nursing (soins complémentaires)": "Nursing (additional care)", "Plaie soufflante, thorax gauche": "Sucking chest wound, left side", "Soustraire le blessé au danger.": "Move the casualty out of danger.", "TCCC PAWS : Wounds (pansements)": "TCCC PAWS: Wounds (dressings)", "5 à 8 cm au-dessus de la plaie": "2–3 in (5–8 cm) above the wound", "La canule se pose dans le nez.": "The airway goes in the nose.", "Pas d'analgésie (inconscient).": "No analgesia (unconscious).", "Pas de fracture constatée ici.": "No fracture found here.", "Pouls radial faible et rapide.": "Weak, rapid radial pulse.", "Pouls radial rapide et faible.": "Rapid, weak radial pulse.", "balayage incomplet, il reste :": "sweep incomplete, still to check:", "découverte à l'examen des yeux": "found during the eye exam", "fais d'abord cesser le danger.": "stop the threat first.", "soustrais le blessé au danger.": "move the casualty out of danger.", "Conscient, parle normalement.": "Conscious, talking normally.", "Orifice de sortie dans le dos": "Exit wound in the back", "Parle, mais pâle et en sueur.": "Talking, but pale and sweaty.", "Blessé extrait vers un abri.": "Casualty extracted to cover.", "Code illisible ou incomplet.": "Unreadable or incomplete code.", "dans la trousse en bas, puis": "in the kit at the bottom, then", "protège-le de l'hypothermie.": "protect him from hypothermia.", "réexamine chaque soin posé :": "re-check each intervention:", "voies aériennes à sécuriser.": "airway needs securing.", "🎗️ Où poses-tu le garrot sur": "🎗️ Where do you place the tourniquet on", "La coque se pose sur l'œil.": "The shield goes over the eye.", "Réexaminer chaque soin posé": "Re-check each intervention", "Analgésie selon protocole.": "Analgesia per protocol.", "Parle par phrases courtes.": "Speaks in short sentences.", "Pas de plaie à panser ici.": "No wound to dress here.", "blessures cachées trouvées": "hidden wounds found", "Aucun garrot à dater ici.": "No tourniquet to time-stamp here.", "Douleur intense du bassin": "Severe pelvic pain", "Isoler du sol et couvrir.": "Insulate from the ground and cover.", "Réévalué : soin en place.": "Reassessed: intervention holding.", "TCCC : ceinture pelvienne": "TCCC: pelvic binder", "Thorax devant ET derrière": "Chest front AND back", "Directement sur la plaie": "Directly over the wound", "E : demande d'évacuation": "E: evacuation request", "Evaluate (premier bilan)": "Evaluate", ", traiter chaque plaie.": ", treat every wound.", "Conscient, parle, pâle.": "Conscious, talking, pale.", "Faire cesser le danger.": "Stop the threat.", "Formations TCCC et TECC": "TCCC and TECC courses", "Tête et voies aériennes": "Head and airway", "blessés pris en charge,": "casualties managed,", "pris en charge, cachées": "managed, hidden", "Termine d'abord SAFE :": "Finish SAFE first:", "décide de l'analgésie.": "decide on analgesia.", "Pansement compressif.": "Pressure dressing.", "demande l'évacuation.": "request evacuation.", "protège l'œil blessé.": "protect the injured eye.", "Évacuation en urgence": "Evacuation priority:", "Évaluer la situation.": "Assess the scene.", "🎗️ Position du garrot": "🎗️ Tourniquet position", "(pour ton formateur)": "(for your instructor)", ", ceinture pelvienne": ", pelvic binder", "Commencer la série (": "Start the series (", "Il est déjà couvert.": "He's already covered.", "Pansement compressif": "Pressure dressing", "Pouls radial faible.": "Weak radial pulse.", "Pouls radial normal.": "Normal radial pulse.", "Pouls radial rapide.": "Rapid radial pulse.", "Trop tôt. Priorité :": "Too early. Priority:", "bassin à stabiliser.": "pelvis needs stabilising.", "évalue la situation.": "assess the scene.", ", heure des garrots": ", tourniquet times", "Inconscient, ronfle": "Unconscious, snoring", "Juste sous la plaie": "Just below the wound", "Plaie jonctionnelle": "Junctional wound", "Retirer cet élève ?": "Remove this student?", "Souffle d'explosion": "Blast injury", "Voir les références": "See references", "thorax non examiné.": "chest not examined.", "Ceinture pelvienne": "Pelvic binder", "Choc / circulation": "Shock / circulation", "Hypothermie / tête": "Hypothermia / head", "Hémorragie massive": "Massive bleeding", "Pansement occlusif": "Chest seal", "Œil droit atteint.": "Right eye injured.", ", coque oculaire.": ", eye shield.", "Examiner les yeux": "Examine the eyes", "La bonne séquence": "The right sequence", "Rejouer une série": "Play another series", "cachée découverte": "hidden wound found", "Éclat à l'abdomen": "Abdominal fragment wound", "Éclats de grenade": "Grenade fragments", ". Point faible :": ". Weak point:", "Choisis un outil": "Pick a tool", "Chute de hauteur": "Fall from height", "Code formateur :": "Instructor code:", "Espace formateur": "Instructor area", "Pansement humide": "Moist dressing", "Soins de l'avant": "Tactical field care", "Temps disponible": "Time available", "la cuisse droite": "the right thigh", "la cuisse gauche": "the left thigh", "· meilleur score": "· best score", "⚠ Réévaluation :": "⚠ Reassessment:", ": canule + PLS.": ": airway + recovery position.", "Code incorrect.": "Wrong code.", "Plaie au thorax": "Chest wound", "Voies aériennes": "Airway", "la jambe droite": "the right leg", "la jambe gauche": "the left leg", "Coque oculaire": "Eye shield", "Feutre (heure)": "Marker (time)", "Ma progression": "My progress", "Premier bilan.": "First evaluation.", "Temps illimité": "Unlimited time", "Voir le détail": "See details", "Yeux examinés.": "Eyes examined.", "le bras gauche": "the left arm", "pris en charge": "managed", "touche la zone": "tap the area", "🖐 En examinant": "🖐 Examining", "A : analgésie": "A: analgesia", "Accès réservé": "Restricted access", "Apprentissage": "Learning", "Constatations": "Findings", "Déverrouiller": "Unlock", "le bras droit": "the right arm", "· dernière le": "· last on", "📈 Progression": "📈 Progress", "Exsufflation": "Decompression", "Pouls radial": "Radial pulse", "Réévaluation": "Reassessment", "jambe droite": "right leg", "jambe gauche": "left leg", "réévaluation": "reassessment", "Éviscération": "Evisceration", "📚 Références": "📚 References", "Choisis : «": "Choose: \"", "Dégradation": "Deterioration", "N : nursing": "N: nursing", "Respiration": "Respiration", "Sous le feu": "Under fire", "bras gauche": "left arm", "🎓 Formateur": "🎓 Instructor", "Canule NPA": "NPA airway", "Constaté :": "Found:", "Couverture": "Blanket", "Découverte": "Discovery", "Mes élèves": "My students", "Références": "References", "Ton prénom": "Your first name", "bras droit": "right arm", "les fesses": "the buttocks", "Évacuation": "Evacuation", "⚠ Blessure": "⚠ Wound", "Analgésie": "Analgesia", "Blessures": "Wounds", "Embuscade": "Ambush", "le bassin": "the pelvis", "le thorax": "the chest", "Apprent.": "Learn", "Attelle.": "Splint.", "Examiner": "Examine", "Illimité": "Unlimited", "Sans nom": "No name", "blessés)": "casualties)", "le coude": "the elbow", "le genou": "the knee", "terminée": "completed", "· 💡 aidé": "· 💡 helped", "Ajouter": "Add", "Annuler": "Cancel", "Attelle": "Splint", "Découv.": "Discov.", "Examiné": "Examined", "Intense": "Intense", "Méchage": "Wound packing", "Outil «": "Tool \"", "la tête": "the head", "Entrer": "Enter", "Garrot": "Tourniquet", "Gourde": "Canteen", "Normal": "Normal", "Retour": "Back", "le dos": "the back", "Bilan": "Summary", "série": "series", "» sur": "\" on", "Yeux": "Eyes", "tête": "head", "Éviscération : couvrir humide sans comprimer ni réintégrer, jambes fléchies. ": "Evisceration: cover moist without compressing or pushing back, knees bent. ", "✓ Copié ! Colle-le dans un message (SMS, WhatsApp…) pour ton formateur.": "✓ Copied! Paste it into a message (SMS, WhatsApp…) for your instructor.", "Copie ce texte et envoie-le à ton formateur :": "Copy this text and send it to your instructor:", "Remplir la fiche de l'avant et surveiller": "Fill in the casualty card and monitor", "Analgésie selon protocole": "Analgesia per protocol", "la jambe (ou la cuisse)": "the leg (or the thigh)", " (retourne le blessé)": " (roll the casualty over)", "Urgence relative": "Routine priority", "Pas d'analgésie": "No analgesia", "cachée, manquée": "hidden, missed", "cachée, trouvée": "hidden, found", "Urgence absolue": "Urgent priority", "Blessé suivant": "Next casualty", "Voir le bilan": "See summary", "Code d'accès": "Access code", "Blessé perdu": "Casualty lost", "Blessé pris en charge": "Casualty managed", ", sans aide": ", no help used", "Record :": "Record:", "✓ Envoyé.": "✓ Sent.", "Jambe G": "Left leg", "Jambe D": "Right leg", "Bras D": "Right arm", "Bras G": "Left arm", "Tête": "Head", "Thorax": "Chest", "Dos": "Back", "de face": "from the front", "de dos": "from behind", "(dos)": "(back)", "RAS.": "Nothing found.", "RAS": "Nothing found", "Sur": "On", "FACE": "FRONT", "DOS": "BACK", "PLS": "RP", "élève": "student", "séries terminées": "series completed", "série terminée": "series completed", "séries": "series", "erreurs": "errors", "erreur": "error", "Aidé": "Helped", "fois": "times", "Aide utilisée": "Help used", "noté au bilan": "logged in the summary", "Nouveau record.": "New record.", "Meilleur score :": "Best score:", "Point faible :": "Weak point:", "aucun": "none", "blessures cachées": "hidden wounds", "aide utilisée": "help used", "aide": "help"};
+const EN_K=Object.keys(EN).sort((a,b)=>b.length-a.length);
+const escR=k=>k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+const EN_RE={};EN_K.forEach(k=>{if(k.length<5)EN_RE[k]=new RegExp("(^|[^\\p{L}])"+escR(k)+"(?![\\p{L}])","gu")});
+function tx(s){if(LANG!=="en"||!s||!/[A-Za-zÀ-ÿ]/.test(s))return s;const t=s.trim();if(EN[t])return s.replace(t,EN[t]);let o=s;
+ for(const k of EN_K){if(EN_RE[k]){if(o.indexOf(k)>-1)o=o.replace(EN_RE[k],(m,a)=>a+EN[k])}else if(o.indexOf(k)>-1)o=o.split(k).join(EN[k])}return o.replace(/\u00a0?\s([:?!;])(?=\s|$)/g,"$1")}
+function trAll(root){if(LANG!=="en"||!root)return;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const ns=[];while(w.nextNode())ns.push(w.currentNode);
+ ns.forEach(n=>{const v=tx(n.nodeValue);if(v!==n.nodeValue)n.nodeValue=v});
+ if(root.querySelectorAll)root.querySelectorAll("[placeholder],[aria-label],[title]").forEach(e=>["placeholder","aria-label","title"].forEach(a=>{if(e.hasAttribute(a))e.setAttribute(a,tx(e.getAttribute(a)))}))}
+new MutationObserver(ms=>{if(LANG!=="en")return;ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===3){const v=tx(n.nodeValue);if(v!==n.nodeValue)n.nodeValue=v}else if(n.nodeType===1)trAll(n)}))}).observe(document.body,{childList:true,subtree:true});
+let lastScreen=null;
+function setLang(l){LANG=l;try{localStorage.setItem("march_lang",l)}catch(e){}document.documentElement.lang=l;
+ if(document.body.classList.contains("inplay")&&st)render();else if(lastScreen)lastScreen();else if(l==="en")trAll(app)}
+const langBtn=()=>`<button class="langbtn" id="langbtn">${LANG==="en"?"🇫🇷 FR":"🇬🇧 EN"}</button>`;
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("#langbtn");if(b)setLang(LANG==="en"?"fr":"en")});
+document.documentElement.lang=LANG;
+
 let order=[],cur=0,st=null,timer=null,total=0,results=[];const HINT_COST=75;
 const MODES={apprentissage:{t:"Apprentissage",d:"Pas de chrono, pas de pénalité sur l'état du blessé. Explications à chaque étape et indices à la demande.",k:0,learn:true},intense:{t:"Intense",d:"Rythme réel : un blessé qui saigne tient environ 1 minute.",k:1},normal:{t:"Normal",d:"Deux fois plus de temps pour réfléchir.",k:.5},decouverte:{t:"Découverte",d:"Quatre fois plus de temps, idéal pour apprendre.",k:.25},illimite:{t:"Temps illimité",d:"Le blessé ne se dégrade pas avec le temps. Seules les erreurs coûtent.",k:0}};
 let MODE="normal",AUTO=false;try{AUTO=localStorage.getItem("march_auto")==="1"}catch(e){}
@@ -295,7 +322,7 @@ function mk(s){
  const w=s.wounds.map((x,i)=>({...x,i,rev:!x.hidden,done:false}));
  return {s,w,seen:w.filter(x=>x.rev).map(x=>x.i),exam:new Set(),re:new Set(),targets:[],safe:new Set(),safeOpts:shuffle(["sS","sA","sF","sE","bad"]),
   pulse:false,marked:false,blanket:false,evac:false,analg:false,fiche:false,yExam:false,evSpawned:false,
-  tqs:(s.pre?.tqs||[]).map(t=>({...t})),blood:0,view:"front",tool:"hands",hp:100,err:0,t0:Date.now(),fb:"",fbc:"",fresh:null,newW:null,dead:new Set(),markTime:"",tap:null,lastBeat:0,hints:0};
+  tqs:(s.pre?.tqs||[]).map(t=>({...t})),blood:0,view:"front",tool:"hands",hp:100,err:0,t0:Date.now(),fb:"",fbc:"",fresh:null,newW:null,dead:new Set(),markTime:"",tap:null,lastBeat:0,hints:0,errL:{}};
 }
 
 /* ---------- mannequin ---------- */
@@ -372,7 +399,8 @@ function figure(S,view,cls="fig"){
   <rect x="55" y="17" width="10" height="7" rx="1.5" fill="#3f432b"/><path d="M48 27 Q60 33 72 27" stroke="#22231b" stroke-width=".9" fill="none"/>`;
  }
  // zones examinées
- for(const [z,x,y,w,h] of back?ZB:ZF){const l=limbOf(z);if(S.exam.has(z)||(l&&S.exam.has("limb:"+l)))o+=`<rect x="${x+2}" y="${y+1}" width="${w-4}" height="${h-2}" rx="5" fill="#5fae4a" opacity=".16"/>`}
+ for(const [z,x,y,w,h] of back?ZB:ZF){const l=limbOf(z);if(S.exam.has(z)||(l&&S.exam.has("limb:"+l))){const cx=x+w-6,cy=y+6;
+  o+=`<rect x="${x+1.5}" y="${y+1}" width="${w-3}" height="${h-2}" rx="5" fill="#4fbf3a" fill-opacity=".26" stroke="#2f8a22" stroke-width="1.3"/><circle cx="${cx}" cy="${cy}" r="4.3" fill="#2f8a22" stroke="#fff" stroke-width=".8"/><path d="M${cx-2} ${cy} l1.5 1.6 l2.6 -3" stroke="#fff" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`}}
  // positions
  const pos=w=>{if(w.tool==="belt")return{x:60,y:118};if(w.zone==="head")return back?null:{x:w.x,y:w.y};
   if(TORSO.has(w.zone))return (w.side||"front")===view?{x:w.x,y:w.y}:null;return{x:mir(w.x,view),y:w.y}};
@@ -391,9 +419,10 @@ function figure(S,view,cls="fig"){
   if(w.tool==="pack")o+=G(w.i,"pop-in",`<ellipse cx="${x}" cy="${w.y}" rx="6.5" ry="5.5" fill="#F3EFE4" stroke="#bdb6a3" stroke-width=".6"/><rect x="${x-8}" y="${w.y-1.8}" width="16" height="3.6" rx="1" fill="#6b6e4a"/><rect x="${x-2}" y="${w.y-3}" width="4" height="6" rx=".8" fill="#4e5236"/>`);
   if(w.tool==="dress")o+=G(w.i,"pop-in",`<g transform="rotate(${x<60?15:-15} ${x} ${w.y})"><rect x="${x-7.5}" y="${w.y-7}" width="15" height="14" rx="3" fill="#6b6e4a"/><rect x="${x-5}" y="${w.y-4}" width="10" height="8" rx="1.5" fill="#F3EFE4"/><path d="M${x-7.5} ${w.y-5}h15M${x-7.5} ${w.y+5}h15" stroke="#555a39" stroke-width="1"/></g>`);
   if(w.tool==="splint")o+=G(w.i,"pop-in",`<rect x="${x-10}" y="${w.y-30}" width="3.8" height="44" rx="1.2" fill="#E8742A" stroke="#2f6db3" stroke-width=".8"/><rect x="${x+6.2}" y="${w.y-30}" width="3.8" height="44" rx="1.2" fill="#E8742A" stroke="#2f6db3" stroke-width=".8"/>${[-22,-6,8].map(d=>`<rect x="${x-10.5}" y="${w.y+d}" width="21" height="3.5" rx="1" fill="#D8C7A0"/>`).join("")}`);
+  if(w.tool==="wet"&&!back)o+=G(w.i,"pop-in",`<rect x="${w.x-11}" y="${w.y-8}" width="22" height="16" rx="4" fill="#DCEBF4" fill-opacity=".92" stroke="#8FB3C9" stroke-width="1"/><path d="M${w.x-8} ${w.y-5} q4 -2 8 0" stroke="#fff" stroke-width="1.2" fill="none"/><path d="M${w.x+4} ${w.y-3} c1 2 1.5 2.5 1.5 3.2a1.5 1.5 0 0 1 -3 0c0-.7.5-1.2 1.5-3.2z" fill="#7fb2d6"/>`);
   if(w.tool==="shield"&&!back)o+=G(w.i,"pop-in",`<ellipse cx="54.5" cy="22.5" rx="5.8" ry="4.8" fill="url(#metal)" stroke="#555" stroke-width=".6"/>${[[53,21],[56,21],[54.5,23.5],[53,25.5],[56,25.5]].map(([a,b])=>`<circle cx="${a}" cy="${b}" r=".5" fill="#555"/>`).join("")}<path d="M49 19l-3-2M60 26l3 2" stroke="#e8e4d8" stroke-width="2"/>`);
   if(w.tool==="seal"&&(w.side||"front")===view)o+=G(w.i,"pop-in",`<circle cx="${w.x}" cy="${w.y}" r="8.5" fill="#CFE3F5" fill-opacity=".85" stroke="#2F6DB3" stroke-width="1.4"/><circle cx="${w.x}" cy="${w.y}" r="2.4" fill="#2F6DB3"/><circle cx="${w.x}" cy="${w.y}" r=".9" fill="#fff"/><path d="M${w.x-5.5} ${w.y-3.5} a6 6 0 0 1 4 -3" stroke="#fff" stroke-width="1" fill="none" opacity=".8"/>`);
-  if(w.tool==="needle"&&!back){const nx=w.zone==="chestL"?69:51;o+=G(w.i,"pop-in",`<line x1="${nx}" y1="50" x2="${nx+4}" y2="44" stroke="#bfc6cf" stroke-width="1"/><rect x="${nx+3}" y="40.5" width="3" height="4.5" rx=".8" fill="#E07A1F" transform="rotate(35 ${nx+4.5} 42.7)"/>`)}
+  if(w.tool==="needle"&&!back){const nx=w.x>60?69:51;o+=G(w.i,"pop-in",`<line x1="${nx}" y1="50" x2="${nx+4}" y2="44" stroke="#bfc6cf" stroke-width="1"/><rect x="${nx+3}" y="40.5" width="3" height="4.5" rx=".8" fill="#E07A1F" transform="rotate(35 ${nx+4.5} 42.7)"/>`)}
   if(w.tool==="npa")o+=back?`<text x="84" y="14" font-size="10" font-weight="700" fill="#1f4e86">PLS</text>`:G(w.i,"pop-in",`<circle cx="61.3" cy="27.6" r="1.7" fill="#E07A1F"/><rect x="80" y="6" width="19" height="10" rx="2" fill="#2F6DB3"/><text x="89.5" y="13.6" text-anchor="middle" font-size="7" font-weight="700" fill="#fff">PLS</text>`);
  }
  if(s.pre?.seal&&!back){const d=S.w.some(w=>w.tool==="needle"&&w.done),{x,y}=s.pre.seal;
@@ -412,6 +441,7 @@ function figure(S,view,cls="fig"){
    else if(w.tool==="npa")o+=`<g class="zz"><text x="76" y="30" font-size="9" font-weight="700" fill="#2b2d20" opacity=".75">z</text><text x="81" y="23" font-size="7" font-weight="700" fill="#2b2d20" opacity=".6">z</text></g>`;
    else if(w.tool==="shield")o+=`<circle cx="55.6" cy="24" r="2.6" fill="#c0392b" opacity=".85"/><path d="M55 27 q.6 2 0 3" stroke="#9cc3ea" stroke-width=".8" fill="none"/>`;
    else if(w.tool==="dress")o+=[[0,0],[2.5,3],[-2,4],[1,-3]].map(([a,b])=>`<circle cx="${x+a}" cy="${y+b}" r="1" fill="#2a1210"/>`).join("");
+   else if(w.tool==="wet")o+=`<circle class="ring" cx="${x}" cy="${y}" r="9" fill="none" stroke="#e0473c" stroke-width="1.2"/><g stroke="#9c4a4a" stroke-width=".7"><ellipse cx="${x-3}" cy="${y-1}" rx="4" ry="2.6" fill="#E3A2A0"/><ellipse cx="${x+3}" cy="${y+1}" rx="4" ry="2.6" fill="#D98F8D"/><ellipse cx="${x}" cy="${y+3.5}" rx="3.6" ry="2.2" fill="#E8B0AE"/></g>`;
    else if(w.tool==="splint")o+=`<path d="M${x-7} ${y-5} l5 3 -4 3 5 3" stroke="#E0B24A" stroke-width="1.8" fill="none" stroke-linecap="round"/>`;
   }
   let bx=x+(x<60?-11:10),by=y-9;
@@ -434,6 +464,8 @@ function noise(d,vol=.2,freq=2500){if(!SOUND)return;const c=ac();if(!c)return;co
 const SFX={ok:()=>{tone(660,.12,"sine",.12);tone(990,.2,"sine",.1,.09)},bad:()=>{tone(150,.28,"square",.06);tone(110,.3,"square",.05,.05)},
  warn:()=>{tone(880,.1,"triangle",.12);tone(880,.1,"triangle",.12,.16)},velcro:()=>noise(.4,.35,3200),beat:()=>{tone(58,.13,"sine",.4);tone(52,.11,"sine",.3,.15)}};
 
+function wPos(w,view){const back=view==="back";if(w.tool==="belt")return{x:60,y:118};if(w.zone==="head")return back?null:{x:w.x,y:w.y};
+ if(TORSO.has(w.zone))return (w.side||"front")===view?{x:w.x,y:w.y}:null;return{x:mir(w.x,view),y:w.y}}
 /* ---------- logique ---------- */
 const open_=(S,L)=>S.w.filter(w=>WL[w.tool]===L&&!w.done);
 function pending(L,S=st){
@@ -446,8 +478,8 @@ function pending(L,S=st){
   return open_(S,"M").length?"une hémorragie n'est pas contrôlée.":"";
  }
  if(L==="A"){if(!S.exam.has("head"))return"voies aériennes non évaluées : examine la tête.";return open_(S,"A").length?"voies aériennes à sécuriser.":""}
- if(L==="R"){if(!S.exam.has("chestR")&&!S.exam.has("chestL"))return"thorax non examiné.";
-  if(!S.exam.has("back")&&!S.exam.has("lowback"))return"dos non examiné : retourne le blessé.";
+ if(L==="R"){if(!S.exam.has("chest"))return"thorax non examiné.";
+  if(!S.exam.has("back"))return"dos non examiné : retourne le blessé.";
   return open_(S,"R").length?"un problème respiratoire n'est pas traité.":""}
  if(L==="C"){if(!S.pulse)return"pouls non vérifié : examine un bras.";
   if(S.tqs.length&&!S.marked)return"heure de pose du garrot non notée.";
@@ -462,7 +494,7 @@ function pending(L,S=st){
 const curLetter=()=>ORDER.find(L=>pending(L));
 const inRyan=()=>{const c=curLetter();return c&&ORDER.indexOf(c)>=ORDER.indexOf("rR")};
 function blocker(L){const c=curLetter();return c&&ORDER.indexOf(c)<ORDER.indexOf(L)?c:null}
-function penal(n,msg){if(!LEARN())st.hp-=n;st.err++;st.fb="✗ "+msg;st.fbc="bad";flash("bad");buzz();SFX.bad()}
+function penal(n,msg){const cl=curLetter();if(cl)st.errL[cl]=(st.errL[cl]||0)+1;if(!LEARN())st.hp-=n;st.err++;st.fb="✗ "+msg;st.fbc="bad";flash("bad");buzz();SFX.bad()}
 function good(msg,fresh){st.hintOn=false;st.fb="✓ "+msg;st.fbc="good";st.fresh=fresh;flash("good");SFX.ok()}
 function tooEarly(L){const c=blocker(L);penal(8,`Trop tôt. Priorité : ${LBL[c]} (${CH(c)}), ${pending(c)}`)}
 function spot(w,z,tool){
@@ -475,7 +507,7 @@ function examine(z){
  st.exam.add(z);if(l)st.exam.add("limb:"+l);
  if(z.startsWith("arm"))st.pulse=true;
  let reMsg="";
- if(inRyan()){const k=l?"limb:"+l:(z==="buttocks"?"pelvis":z==="lowback"?"back":z);
+ if(inRyan()){const k=l?"limb:"+l:(z==="buttocks"?"pelvis":z);
   if(st.targets.includes(k)&&!st.re.has(k)){st.re.add(k);reMsg="Réévalué : soin en place."}
   const e=st.s.event;
   if(e&&!st.evSpawned&&spot(e,z,"hands")){st.evSpawned=true;const nw={...e,i:st.w.length,rev:true,done:false,ev:true};st.w.push(nw);st.seen.push(nw.i);st.newW=nw.i;
@@ -487,32 +519,35 @@ function examine(z){
  hid.forEach(w=>{w.rev=true;st.seen.push(w.i);st.newW=w.i});
  if(hid.length){st.fb="⚠ Blessure "+(c==="rY"?"découverte à l'examen des yeux":"cachée découverte")+" : "+hid.map(w=>w.label).join(" ; ")+".";st.fbc="warn";flash("bad");buzz();SFX.warn();return}
  const vis=here.filter(w=>w.rev&&!w.done);
- let info=vis.length?"Constaté : "+vis.map(w=>w.label.toLowerCase()).join(" ; ")+".":"RAS.";
+ let info=vis.length?"Constaté : "+vis.map(w=>LANG==="en"?w.label:w.label.toLowerCase()).join(" ; ")+".":"RAS.";
  if(z==="head")info=c==="rY"?"Yeux examinés. "+(vis.some(w=>w.tool==="shield")?"Œil droit atteint.":"RAS."):st.s.head;
  if(z.startsWith("arm"))info=(vis.length?info+" ":"RAS. ")+st.s.pulse;
  if(reMsg)info=reMsg+" "+info;
  st.fb=`🖐 En examinant ${ZN[z]} : ${info}`;st.fbc="info";
 }
 function onZone(z){
- st.fresh=null;st.newW=null;const t=st.tool,c=curLetter();
+ st.fresh=null;st.newW=null;st.tqPick=null;st.evPick=null;const t=st.tool,c=curLetter();
  if(c&&c[0]==="s"&&c.length===2){penal(8,"Termine d'abord SAFE : "+pending(c));return after()}
  if(t==="hands"){examine(z);return after()}
  if(t==="water"){penal(10,"Pas de boisson : risque de vomissement et de chirurgie à venir.");return after()}
  if(t==="blanket"){if(st.blanket)penal(3,"Il est déjà couvert.");else if(blocker("H"))tooEarly("H");else{st.blanket=true;good("Couverture de survie et isolation du sol : l'hypothermie aggrave les saignements.","blanket")}return after()}
  if(t==="marker"){const l=limbOf(z);if(!st.tqs.some(q=>q.limb===l))penal(6,"Aucun garrot à dater ici.");else if(blocker("C"))tooEarly("C");else{st.marked=true;st.markTime=new Date().toTimeString().slice(0,5);good("Heure de pose notée : l'équipe médicale doit savoir depuis quand le garrot est serré.","marker")}return after()}
- const w=st.w.find(w=>!w.done&&w.rev&&w.tool===t&&spot(w,z,t));
+ let w=null;
+ if(st.tap){let bd=20;for(const c of st.w){if(c.done||!c.rev||c.tool!==t)continue;const q=wPos(c,st.view);if(!q)continue;const d=Math.hypot(q.x-st.tap.x,q.y-st.tap.y);if(d<bd){bd=d;w=c}}
+  if(w&&w.tool!=="belt"&&!limbOf(w.zone))z=w.zone;}
+ if(!w)w=st.w.find(w=>!w.done&&w.rev&&w.tool===t&&spot(w,z,t));
  if(w){
-  if(t==="tq"&&w.zone.startsWith("thigh")&&z.startsWith("leg")){penal(8,"Le garrot se pose au-dessus de la plaie, haut sur la cuisse.");return after()}
   const L=WL[t];if(blocker(L)){tooEarly(L);return after()}
-  w.done=true;st.exam.add(z);if(limbOf(z))st.exam.add("limb:"+limbOf(z));
-  if(t==="tq"){const l=limbOf(z),n=st.tqs.filter(q=>q.limb===l).length;st.tqs.forEach(q=>q.fresh=false);
-   st.tqs.push({limb:l,y:(z.startsWith("thigh")?146:z.startsWith("arm")?Math.max(60,w.y-14):w.y-14)-n*11,fresh:true})}
-  good(w.ok,t==="tq"?"tq":w.i);if(["tq","dress","splint","belt","pack"].includes(t))SFX.velcro();return after();
+  st.exam.add(z);if(limbOf(z))st.exam.add("limb:"+limbOf(z));if(limbOf(w.zone))st.exam.add("limb:"+limbOf(w.zone));
+  if(t==="wet"){st.evPick={i:w.i};st.evOpts=shuffle(["ok","push","tight","dry"]);st.evDead=new Set();st.fb="Comment traites-tu l'éviscération ?";st.fbc="info";return after()}
+  if(t==="tq"){st.tqPick={i:w.i};st.tqOpts=shuffle(["hi","above","on","below","joint"]);st.tqDead=new Set();st.fb="🎗️ Où poses-tu le garrot sur "+ZN[w.zone].replace(/^l[ae] |^l'/,m=>m)+" ?";st.fbc="info";return after()}
+  applyTreat(w,t);return after();
  }
  if(st.w.some(w=>!w.rev&&w.tool===t&&spot(w,z,t))){penal(5,"Tu n'as rien constaté ici : examine d'abord la zone.");return after()}
  const o=st.w.find(w=>!w.done&&w.rev&&(w.zone===z||(limbOf(w.zone)&&limbOf(w.zone)===limbOf(z))));
  if(o&&t==="tq"&&o.tool==="pack")penal(10,"Plaie trop proche du tronc (zone jonctionnelle) : garrot impossible, fais un méchage + compression.");
  else if(o&&t==="pack"&&o.tool==="tq")penal(6,"Sur un membre, le garrot est plus rapide et plus sûr pour une hémorragie massive.");
+ else if(o&&o.tool==="wet"&&["dress","pack","seal"].includes(t))penal(t==="seal"?3:8,t==="dress"?"Pas de pansement compressif sur des viscères : on couvre humide, sans serrer.":t==="pack"?"Jamais de méchage dans une éviscération : on couvre humide, sans rien enfoncer.":"Pour des viscères, utilise un pansement humide non adhérent.");
  else if(o&&t==="tq"&&o.tool==="dress")penal(8,"Saignement modéré : un pansement compressif suffit, pas de garrot.");
  else if(o&&t==="splint"&&o.tool==="tq")penal(6,"Contrôle d'abord l'hémorragie, l'attelle vient après.");
  else penal(8,{tq:"Pas d'hémorragie massive constatée ici.",pack:"Pas d'hémorragie jonctionnelle constatée ici.",dress:"Pas de plaie à panser ici.",seal:"Pas de plaie thoracique ouverte constatée ici.",
@@ -528,11 +563,13 @@ function after(){if(st.hp<=0){st.hp=0;return end(false)}if(!curLetter())return e
 /* ---------- aide (mode apprentissage) ---------- */
 const EXPL={sS:"Faire cesser ce qui fait des victimes : riposter, neutraliser la menace ou écarter le danger.",sA:"Évaluer la scène : autres menaces, engins non explosés, feu, circulation.",sF:"Soustraire le blessé au danger : l'extraire à l'abri avant de le soigner.",sE:"Premier bilan rapide : conscient ? hémorragie évidente ?",
  M:"Chercher et stopper toute hémorragie massive : balayage des 4 membres, aisselles, aines, sous le gilet.",A:"Vérifier que l'air passe. S'il parle, c'est bon. Inconscient qui ronfle : canule + PLS.",R:"Examiner tout le thorax, devant ET derrière. Plaie soufflante : pansement occlusif.",C:"Pouls radial, signes de choc, heure de pose des garrots, bassin.",H:"Isoler du sol et couvrir : l'hypothermie aggrave les saignements.",E:"Demander l'évacuation avec la bonne priorité.",
- rR:"Réexaminer chaque soin posé : un garrot peut lâcher, un pansement peut ne plus suffire.",rY:"Examiner les yeux : une lésion oculaire passe souvent inaperçue.",rA:"Soulager la douleur selon ton protocole, sauf si le blessé est inconscient.",rN:"Soins complémentaires : pansements, attelles, fiche de l'avant, surveillance."};
+ rR:"Réexaminer chaque soin posé : un garrot peut lâcher, un pansement peut ne plus suffire.",rY:"Examiner les yeux : une lésion oculaire passe souvent inaperçue.",rA:"Soulager la douleur selon ton protocole, sauf si le blessé est inconscient.",rN:"Soins complémentaires : pansements, éviscération, attelles, fiche de l'avant, surveillance."};
 const TN=t=>(TOOLS.find(x=>x[0]===t)||[,t])[1];
 const ZK=k=>({"limb:armR":"armR","limb:armL":"armL","limb:LR":"thighR","limb:LL":"thighL"})[k]||k;
 function hint(){
  const c=curLetter();if(!c)return null;const s=st.s,W=st.w;
+ if(st.evPick)return{choice:"ev_ok",text:"Couvre avec un pansement humide non adhérent, sans comprimer, et ne réintègre jamais les viscères."};
+ if(st.tqPick)return{choice:s.fire?"tq_hi":"tq_above",text:s.fire?"Zone dangereuse : garrot haut et serré, à la racine du membre.":"À l'abri : garrot 5 à 8 cm au-dessus de la plaie, jamais sur une articulation."};
  if(c[0]==="s"&&c.length===2)return{choice:c,text:"Choisis : « "+SAFE_T[c]+" »."};
  if(c==="E")return{choice:s.evac,text:s.evac==="UA"?"Hémorragie, détresse respiratoire ou choc : urgence absolue.":"Pas de détresse vitale : urgence relative."};
  if(c==="rA")return{choice:s.analg?"yes":"no",text:s.analg?"Il est conscient et souffre : analgésie selon protocole.":"Il est inconscient : pas d'analgésie."};
@@ -542,24 +579,43 @@ function hint(){
   const miss=["armR","armL","LR","LL"].filter(l=>!st.exam.has("limb:"+l));
   return{tool:"hands",zones:miss.map(l=>ZK("limb:"+l)),text:"Balayage : outil « Examiner » sur chaque membre en surbrillance. Des blessures peuvent être cachées."}}
  if(c==="A"){if(!st.exam.has("head"))return{tool:"hands",zones:["head"],text:"Outil « Examiner » sur la tête : est-ce qu'il parle, est-ce qu'il respire bruyamment ?"};const w=open("A");return act(w,"Inconscient qui ronfle : « Canule NPA » sur la tête, puis PLS.")}
- if(c==="R"){if(!st.exam.has("chestR")&&!st.exam.has("chestL"))return{tool:"hands",zones:["chestR","chestL"],text:"Outil « Examiner » sur le thorax."};
-  if(!st.exam.has("back")&&!st.exam.has("lowback"))return{tool:"hands",zones:["back"],text:"Retourne le blessé (bouton ↻), puis « Examiner » sur le dos : cherche un orifice de sortie."};
+ if(c==="R"){if(!st.exam.has("chest"))return{tool:"hands",zones:["chest"],text:"Outil « Examiner » sur le thorax."};
+  if(!st.exam.has("back"))return{tool:"hands",zones:["back"],text:"Retourne le blessé (bouton ↻), puis « Examiner » sur le dos : cherche un orifice de sortie."};
   const w=open("R");return act(w,w.tool==="needle"?"Pneumothorax sous tension : « Exsufflation » sur le thorax atteint (d'abord décoller un bord du pansement).":undefined)}
  if(c==="C"){if(!st.pulse)return{tool:"hands",zones:["armR","armL"],text:"Outil « Examiner » sur un bras pour prendre le pouls radial."};
   if(st.tqs.length&&!st.marked)return{tool:"marker",zones:[...new Set(st.tqs.map(q=>ZK("limb:"+q.limb)))],text:"Outil « Feutre » sur un membre garrotté : on note l'heure de pose."};
   return act(open("C"),"Chute + douleur du bassin : « Ceinture pelvienne » sur le bassin.")}
- if(c==="H")return{tool:"blanket",zones:["chestR","chestL","abdomen"],text:"Outil « Couverture » sur le blessé."};
+ if(c==="H")return{tool:"blanket",zones:["chest","abdomen"],text:"Outil « Couverture » sur le blessé."};
  if(c==="rR"){const m=st.targets.filter(k=>!st.re.has(k));return{tool:"hands",zones:m.map(ZK),text:"Outil « Examiner » sur chaque zone déjà soignée, en surbrillance."}}
  if(c==="rY"){if(!st.yExam)return{tool:"hands",zones:["head"],text:"Outil « Examiner » sur la tête pour vérifier les yeux."};return act(open("rY"),"« Coque oculaire » sur la tête : on protège sans appuyer.")}
  if(c==="rN"){const w=open("rN");if(w)return act(w);return{choice:"fiche",text:"Remplis la fiche de l'avant et surveille le blessé."}}
  return null;
 }
+function applyTreat(w,t,place,msg){
+ w.done=true;if(limbOf(w.zone))st.exam.add("limb:"+limbOf(w.zone));
+ if(t==="tq"){const l=limbOf(w.zone),n=st.tqs.filter(q=>q.limb===l).length,arm=l.startsWith("arm");st.tqs.forEach(q=>q.fresh=false);
+  const y=place==="hi"?(arm?58:136):(w.zone.startsWith("thigh")?Math.max(136,Math.min(146,w.y-14)):arm?Math.max(60,w.y-14):w.y-14);
+  st.tqs.push({limb:l,y:y-n*11,fresh:true})}
+ good(w.ok+(msg?" "+msg:""),t==="tq"?"tq":w.i);if(["tq","dress","splint","belt","pack"].includes(t))SFX.velcro();
+}
+const jointOf=w=>w.zone.startsWith("arm")?"le coude":"le genou";
+const TQ_T={hi:"Haut et serré, à la racine du membre",above:"5 à 8 cm au-dessus de la plaie",on:"Directement sur la plaie",below:"Juste sous la plaie",joint:null};
 /* ---------- panneaux de choix ---------- */
 const SAFE_T={sS:"Faire cesser le danger (riposte, neutralisation)",sA:"Évaluer la situation (menaces, engins, dangers)",sF:"Soustraire le blessé au danger (extraction à l'abri)",sE:"Premier bilan : conscience, hémorragie évidente",bad:"Courir le soigner immédiatement"};
 function safeOk(k){const f=st.s.fire;return{sS:f?"Supériorité du feu d'abord : la meilleure médecine, c'est de neutraliser la menace.":"Danger écarté : pas de sur-accident.",
  sA:"Situation évaluée : menaces résiduelles, engins, feu, circulation.",sF:f?"Blessé extrait vers un abri.":"Blessé soustrait au danger et installé.",sE:"Premier bilan fait. On enchaîne sur MARCHE."}[k]}
 function choose(k){
  st.tap=null;st.fresh=null;st.newW=null;const c=curLetter();
+ if(st.evPick&&k.startsWith("ev_")){const w=st.w[st.evPick.i],o=k.slice(3);
+  if(o==="cancel"){st.evPick=null;st.fb="";render();return}
+  if(o==="ok"){st.evPick=null;applyTreat(w,"wet");return after()}
+  st.evDead.add(o);penal(8,{push:"Jamais réintégrer les viscères : risque d'infection grave et de lésions. On les couvre là où ils sont.",tight:"Pas de compression sur des viscères : ça les abîme et aggrave l'état. On couvre sans serrer.",dry:"Une compresse sèche colle aux intestins et les lèse au retrait : le pansement doit être humide et non adhérent."}[o]);return after()}
+ if(st.tqPick&&k.startsWith("tq_")){const w=st.w[st.tqPick.i],o=k.slice(3);
+  if(o==="cancel"){st.tqPick=null;st.fb="";render();return}
+  if(o==="hi"||o==="above"){st.tqPick=null;applyTreat(w,"tq",o,o==="hi"?"Posé haut et serré : le bon réflexe sous le feu ou si la plaie est mal localisée. À réévaluer ensuite.":"Posé 5 à 8 cm au-dessus de la plaie, hors articulation : la position de référence une fois à l'abri.");return after()}
+  st.tqDead.add(o);
+  penal(8,{on:"Sur la plaie, le garrot ne comprime pas l'artère en amont : le saignement continue. Remonte-le au-dessus.",below:"Sous la plaie, il n'arrête pas un saignement qui vient du cœur : le sang continue de couler. Il se pose au-dessus.",joint:`Sur ${jointOf(w)}, les os empêchent de comprimer l'artère : le garrot est inefficace. Décale-le au-dessus de l'articulation.`}[o]);
+  return after()}
  if(k==="bad"){st.dead.add("bad");penal(10,"Sans sécuriser d'abord, tu risques d'être le deuxième blessé.")}
  else if(["sS","sA","sF","sE"].includes(k)){if(c===k){st.safe.add(k);good(safeOk(k))}else penal(8,`Pas encore. Dans SAFE, la priorité est : ${SAFE_T[c]}.`)}
  else if(k==="UA"||k==="UR"){if(k===st.s.evac){st.evac=true;
@@ -573,6 +629,9 @@ function choose(k){
 }
 function panel(){
  const c=curLetter();if(!c)return"";
+ if(st.evPick){const hc=st.H&&st.H.choice,T={ok:"Couvrir avec un pansement humide, sans comprimer",push:"Remettre les intestins dans l'abdomen",tight:"Bander serré pour tout maintenir",dry:"Couvrir avec une compresse sèche"};
+  return`<div class="choice" style="--c:var(--lH)"><h3>Éviscération</h3><div class="opts">${st.evOpts.map(o=>`<button data-k="ev_${o}" class="${hc==="ev_"+o?"hint":""}" ${st.evDead.has(o)?"disabled":""}>${T[o]}</button>`).join("")}<button data-k="ev_cancel" style="background:none;box-shadow:none;border-style:dashed">Annuler</button></div></div>`}
+ if(st.tqPick){const w=st.w[st.tqPick.i],hc=st.H&&st.H.choice;return`<div class="choice" style="--c:var(--lM)"><h3>🎗️ Position du garrot</h3><div class="opts">${st.tqOpts.map(o=>`<button data-k="tq_${o}" class="${hc==="tq_"+o?"hint":""}" ${st.tqDead.has(o)?"disabled":""}>${o==="joint"?"Sur "+jointOf(w):TQ_T[o]}</button>`).join("")}<button data-k="tq_cancel" style="background:none;box-shadow:none;border-style:dashed">Annuler</button></div></div>`}
  const HC=st.H&&st.H.choice;const B=(k,t)=>`<button data-k="${k}" class="${HC===k?"hint":""}" ${st.dead.has(k)?"disabled":""}>${t}</button>`;
  if(c[0]==="s"&&c.length===2)return`<div class="choice" style="--c:var(--ink)"><h3>SAFE : avant de toucher le blessé</h3><div class="opts">${st.safeOpts.filter(k=>!st.safe.has(k)).map(k=>B(k,SAFE_T[k])).join("")}</div></div>`;
  if(c==="E")return`<div class="choice" style="--c:var(--olive)"><h3>E : demande d'évacuation</h3><div class="opts">${B("UA","Urgence absolue")}${B("UR","Urgence relative")}</div></div>`;
@@ -581,27 +640,208 @@ function panel(){
  return"";
 }
 
+/* ---------- références ---------- */
+const REFS=[
+ {t:"Sauvetage au combat (SC1, SC2, SC3)",o:"Service de santé des armées (SSA), ministère des Armées",u:"https://www.defense.gouv.fr/sante",d:"Doctrine française SAFE MARCHE RYAN. SC1 pour tout combattant, SC2 pour l'auxiliaire sanitaire, SC3 pour le personnel médical."},
+ {t:"TCCC Guidelines",o:"Committee on Tactical Combat Casualty Care (CoTCCC), Joint Trauma System",u:"https://deployedmedicine.com",d:"Référence militaire internationale : Care Under Fire, Tactical Field Care, Tactical Evacuation Care, algorithme MARCH PAWS."},
+ {t:"TECC Guidelines",o:"Committee for Tactical Emergency Casualty Care (C-TECC)",u:"https://www.c-tecc.org",d:"Adaptation civile du TCCC (forces de l'ordre, secours, tueries de masse) : Direct Threat, Indirect Threat, Evacuation Care."},
+ {t:"Formations TCCC et TECC",o:"National Association of Emergency Medical Technicians (NAEMT)",u:"https://www.naemt.org",d:"Cours certifiants TCCC (militaires) et TECC (civils) dispensés dans de nombreux pays."},
+ {t:"Stop the Bleed",o:"American College of Surgeons",u:"https://www.stopthebleed.org",d:"Programme grand public de contrôle des hémorragies : compression, méchage, garrot."}
+];
+const CORR=[["SAFE","Care Under Fire (TCCC) · Direct Threat Care (TECC)"],["MARCH","MARCH (Tactical Field Care · Indirect Threat Care)"],["E","Tactical Evacuation Care (TACEVAC) · Evacuation Care"],["RYAN","Réévaluation + PAWS : Pain, Antibiotics, Wounds, Splinting"]];
+const TREF={tq:"TCCC : garrot de membre, hémorragie massive",pack:"TCCC : hémorragie jonctionnelle, méchage et pansement hémostatique",seal:"TCCC : plaie thoracique ouverte, pansement occlusif à valve",needle:"TCCC : pneumothorax sous tension, décompression",npa:"TCCC : voies aériennes, canule nasopharyngée",belt:"TCCC : ceinture pelvienne",shield:"TCCC : traumatisme oculaire, coque rigide",splint:"TCCC PAWS : Splinting (immobilisation)",dress:"TCCC PAWS : Wounds (pansements)",wet:"TCCC : plaie abdominale, éviscération (couvrir humide, ne pas réintégrer)"};
+function refsScreen(back){lastScreen=()=>refsScreen(back);
+ document.body.classList.remove("inplay");
+ app.innerHTML=`<h1 class="big" style="font-size:2.4rem;margin-top:12px">Références</h1>
+ <p class="muted">Ce jeu s'appuie sur ces doctrines. En cas de différence, ce sont les protocoles de ta formation et de ton unité qui priment.</p>
+ ${REFS.map(r=>`<div class="card"><h2>${r.t}</h2><p class="muted" style="margin:2px 0 6px">${r.o}</p><p style="margin:0 0 6px">${r.d}</p><a href="${r.u}" target="_blank" rel="noopener" style="color:var(--olive);font-weight:700">${r.u.replace("https://","")}</a></div>`).join("")}
+ <div class="card"><h2>Correspondance SC ↔ TCCC / TECC</h2><ul class="debrief">${CORR.map(([a,b])=>`<li><span class="l" style="--c:var(--olive);width:auto;padding:0 6px">${a}</span><span>${b}</span></li>`).join("")}</ul></div>
+ <button class="primary" id="bk">Retour</button>`;
+ window.scrollTo(0,0);document.getElementById("bk").onclick=back||intro;
+}
+
+/* ---------- progression élève / formateur ---------- */
+const PROF_CODES=["849f66f5"];
+const ldj=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}};
+const svj=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+function me(){let p=ldj("march_profile",null);if(!p){p={id:Math.random().toString(36).slice(2,8),name:"",h:[]};svj("march_profile",p)}return p}
+const enc=o=>btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+const dec=t=>JSON.parse(decodeURIComponent(escape(atob(t.replace(/-/g,"+").replace(/_/g,"/")))));
+const fdate=m=>{const d=new Date(m*60000);return d.toLocaleDateString(LANG==="en"?"en-GB":"fr-FR",{day:"2-digit",month:"2-digit"})+" "+d.toTimeString().slice(0,5)};
+const MSH={apprentissage:"Apprent.",intense:"Intense",normal:"Normal",decouverte:"Découv.",illimite:"Illimité"};
+function weak(h){const t={};h.forEach(x=>Object.entries(x.el||{}).forEach(([k,v])=>t[k]=(t[k]||0)+v));const e=Object.entries(t).sort((a,b)=>b[1]-a[1])[0];return e&&e[1]>0?`${CH(e[0])} · ${LBL[e[0]]} (${e[1]} erreurs)`:"aucun"}
+function histRows(h){return h.slice().reverse().map(x=>`<li><span class="l" style="--c:${x.ok===x.n?"var(--ok)":"var(--blood)"}">${x.ok===x.n?"✓":"!"}</span><span><strong>${fdate(x.d)}</strong> · ${MSH[x.m]||x.m}${x.s?` · ${x.s} pts`:""}<br><span class="muted">${x.ok}/${x.n} pris en charge, cachées ${x.hf}/${x.ht}, ${x.er} erreur${x.er>1?"s":""}, aide ${x.hi}×</span></span></li>`).join("")}
+function progress(){lastScreen=progress;
+ document.body.classList.remove("inplay");const p=me();
+ app.innerHTML=`<h1 class="big" style="font-size:2.4rem;margin-top:12px">Ma progression</h1>
+ <div class="card"><h2>${p.name||"Sans nom"}</h2>${p.cls?`<p style="margin:4px 0 0">🌐 Classe ${p.cls.code} · ${p.cls.dirty?"synchronisation en attente":"résultats envoyés automatiquement"}</p>`:""}<p class="muted" style="margin:4px 0 0">${p.h.length} série${p.h.length>1?"s":""} terminée${p.h.length>1?"s":""}. Point faible : ${weak(p.h)}</p></div>
+ ${p.h.length?`<div class="card"><ul class="debrief">${histRows(p.h)}</ul></div>`:`<p class="muted">Termine une série pour voir ta progression ici.</p>`}
+ ${p.h.length?`<button class="primary" id="share">📤 Envoyer à mon formateur</button><div id="sharebox"></div>`:""}
+ <button class="primary" id="bk" style="background:var(--btn);color:var(--ink);border:1px solid var(--line)">Retour</button>`;
+ window.scrollTo(0,0);document.getElementById("bk").onclick=intro;
+ const sb=document.getElementById("share");if(sb)sb.onclick=async()=>{
+  const txt=tx(`Ma progression SAFE MARCHE RYAN (${p.name||"élève"}) :`)+`\nSMR1.${enc({i:p.id,n:p.name,h:p.h})}`;
+  const box=document.getElementById("sharebox");let ok=false;
+  if(navigator.share){try{await navigator.share({text:txt});ok=true}catch(e){}}
+  if(!ok){try{await navigator.clipboard.writeText(txt);ok="copy"}catch(e){}}
+  box.innerHTML=`<div class="card"><p style="margin:0 0 6px">${ok==="copy"?"✓ Copié ! Colle-le dans un message (SMS, WhatsApp…) pour ton formateur.":ok?"✓ Envoyé.":"Copie ce texte et envoie-le à ton formateur :"}</p><textarea readonly style="width:100%;height:90px;font:inherit;font-size:.75rem;border:1px solid var(--line);border-radius:8px;background:var(--btn);color:var(--ink)">${txt}</textarea></div>`;
+  box.querySelector("textarea").onclick=e=>e.target.select();
+ };
+}
+function teacherGate(){lastScreen=teacherGate;
+ document.body.classList.remove("inplay");
+ app.innerHTML=`<h1 class="big" style="font-size:2.4rem;margin-top:12px">Espace formateur</h1>
+ <div class="card"><p class="muted" style="margin:0 0 8px">Code formateur :</p><input id="tc" type="password" inputmode="numeric" autocomplete="off" style="width:100%;font:inherit;font-size:1.2rem;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--btn);color:var(--ink)">
+ <p id="terr" style="color:var(--blood);font-weight:600;min-height:1.3em;margin:6px 0 0"></p><button class="primary" id="tgo">Entrer</button></div>
+ <button class="primary" id="bk" style="background:var(--btn);color:var(--ink);border:1px solid var(--line)">Retour</button>`;
+ const i=document.getElementById("tc"),go=()=>{if(PROF_CODES.includes(hashCode(i.value.trim().toUpperCase()))){svj("march_prof_ok",1);teacher()}else{document.getElementById("terr").textContent="Code incorrect.";flash("bad")}};
+ document.getElementById("tgo").onclick=go;i.onkeydown=e=>{if(e.key==="Enter")go()};document.getElementById("bk").onclick=intro;
+}
+function teacher(open){lastScreen=()=>teacher(open);
+ document.body.classList.remove("inplay");const cls=ldj("march_class",{});const ids=Object.keys(cls).sort((a,b)=>(cls[a].n||"").localeCompare(cls[b].n||""));
+ const TC=ldj("march_tclasses",[]);
+ app.innerHTML=`<h1 class="big" style="font-size:2.4rem;margin-top:12px">Mes élèves</h1>
+ <div class="card"><h2>🌐 Classes en ligne</h2>${FBOK()?`<p class="muted" style="margin:4px 0 8px">Les résultats des élèves arrivent automatiquement.</p>
+  ${TC.map(c=>`<button class="viewbtn" data-cls="${c.code}" style="text-align:left;margin-bottom:6px">📋 ${c.name.replace(/</g,"&lt;")} · <span class="muted">${c.code}</span></button>`).join("")}
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="viewbtn" id="newc">＋ Créer une classe</button><button class="viewbtn" id="claimc">↪ Récupérer une classe</button></div><div id="cform"></div>`
+  :`<p class="muted" style="margin:4px 0 0">Pas encore configuré.</p>`}</div>
+ <div class="card"><h2>Ajouter / mettre à jour un élève (par message)</h2><p class="muted" style="margin:4px 0 8px">Colle ici le message reçu de l'élève (bouton « Envoyer à mon formateur » dans sa progression).</p>
+ <textarea id="paste" style="width:100%;height:80px;font:inherit;font-size:.8rem;border:1px solid var(--line);border-radius:8px;background:var(--btn);color:var(--ink)"></textarea>
+ <p id="perr" style="font-weight:600;min-height:1.3em;margin:6px 0 0"></p><button class="primary" id="add" style="margin-top:6px">Ajouter</button></div>
+ ${ids.length?ids.map(id=>{const e=cls[id],h=e.h||[],b=h.reduce((a,x)=>Math.max(a,x.s||0),0),l=h[h.length-1],tot=h.reduce((a,x)=>[a[0]+x.ok,a[1]+x.n,a[2]+x.hf,a[3]+x.ht,a[4]+x.hi],[0,0,0,0,0]);
+  return`<div class="card"><div class="row" style="font-size:1rem"><h2>${e.n||"Sans nom"}</h2><button data-del="${id}" style="background:none;border:0;color:var(--blood);font-weight:700">Retirer</button></div>
+  <p style="margin:4px 0">${h.length} série${h.length>1?"s":""}${l?` · dernière le ${fdate(l.d)} (${MSH[l.m]||l.m})`:""}${b?` · meilleur score ${b}`:""}</p>
+  <p class="muted" style="margin:0 0 4px">Pris en charge ${tot[1]?Math.round(100*tot[0]/tot[1]):0} % · blessures cachées ${tot[3]?Math.round(100*tot[2]/tot[3]):0} % · aide ${tot[4]}×</p>
+  <p style="margin:0"><strong>Point faible :</strong> ${weak(h)}</p>
+  ${open===id?`<ul class="debrief">${histRows(h)}</ul>`:`<button data-open="${id}" style="margin-top:6px;background:var(--btn);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-weight:600">Voir le détail</button>`}</div>`}).join(""):`<p class="muted">Aucun élève pour l'instant.</p>`}
+ <button class="primary" id="bk" style="background:var(--btn);color:var(--ink);border:1px solid var(--line)">Retour</button>`;
+ document.getElementById("bk").onclick=intro;
+ app.querySelectorAll("[data-cls]").forEach(b=>b.onclick=()=>classView(b.dataset.cls));
+ const IN='style="width:100%;font:inherit;padding:10px;margin-top:6px;border:1px solid var(--line);border-radius:8px;background:var(--btn);color:var(--ink)"';
+ const nc=document.getElementById("newc");if(nc)nc.onclick=()=>{const f=document.getElementById("cform");f.innerHTML=`<input id="cn" ${IN} maxlength="40" placeholder="${tx("Nom de la classe (ex. Groupe SC1 octobre)")}"><p id="cer" style="color:var(--blood);font-weight:600;min-height:1.2em;margin:4px 0"></p><button class="primary" id="cgo" style="margin-top:0">${tx("Créer")}</button>`;
+  document.getElementById("cgo").onclick=async()=>{const n=document.getElementById("cn").value.trim();if(!n)return;const er=document.getElementById("cer");er.style.color="var(--muted)";er.textContent=tx("Création…");
+   try{const c=await createClass(n);classView(c.code)}catch(e){er.style.color="var(--blood)";er.textContent=tx(e.message&&/^(create|secret|auth)/.test(e.message)?"Erreur de création. Vérifie la configuration Firebase.":netMsg())}}};
+ const cc=document.getElementById("claimc");if(cc)cc.onclick=()=>{const f=document.getElementById("cform");f.innerHTML=`<input id="kc" ${IN} placeholder="${tx("Code de classe")}" autocapitalize="characters"><input id="kk" ${IN} placeholder="${tx("Clé formateur")}" autocapitalize="characters"><p id="cer" style="color:var(--blood);font-weight:600;min-height:1.2em;margin:4px 0"></p><button class="primary" id="kgo" style="margin-top:0">${tx("Récupérer")}</button>`;
+  document.getElementById("kgo").onclick=async()=>{const er=document.getElementById("cer");try{const ok=await claimClass(document.getElementById("kc").value,document.getElementById("kk").value);if(ok)classView(document.getElementById("kc").value.trim().toUpperCase());else er.textContent=tx("Code ou clé incorrects.")}catch(e){er.textContent=tx(netMsg())}}};
+ document.getElementById("add").onclick=()=>{const m=document.getElementById("paste").value.match(/SMR1\.([A-Za-z0-9_-]+)/),pe=document.getElementById("perr");
+  if(!m){pe.style.color="var(--blood)";pe.textContent="Aucun code de progression trouvé dans ce texte.";return}
+  try{const d=dec(m[1]);if(!d.i||!Array.isArray(d.h))throw 0;const c=ldj("march_class",{});c[d.i]={n:d.n,h:d.h,u:Date.now()};svj("march_class",c);teacher()}catch(e){pe.style.color="var(--blood)";pe.textContent="Code illisible ou incomplet."}};
+ app.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{if(!confirm(tx("Retirer cet élève ?")))return;const c=ldj("march_class",{});delete c[b.dataset.del];svj("march_class",c);teacher()});
+ app.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>teacher(b.dataset.open));
+}
+
+/* ---------- classes en ligne (Firebase) ---------- */
+const FB=window.__FB||{apiKey:"AIzaSyBWaMgAPc4Muwmvk3W-fhI9-ztNH7drl_o",projectId:"safe-marche-ryan"};
+const FBOK=()=>!!(FB.apiKey&&FB.projectId);
+const FBASE=()=>`https://firestore.googleapis.com/v1/projects/${FB.projectId}/databases/(default)/documents`;
+const FV={s:v=>({stringValue:String(v)}),i:v=>({integerValue:String(Math.round(v))}),b:v=>({booleanValue:!!v})};
+const gv=(f,k)=>f&&f[k]?(f[k].stringValue??f[k].integerValue??f[k].booleanValue):undefined;
+const AL="ABCDEFGHJKLMNPQRSTUVWXYZ23456789",rnd=n=>Array.from({length:n},()=>AL[Math.floor(Math.random()*AL.length)]).join("");
+async function fbAuth(){
+ let a=ldj("march_fb",null);if(a&&a.exp>Date.now()+60000)return a;
+ if(a&&a.rt){try{const r=await fetch(`https://securetoken.googleapis.com/v1/token?key=${FB.apiKey}`,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"grant_type=refresh_token&refresh_token="+encodeURIComponent(a.rt)});
+  if(r.ok){const j=await r.json();a={uid:j.user_id,tok:j.id_token,rt:j.refresh_token,exp:Date.now()+(+j.expires_in)*1000};svj("march_fb",a);return a}}catch(e){throw e}}
+ const r=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FB.apiKey}`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({returnSecureToken:true})});
+ if(!r.ok)throw new Error("auth "+r.status);const j=await r.json();a={uid:j.localId,tok:j.idToken,rt:j.refreshToken,exp:Date.now()+(+j.expiresIn)*1000};svj("march_fb",a);return a;
+}
+async function fs(method,path,body){
+ const a=await fbAuth();const r=await fetch(`${FBASE()}/${path}`,{method,headers:{Authorization:"Bearer "+a.tok,"Content-Type":"application/json"},body:body?JSON.stringify(body):undefined});
+ let j=null;try{j=await r.json()}catch(e){}return{ok:r.ok,status:r.status,j,uid:a.uid};
+}
+const netMsg=e=>"Connexion impossible. Vérifie ta connexion internet (la fonction en ligne marche sur la version GitHub, pas dans l'aperçu Claude).";
+async function syncMe(){
+ const p=me();if(!FBOK()||!p.cls||!p.cls.code)return{ok:false};
+ try{const a=await fbAuth();const r=await fs("PATCH",`classes/${p.cls.code}/students/${a.uid}`,{fields:{name:FV.s(p.name||""),h:FV.s(JSON.stringify(p.h||[])),up:FV.i(Date.now())}});
+  if(r.ok){p.cls.dirty=false;p.cls.sync=Date.now();svj("march_profile",p);return{ok:true}}
+  return{ok:false,status:r.status}}catch(e){return{ok:false,net:true}}
+}
+async function joinClass(code){
+ code=(code||"").trim().toUpperCase().replace(/\s+/g,"");const p=me();
+ if(!code){p.cls=null;svj("march_profile",p);return{ok:true,left:true}}
+ p.cls={code,dirty:true};svj("march_profile",p);
+ const r=await syncMe();if(!r.ok&&!r.net){p.cls=null;svj("march_profile",p);return{ok:false,bad:true}}
+ return r;
+}
+async function leaveClass(){const p=me();if(p.cls&&FBOK()){try{const a=await fbAuth();await fs("DELETE",`classes/${p.cls.code}/students/${a.uid}`)}catch(e){}}p.cls=null;svj("march_profile",p)}
+async function createClass(name){
+ const code=rnd(4)+"-"+rnd(4),key=rnd(8);const a=await fbAuth();
+ const r=await fs("POST",`classes?documentId=${code}`,{fields:{name:FV.s(name),owners:{mapValue:{fields:{[a.uid]:FV.b(true)}}},created:FV.i(Date.now())}});
+ if(!r.ok)throw new Error("create "+r.status);
+ const r2=await fs("POST",`classes/${code}/private?documentId=secret`,{fields:{v:FV.s(key)}});
+ if(!r2.ok)throw new Error("secret "+r2.status);
+ const L=ldj("march_tclasses",[]);L.push({code,name,key});svj("march_tclasses",L);return{code,name,key};
+}
+async function claimClass(code,key){
+ code=code.trim().toUpperCase();key=key.trim().toUpperCase();const a=await fbAuth();
+ const r=await fs("PATCH",`classes/${code}?updateMask.fieldPaths=owners.${a.uid}&updateMask.fieldPaths=proof`,{fields:{owners:{mapValue:{fields:{[a.uid]:FV.b(true)}}},proof:FV.s(key)}});
+ if(!r.ok)return false;const g=await fs("GET",`classes/${code}`);const name=g.ok?gv(g.j.fields,"name"):code;
+ const L=ldj("march_tclasses",[]).filter(c=>c.code!==code);L.push({code,name,key});svj("march_tclasses",L);return true;
+}
+async function listStudents(code){
+ const r=await fs("GET",`classes/${code}/students?pageSize=300`);if(!r.ok)throw new Error("list "+r.status);
+ return(r.j.documents||[]).map(d=>({id:d.name.split("/").pop(),n:gv(d.fields,"name"),h:JSON.parse(gv(d.fields,"h")||"[]"),u:+gv(d.fields,"up")}));
+}
+function studentCard(e,id,open,prefix){const h=e.h||[],b=h.reduce((a,x)=>Math.max(a,x.s||0),0),l=h[h.length-1],tot=h.reduce((a,x)=>[a[0]+x.ok,a[1]+x.n,a[2]+x.hf,a[3]+x.ht,a[4]+x.hi],[0,0,0,0,0]);
+ return`<div class="card"><div class="row" style="font-size:1rem"><h2>${(e.n||"Sans nom").replace(/</g,"&lt;")}</h2><button data-del="${id}" style="background:none;border:0;color:var(--blood);font-weight:700">Retirer</button></div>
+ <p style="margin:4px 0">${h.length} série${h.length>1?"s":""}${l?` · dernière le ${fdate(l.d)} (${MSH[l.m]||l.m})`:""}${b?` · meilleur score ${b}`:""}</p>
+ <p class="muted" style="margin:0 0 4px">Pris en charge ${tot[1]?Math.round(100*tot[0]/tot[1]):0} % · blessures cachées ${tot[3]?Math.round(100*tot[2]/tot[3]):0} % · aide ${tot[4]}×</p>
+ <p style="margin:0"><strong>Point faible :</strong> ${weak(h)}</p>
+ ${open===id?`<ul class="debrief">${histRows(h)}</ul>`:`<button data-open="${id}" style="margin-top:6px;background:var(--btn);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-weight:600">Voir le détail</button>`}</div>`}
+let clsTimer=null;
+async function classView(code,open){
+ lastScreen=()=>classView(code,open);document.body.classList.remove("inplay");clearInterval(clsTimer);
+ const c=ldj("march_tclasses",[]).find(x=>x.code===code)||{code,name:code};
+ app.innerHTML=`<div id="clsview"><h1 class="big" style="font-size:2.2rem;margin-top:12px">${c.name.replace(/</g,"&lt;")}</h1>
+ <div class="card"><p style="margin:0">Code de classe à donner aux élèves :</p><div class="score" style="font-size:2.2rem;letter-spacing:.06em">${code}</div>
+ <p class="muted" style="margin:0 0 6px">Clé formateur (pour retrouver la classe sur un autre téléphone) : <strong>${c.key||"?"}</strong></p>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="viewbtn" id="shc">📤 Partager le code</button><button class="viewbtn" id="rfh">↻ Actualiser</button></div></div>
+ <p id="cst" class="muted">Chargement…</p><div id="slist"></div>
+ <button class="primary" id="bk" style="background:var(--btn);color:var(--ink);border:1px solid var(--line)">Retour</button></div>`;
+ document.getElementById("bk").onclick=()=>{clearInterval(clsTimer);teacher()};
+ document.getElementById("shc").onclick=async()=>{const t=tx(`Rejoins ma classe SAFE MARCHE RYAN : entre le code ${code} dans le champ « Code de classe » de l'appli.`)+" "+location.href.split("#")[0];
+  try{if(navigator.share){await navigator.share({text:t});return}}catch(e){}try{await navigator.clipboard.writeText(t);document.getElementById("cst").textContent=tx("✓ Message copié.")}catch(e){prompt("",t)}};
+ const load=async()=>{if(!document.getElementById("clsview")){clearInterval(clsTimer);return}const st_=document.getElementById("cst");
+  try{const L=(await listStudents(code)).sort((a,b)=>(a.n||"").localeCompare(b.n||""));
+   st_.textContent=tx(`${L.length} élève${L.length>1?"s":""} · mis à jour à ${new Date().toTimeString().slice(0,5)}`);
+   const sl=document.getElementById("slist");sl.innerHTML=L.length?L.map(e=>studentCard(e,e.id,open)).join(""):`<p class="muted">Aucun élève pour l'instant. Partage le code de classe.</p>`;
+   sl.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{open=b.dataset.open;load()});
+   sl.querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{if(!confirm(tx("Retirer cet élève ?")))return;try{await fs("DELETE",`classes/${code}/students/${b.dataset.del}`)}catch(e){}load()});
+  }catch(e){st_.textContent=tx(e.message&&e.message.startsWith("list")?"Accès refusé à cette classe.":netMsg())}};
+ document.getElementById("rfh").onclick=load;load();clsTimer=setInterval(load,30000);
+}
 /* ---------- écrans ---------- */
 function tracker(){
  const c=curLetter();
  return`<div class="tracker2">${GROUPS.map(([g,ks])=>`<div class="grp" style="--n:${ks.length}"><span class="gl ${ks.includes(c)?"on":""}">${g}</span><div class="ls">${ks.map(k=>`<div class="${!pending(k)&&(!c||ORDER.indexOf(k)<ORDER.indexOf(c))?"done":c===k?"now":""}" style="--c:${LC[k]}" title="${LBL[k]}">${CH(k)}</div>`).join("")}</div></div>`).join("")}</div>
  ${c?`<p class="curstep"><b style="color:${LC[c]}">${CH(c)}</b> ${LBL[c]}</p>`:""}`;
 }
-function intro(){
+function intro(){lastScreen=intro;
  document.body.classList.remove("inplay");
  const b=best(),D=mk(SC[0]);
- app.innerHTML=`<div class="hero"><h1 class="big" style="font-size:clamp(2.2rem,11vw,3.2rem)"><span>SAFE</span><span style="color:var(--lM)">MARCHE</span><span style="color:var(--lR)">RYAN</span></h1><div class="stage env-fire">${figure(D,"front")}</div></div>
+ app.innerHTML=`${langBtn()}<div class="hero"><h1 class="big" style="font-size:clamp(2.2rem,11vw,3.2rem)"><span>SAFE</span><span style="color:var(--lM)">MARCHE</span><span style="color:var(--lR)">RYAN</span></h1><div class="stage env-fire">${figure(D,"front")}</div></div>
  <p style="margin-top:10px">Le protocole complet du sauvetage au combat, du premier coup de feu jusqu'à l'évacuation.</p>
  <p class="grpt">SAFE</p><p class="muted">Avant de toucher le blessé : faire cesser le danger, évaluer la situation, soustraire au danger, premier bilan.</p>
  <p class="grpt" style="color:var(--lM)">MARCHE</p><p class="muted">Hémorragie massive, voies aériennes, respiration, choc, hypothermie, évacuation.</p>
  <p class="grpt" style="color:var(--lR)">RYAN</p><p class="muted">En attendant l'évacuation : réévaluation, yeux, analgésie, nursing.</p>
  <p style="margin-top:12px"><strong>Choisis un outil</strong> dans la trousse en bas, puis <strong>touche la zone</strong> sur le mannequin. Fais un vrai balayage et retourne le blessé : certaines blessures sont cachées, et la réévaluation peut en faire apparaître de nouvelles.</p>
  <div class="choice" style="--c:var(--olive);margin-top:14px"><h3>Temps disponible</h3><div class="opts">${Object.entries(MODES).map(([k,m])=>`<button data-m="${k}" class="${MODE===k?"msel":""}"><strong>${MODE===k?"● ":"○ "}${m.t}</strong><br><span class="muted" style="font-weight:500;font-size:.88rem">${m.d}</span></button>`).join("")}</div></div>
+ <div class="card"><label for="nm" style="font-weight:700">Ton prénom</label> <span class="muted" style="font-size:.85rem">(pour ton formateur)</span>
+ <input id="nm" value="${(me().name||"").replace(/"/g,"&quot;")}" maxlength="30" autocomplete="given-name" style="width:100%;font:inherit;padding:10px;margin-top:6px;border:1px solid var(--line);border-radius:8px;background:var(--btn);color:var(--ink)">
+ ${FBOK()?`<label for="ccode" style="font-weight:700;display:block;margin-top:10px">Code de classe</label> <span class="muted" style="font-size:.85rem">(donné par ton formateur, facultatif)</span>
+ <input id="ccode" value="${me().cls?me().cls.code:""}" autocapitalize="characters" autocomplete="off" placeholder="ABCD-1234" style="width:100%;font:inherit;letter-spacing:.06em;padding:10px;margin-top:6px;border:1px solid var(--line);border-radius:8px;background:var(--btn);color:var(--ink)">
+ <p id="ccs" class="muted" style="margin:6px 0 0;font-size:.88rem">${me().cls?(me().cls.dirty?"⏳ Inscrit, synchronisation en attente":"✓ Inscrit dans la classe "+me().cls.code+" : tes résultats sont envoyés automatiquement"):""}</p>`:""}</div>
  ${b?`<p>Meilleur score : <strong>${b}</strong></p>`:""}
  <button class="primary" id="go">Commencer la série (${SC.length} blessés)</button>
+ <div class="opts" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px">
+  <button class="viewbtn" id="b-pg">📈 Progression</button><button class="viewbtn" id="b-rf">📚 Références</button><button class="viewbtn" id="b-tc">🎓 Formateur</button></div>
  <p class="note">Outil d'entraînement au raisonnement. Ne remplace pas une formation SC1 / SC2 / TCCC encadrée, ni les protocoles de ton unité.</p>`;
  app.querySelectorAll("[data-m]").forEach(x=>x.onclick=()=>{MODE=x.dataset.m;try{localStorage.setItem("march_mode",MODE)}catch(e){}const y=window.scrollY;intro();window.scrollTo(0,y)});
- document.getElementById("go").onclick=()=>{order=shuffle(SC.map((_,i)=>i));cur=0;total=0;results=[];start()};
+ const nm=document.getElementById("nm");nm.onchange=nm.onblur=()=>{const p=me();const old=p.name;p.name=nm.value.trim();svj("march_profile",p);if(old!==p.name&&p.cls){p.cls.dirty=true;svj("march_profile",p);syncMe()}};
+ const ccI=document.getElementById("ccode");if(ccI)ccI.onchange=async()=>{nm.onchange();const s_=document.getElementById("ccs");s_.textContent=tx("Inscription…");const r=await joinClass(ccI.value);
+  s_.textContent=tx(r.left?"":r.ok?"✓ Inscrit dans la classe "+me().cls.code+" : tes résultats sont envoyés automatiquement":r.bad?"✗ Code de classe inconnu.":"⏳ Inscrit, synchronisation en attente (pas de connexion)")};
+ {const p=me();if(p.cls&&p.cls.dirty&&FBOK())syncMe().then(r=>{const s_=document.getElementById("ccs");if(r.ok&&s_)s_.textContent=tx("✓ Inscrit dans la classe "+p.cls.code+" : tes résultats sont envoyés automatiquement")})}
+ document.getElementById("b-pg").onclick=()=>{nm.onchange();progress()};document.getElementById("b-rf").onclick=()=>refsScreen();document.getElementById("b-tc").onclick=()=>ldj("march_prof_ok",0)?teacher():teacherGate();
+ document.getElementById("go").onclick=()=>{nm.onchange();order=shuffle(SC.map((_,i)=>i));cur=0;total=0;results=[];start()};
 }
 function start(){
  st=mk(SC[order[cur]]);render();clearInterval(timer);
@@ -626,11 +866,12 @@ function render(){
  app.innerHTML=`<div class="play" style="display:contents">
  <div class="topbar"><span style="white-space:nowrap">${cur+1}/${SC.length} · ${({apprentissage:"Apprent.",intense:"Intense",normal:"Normal",decouverte:"Découv.",illimite:"∞"})[MODE]}</span><span style="white-space:nowrap">✗ ${st.err}${st.hints?` · 💡${st.hints}`:""}</span><span class="sp"></span>
   ${learn?`<button id="auto" class="${AUTO?"on":""}">💡 Auto</button>`:""}${learn&&AUTO?"":`<button id="hintbtn" class="${st.H?"on":""}">💡${learn?"":` −${HINT_COST}`}</button>`}
-  <button id="snd" aria-label="Son">${SOUND?"🔊":"🔇"}</button></div>
+  <button id="langbtn">${LANG==="en"?"FR":"EN"}</button><button id="snd" aria-label="Son">${SOUND?"🔊":"🔇"}</button></div>
  ${tracker()}
  <div class="vitals">${HEART}<div class="bar"><i></i></div><span class="bpm" id="bpm"></span></div>
  <div class="mid"><div class="stage env-${s.env}">${figure(st,st.view,"fig play")}<button class="flipbtn ${needFlip?"hint":""}" id="flip">↻ ${st.view==="front"?"Dos":"Face"}</button></div>
   <div class="side2">${learn&&c0?`<div class="expl"><b style="color:${LC[c0]}">${CH(c0)}</b> ${EXPL[c0]}</div>`:""}<span class="phase">${s.phase}</span><h2>${s.title}</h2><p class="ctx">${s.ctx}</p>
+  <h3>Examiné</h3><div class="chips">${[["head","Tête"],["chest","Thorax"],["back","Dos"],["limb:armR","Bras D"],["limb:armL","Bras G"],["limb:LR","Jambe D"],["limb:LL","Jambe G"]].map(([k,n])=>`<span class="chip ${st.exam.has(k)?"on":""}">${st.exam.has(k)?"✓":"○"} ${n}</span>`).join("")}</div>
   <h3>Constatations</h3><ul class="inj">${st.seen.map((i,k)=>{const w=st.w[i];return `<li class="${w.done?"done":""} ${st.newW===i?"new":""}"><span class="badge" style="${w.done?"background:var(--ok)":""}">${w.done?"✓":k+1}</span><span>${w.label}${w.side==="back"?" (dos)":""}</span></li>`}).join("")}
   ${(s.notes||[]).map(n=>`<li><span class="dot">•</span><span>${n}</span></li>`).join("")}</ul></div></div>
  <div class="bottom">
@@ -648,45 +889,50 @@ function render(){
  const kit=app.querySelector(".kit");
  app.querySelectorAll(".tool").forEach(b=>b.onclick=()=>{st.tap=null;st.tool=b.dataset.t;st.fresh=null;st.newW=null;const sc=kit.scrollLeft;render();const k2=app.querySelector(".kit");if(k2)k2.scrollLeft=sc});
 }
-function end(ok){
+function end(ok){lastScreen=null;
  clearInterval(timer);
  document.body.classList.remove("inplay");
  const s=st.s,sec=Math.round((Date.now()-st.t0)/1000),hidden=st.w.filter(w=>w.hidden),found=hidden.filter(w=>w.rev).length;
  const pts=LEARN()?0:ok?Math.max(0,Math.round(st.hp*10-st.err*40+(MODES[MODE].k?Math.max(0,Math.round(150/MODES[MODE].k)-sec)*3*MODES[MODE].k:0)+found*100+(st.evSpawned?100:0)-st.hints*HINT_COST)):0;
- total+=pts;results.push({title:s.title,ok,pts,found,hid:hidden.length,hints:st.hints});
+ total+=pts;results.push({title:s.title,ok,pts,found,hid:hidden.length,hints:st.hints,err:st.err,errL:st.errL});
  const F=mk(s);F.w=st.w.map(w=>({...w,rev:true,done:ok?true:w.done}));F.seen=F.w.map(w=>w.i);
  F.tqs=st.tqs.map(t=>({...t,fresh:false}));F.marked=st.marked;F.blanket=st.blanket;F.blood=st.blood;F.exam=st.exam;
  const has=t=>s.wounds.some(w=>w.tool===t);
  const steps=[["SAFE",[["sS",s.fire?"Riposter, neutraliser la menace.":"Faire cesser le danger."],["sA","Évaluer la situation."],["sF","Soustraire le blessé au danger."],["sE","Premier bilan."]]],
   ["MARCHE",[["M","Balayage des 4 membres (et sous le gilet), contrôle de chaque hémorragie."],["A","Tête et voies aériennes"+(has("npa")?" : canule + PLS.":".")],["R","Thorax devant ET derrière"+(s.wounds.some(w=>WL[w.tool]==="R")?", traiter chaque plaie.":".")],
    ["C","Pouls radial"+(has("tq")||s.pre?.tqs?", heure des garrots":"")+(has("belt")?", ceinture pelvienne":"")+"."],["H","Isoler du sol et couvrir."],["E","Évacuation en urgence "+(s.evac==="UA"?"absolue.":"relative.")]]],
-  ["RYAN",[["rR","Réexaminer chaque soin posé"+(s.event?" : ici, "+s.event.label.toLowerCase()+".":".")],["rY","Examiner les yeux"+(has("shield")?", coque oculaire.":".")],["rA",s.analg?"Analgésie selon protocole.":"Pas d'analgésie (inconscient)."],["rN",(has("splint")?"Attelle. ":"")+(has("dress")?"Pansement compressif. ":"")+"Fiche de l'avant, surveillance."]]]];
+  ["RYAN",[["rR","Réexaminer chaque soin posé"+(s.event?" : ici, "+(LANG==="en"?s.event.label:s.event.label.toLowerCase())+".":".")],["rY","Examiner les yeux"+(has("shield")?", coque oculaire.":".")],["rA",s.analg?"Analgésie selon protocole.":"Pas d'analgésie (inconscient)."],["rN",(has("splint")?"Attelle. ":"")+(has("dress")?"Pansement compressif. ":"")+(has("wet")?"Éviscération : couvrir humide sans comprimer ni réintégrer, jambes fléchies. ":"")+"Fiche de l'avant, surveillance."]]]];
  app.innerHTML=`<div class="card"><h2 style="color:${ok?"var(--ok)":"var(--blood)"}">${ok?"Blessé pris en charge":"Blessé perdu"}</h2>
   <p class="muted" style="margin:4px 0 0">${s.title} : ${sec} s, ${st.err} erreur${st.err>1?"s":""}${hidden.length?`, blessures cachées : ${found}/${hidden.length}`:""}${st.hints?`<br><span class="tag" style="background:#F2C94C;color:#222;margin:4px 0 0">💡 Aidé ${st.hints} fois${LEARN()?"":` (−${st.hints*HINT_COST} pts)`}</span>`:""}</p>
   <div class="score">${LEARN()?(ok?"✓":"✗"):pts}</div><div class="figs2"><div class="stage env-${s.env}">${figure(F,"front")}</div><div class="stage env-${s.env}">${figure(F,"back")}</div></div></div>
- <div class="card"><h2>Blessures</h2><ul class="debrief">${F.w.map(w=>`<li><span class="l" style="--c:${LC[WL[w.tool]]}">${CH(WL[w.tool])}</span><span><strong>${w.label}</strong>${w.hidden?`<span class="tag ${st.w[w.i].rev?"found":"miss"}">${st.w[w.i].rev?"cachée, trouvée":"cachée, manquée"}</span>`:""}${w.ev?`<span class="tag found">réévaluation</span>`:""}<br><span class="muted">${w.ok}</span></span></li>`).join("")}</ul></div>
+ <div class="card"><h2>Blessures</h2><ul class="debrief">${F.w.map(w=>`<li><span class="l" style="--c:${LC[WL[w.tool]]}">${CH(WL[w.tool])}</span><span><strong>${w.label}</strong>${w.hidden?`<span class="tag ${st.w[w.i].rev?"found":"miss"}">${st.w[w.i].rev?"cachée, trouvée":"cachée, manquée"}</span>`:""}${w.ev?`<span class="tag found">réévaluation</span>`:""}<br><span class="muted">${w.ok}</span>${TREF[w.tool]?`<br><span style="font-size:.78rem;color:var(--olive);font-weight:600">📚 ${TREF[w.tool]}</span>`:""}</span></li>`).join("")}</ul></div>
  <div class="card"><h2>La bonne séquence</h2>${steps.map(([g,l])=>`<p class="grpt">${g}</p><ol class="debrief">${l.map(([k,t])=>`<li><span class="l" style="--c:${LC[k]}">${CH(k)}</span><span>${t}</span></li>`).join("")}</ol>`).join("")}</div>
+ <p class="note" style="margin:0 0 4px">Sources : SSA (sauvetage au combat), CoTCCC (TCCC Guidelines), C-TECC. <a href="#" id="rf" style="color:var(--olive);font-weight:700">Voir les références</a></p>
  <button class="primary" id="nx">${cur+1<SC.length?"Blessé suivant":"Voir le bilan"}</button>`;
+ {const rf=document.getElementById("rf");const html=app.innerHTML;rf.onclick=e=>{e.preventDefault();const snap=app.innerHTML;refsScreen(()=>{app.innerHTML=snap;document.getElementById("nx").onclick=()=>{cur++;cur<SC.length?start():final()};document.getElementById("rf").onclick=ev=>{ev.preventDefault();rf.onclick(ev)}})}}
  window.scrollTo(0,0);
  document.getElementById("nx").onclick=()=>{cur++;cur<SC.length?start():final()};
 }
-function final(){
+function final(){lastScreen=null;
  document.body.classList.remove("inplay");
  const b=best(),rec=!LEARN()&&total>b;if(rec)best(total);
+ {const p=me(),el={};results.forEach(r=>Object.entries(r.errL||{}).forEach(([k,v])=>el[k]=(el[k]||0)+v));
+  p.h.push({d:Math.round(Date.now()/60000),m:MODE,s:LEARN()?0:total,ok:results.filter(r=>r.ok).length,n:results.length,hf:results.reduce((a,r)=>a+r.found,0),ht:results.reduce((a,r)=>a+r.hid,0),hi:results.reduce((a,r)=>a+(r.hints||0),0),er:results.reduce((a,r)=>a+(r.err||0),0),el});p.h=p.h.slice(-20);if(p.cls)p.cls.dirty=true;svj("march_profile",p);if(p.cls)syncMe()}
  const th=results.reduce((a,r)=>a+(r.hints||0),0),saved=results.filter(r=>r.ok).length,hf=results.reduce((a,r)=>a+r.found,0),ht=results.reduce((a,r)=>a+r.hid,0);
  app.innerHTML=`<h1 class="big" style="font-size:3rem;margin-top:14px">Bilan</h1><div class="score">${LEARN()?"":total}</div>
  <p class="muted">Mode ${MODES[MODE].t}. ${saved} / ${results.length} blessés pris en charge, ${hf} / ${ht} blessures cachées trouvées${th?`, aide utilisée ${th} fois`:", sans aide"}. ${LEARN()?"":rec?"Nouveau record.":"Record : "+b}</p>
  <div class="card"><ul class="debrief">${results.map(r=>`<li><span class="l" style="--c:${r.ok?"var(--ok)":"var(--blood)"}">${r.ok?"✓":"✗"}</span><span>${r.title} : ${LEARN()?(r.ok?"pris en charge":"perdu"):r.ok?r.pts+" pts":"perdu"}${r.hints?` · 💡 aidé ${r.hints}×`:""}</span></li>`).join("")}</ul></div>
- <button class="primary" id="re">Rejouer une série</button>`;
+ <button class="primary" id="re">Rejouer une série</button><button class="primary" id="pg" style="background:var(--btn);color:var(--ink);border:1px solid var(--line)">📈 Ma progression / envoyer au formateur</button>`;
+ document.getElementById("pg").onclick=progress;
  document.getElementById("re").onclick=intro;
 }
 /* ---------- code d'accès ---------- */
 const CODES=["fdc422fd"];
 const hashCode=s=>{let x=0x811c9dc5;for(const c of s){x^=c.charCodeAt(0);x=Math.imul(x,0x01000193)>>>0}return x.toString(16)};
 function unlocked(){try{return CODES.includes(localStorage.getItem("march_key"))}catch(e){return false}}
-function gate(){
+function gate(){lastScreen=gate;
  document.body.classList.remove("inplay");
- app.innerHTML=`<div class="hero"><h1 class="big" style="font-size:clamp(2.2rem,11vw,3.2rem)"><span>SAFE</span><span style="color:var(--lM)">MARCHE</span><span style="color:var(--lR)">RYAN</span></h1><div class="stage env-fire">${figure(mk(SC[0]),"front")}</div></div>
+ app.innerHTML=`${langBtn()}<div class="hero"><h1 class="big" style="font-size:clamp(2.2rem,11vw,3.2rem)"><span>SAFE</span><span style="color:var(--lM)">MARCHE</span><span style="color:var(--lR)">RYAN</span></h1><div class="stage env-fire">${figure(mk(SC[0]),"front")}</div></div>
  <div class="card" style="margin-top:16px"><h2>Accès réservé</h2><p class="muted" style="margin:4px 0 10px">Entre le code qui t'a été transmis pour accéder à l'entraînement.</p>
  <input id="code" type="text" autocomplete="off" autocapitalize="characters" inputmode="numeric" spellcheck="false" placeholder="Code d'accès" aria-label="Code d'accès"
   style="width:100%;font:inherit;font-size:1.2rem;letter-spacing:.08em;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--btn);color:var(--ink)">
